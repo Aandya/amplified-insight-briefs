@@ -1,0 +1,1612 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>When the Cash Engine Becomes the Cage — Amplified Insight</title>
+<style>
+:root {
+  --bg:#0D1117; --surface:#161B22; --surface2:#1C2128; --border:#21262D;
+  --text:#F0F6FC; --text-muted:#8B949E; --text-dim:#484F58;
+  --auto:#3B82F6; --auto-dim:#0D2340; --auto-mid:#1E3A5F;
+  --defence:#F59E0B; --defence-dim:#2D1A00; --defence-mid:#5C3D08;
+  --ev:#10B981; --ev-dim:#022C22; --ev-mid:#064E3B;
+  --constraint:#EF4444; --constraint-dim:#2D0A0A;
+  --intervention:#8B5CF6; --intervention-dim:#1E0A3C;
+  --accent:#0EA5E9; --gold:#F59E0B;
+  --font:'Segoe UI',system-ui,-apple-system,sans-serif;
+  --mono:'SF Mono','Fira Code',monospace;
+}
+[data-theme="light"] {
+  --bg:#F8FAFC; --surface:#FFFFFF; --surface2:#F1F5F9; --border:#E2E8F0;
+  --text:#0F172A; --text-muted:#64748B; --text-dim:#94A3B8;
+  --auto-dim:#DBEAFE; --auto-mid:#BFDBFE; --defence-dim:#FEF3C7;
+  --defence-mid:#FDE68A; --ev-dim:#D1FAE5; --ev-mid:#A7F3D0;
+  --constraint-dim:#FEE2E2; --intervention-dim:#EDE9FE;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:var(--font);background:var(--bg);color:var(--text);line-height:1.6;font-size:14px}
+
+/* HEADER */
+.hdr{background:var(--surface);border-bottom:1px solid var(--border);padding:18px 40px;position:sticky;top:0;z-index:100;display:flex;justify-content:space-between;align-items:center}
+.hdr-l .client{font-size:18px;font-weight:800;letter-spacing:-0.5px}
+.hdr-l .meta{font-size:11px;color:var(--text-muted);letter-spacing:1.5px;text-transform:uppercase;margin-top:2px}
+.hdr-r{display:flex;align-items:center;gap:14px}
+.conf{background:var(--constraint);color:#fff;font-size:9px;font-weight:800;letter-spacing:2px;padding:3px 8px;border-radius:3px}
+.stamp{font-size:11px;color:var(--text-muted)}
+.toggle{background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:5px 12px;border-radius:6px;cursor:pointer;font-size:11px;font-family:var(--font)}
+.ai-badge{font-size:10px;color:var(--text-dim);letter-spacing:1px}
+
+/* NAV */
+.nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 40px;display:flex;overflow-x:auto;gap:0}
+.nav a{color:var(--text-muted);text-decoration:none;font-size:11px;letter-spacing:0.5px;padding:11px 14px;border-bottom:2px solid transparent;white-space:nowrap;transition:all .2s;text-transform:uppercase}
+.nav a:hover{color:var(--text);border-bottom-color:var(--accent)}
+
+/* MAIN */
+.main{max-width:1100px;margin:0 auto;padding:40px}
+.section{margin-bottom:64px;scroll-margin-top:110px}
+.sec-hdr{display:flex;align-items:center;gap:12px;margin-bottom:28px}
+.sec-n{font-size:10px;color:var(--text-dim);font-family:var(--mono);min-width:20px}
+.sec-t{font-size:17px;font-weight:700;letter-spacing:-0.3px}
+.sec-line{flex:1;height:1px;background:var(--border)}
+
+/* EXEC SUMMARY */
+.mandate-bar{background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:14px 20px;margin-bottom:20px;font-size:12px;color:var(--text-muted);display:flex;gap:32px}
+.mandate-bar span{display:flex;flex-direction:column;gap:2px}
+.mandate-bar strong{color:var(--text);font-size:13px}
+.rec-box{background:var(--intervention-dim);border:1px solid var(--intervention);border-left:4px solid var(--intervention);border-radius:8px;padding:22px 24px;margin-bottom:20px}
+.rec-label{font-size:10px;color:var(--intervention);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px}
+.rec-text{font-size:15px;font-weight:600;line-height:1.6;color:var(--text)}
+.sup-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.sup-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:18px}
+.sup-n{font-size:32px;font-weight:900;line-height:1;margin-bottom:8px}
+.sup-t{font-size:12px;font-weight:700;margin-bottom:6px}
+.sup-d{font-size:12px;color:var(--text-muted);line-height:1.5}
+
+/* CHIPS */
+.chip{display:inline-block;padding:2px 9px;border-radius:12px;font-size:11px;font-weight:600;margin:1px}
+.ch-a{background:var(--auto-dim);color:var(--auto);border:1px solid var(--auto-mid)}
+.ch-d{background:var(--defence-dim);color:var(--defence);border:1px solid var(--defence-mid)}
+.ch-e{background:var(--ev-dim);color:var(--ev);border:1px solid var(--ev-mid)}
+.ch-w{background:var(--constraint-dim);color:var(--constraint);border:1px solid var(--constraint)}
+
+/* TABLES */
+.tbl{width:100%;border-collapse:collapse;font-size:13px}
+.tbl th{text-align:left;padding:10px 14px;background:var(--surface2);border:1px solid var(--border);font-size:10px;letter-spacing:1px;color:var(--text-muted);text-transform:uppercase}
+.tbl td{padding:12px 14px;border:1px solid var(--border);vertical-align:top;line-height:1.5}
+.tbl tbody tr:hover td{background:var(--surface2)}
+.tbl .highlight td{background:var(--intervention-dim)}
+
+/* SVG CONTAINERS */
+.svg-wrap{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:24px;margin-bottom:20px;overflow:hidden}
+.svg-cap{font-size:11px;color:var(--text-muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--border)}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+
+/* PAEI GRID */
+.paei-grid{display:grid;grid-template-columns:100px repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:6px;overflow:hidden;font-size:12px}
+.paei-cell{background:var(--surface);padding:12px 14px}
+.paei-header{background:var(--surface2);font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--text-muted);font-weight:600;display:flex;align-items:center}
+.paei-role{background:var(--surface2);font-weight:700;font-size:13px;display:flex;align-items:center}
+.paei-bar-wrap{display:flex;align-items:center;gap:8px}
+.paei-bar{height:8px;border-radius:4px;transition:width .3s}
+.paei-val{font-size:11px;color:var(--text-muted);min-width:28px}
+
+/* SCORECARD */
+.score-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.score-item{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:16px;display:flex;gap:12px;align-items:flex-start}
+.score-icon{font-size:18px;min-width:26px;margin-top:1px}
+.score-label{font-size:13px;font-weight:700;margin-bottom:4px}
+.score-detail{font-size:12px;color:var(--text-muted);line-height:1.5}
+.score-miss{border-color:var(--constraint);background:var(--constraint-dim)}
+.score-warn{border-color:var(--defence);background:var(--defence-dim)}
+.score-ok{border-color:var(--ev);background:var(--ev-dim)}
+
+/* INTERVENTION TIMELINE */
+.steps{display:flex;flex-direction:column;gap:0}
+.step{display:flex;gap:20px}
+.step-l{display:flex;flex-direction:column;align-items:center;min-width:44px}
+.step-dot{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:12px;flex-shrink:0;border:2px solid}
+.step-line-v{width:2px;flex:1;background:var(--border);margin:4px 0;min-height:16px}
+.step-r{padding-bottom:32px;flex:1;padding-top:8px}
+.step-lp{font-size:10px;color:var(--text-dim);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:3px}
+.step-t{font-size:15px;font-weight:700;margin-bottom:6px}
+.step-d{font-size:13px;color:var(--text-muted);line-height:1.6}
+.step-horizon{display:inline-block;margin-top:8px;font-size:10px;padding:2px 8px;border-radius:4px;background:var(--surface2);color:var(--text-dim);letter-spacing:0.5px}
+
+/* FOOTER */
+.footer{border-top:1px solid var(--border);padding:24px 40px;max-width:1100px;margin:0 auto;font-size:11px;color:var(--text-dim);line-height:1.8}
+.footer strong{color:var(--text-muted)}
+
+/* WARNING CALLOUT */
+.callout{border-radius:6px;padding:14px 18px;margin:14px 0;font-size:13px;display:flex;gap:10px;align-items:flex-start}
+.callout-warn{background:var(--defence-dim);border:1px solid var(--defence)}
+.callout-danger{background:var(--constraint-dim);border:1px solid var(--constraint)}
+.callout-info{background:var(--intervention-dim);border:1px solid var(--intervention)}
+.callout-icon{font-size:16px;min-width:22px}
+
+/* DELTA BOX */
+.delta-box{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:20px;margin-top:20px}
+.delta-title{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-dim);margin-bottom:12px}
+.delta-grid{display:grid;grid-template-columns:1fr auto 1fr;gap:12px;align-items:center}
+.delta-from{background:var(--constraint-dim);border:1px solid var(--constraint);border-radius:6px;padding:12px 14px;font-size:13px}
+.delta-arrow{font-size:20px;color:var(--intervention);text-align:center}
+.delta-to{background:var(--ev-dim);border:1px solid var(--ev);border-radius:6px;padding:12px 14px;font-size:13px}
+.delta-label{font-size:10px;letter-spacing:1px;text-transform:uppercase;margin-bottom:4px;font-weight:700}
+
+@media(max-width:768px){
+  .main{padding:20px}
+  .hdr{padding:14px 20px}
+  .nav{padding:0 20px}
+  .sup-grid{grid-template-columns:1fr}
+  .two-col{grid-template-columns:1fr}
+  .score-grid{grid-template-columns:1fr}
+  .mandate-bar{flex-direction:column;gap:12px}
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="hdr">
+  <div class="hdr-l">
+    <div class="client">When the Cash Engine Becomes the Cage</div>
+    <div class="meta">Strategic Operations Brief · Amplified Insight</div>
+  </div>
+  <div class="hdr-r">
+    <span class="ai-badge">AMPLIFIED INSIGHT</span>
+    <span class="stamp">24 June 2026</span>
+    <span class="conf">CONFIDENTIAL</span>
+    <button class="toggle" onclick="document.documentElement.setAttribute('data-theme', document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark')">☀ / ☾</button>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav class="nav">
+  <a href="#exec">Executive Summary</a>
+  <a href="#portfolio">Portfolio Diagnostic</a>
+  <a href="#conflict">Operating Model Conflict</a>
+  <a href="#leverage">Leverage Altitude</a>
+  <a href="#archetypes">Structural Archetypes</a>
+  <a href="#rebirth">Rebirth Scorecard</a>
+  <a href="#capital">Capital Allocation</a>
+  <a href="#intervention">Intervention Sequence</a>
+  <a href="#ev-math">EV Component Math</a>
+  <a href="#experience-curve">BCG Experience Curve</a>
+  <a href="#crossover">Crossover Timeline</a>
+  <a href="#toc">Constraint Sequence</a>
+  <a href="#horizontal">Horizontal Deployment</a>
+  <a href="#planning-fallacy">Planning Fallacy</a>
+</nav>
+
+<div style="background:var(--surface2);border-bottom:1px solid var(--border);padding:48px 40px;max-width:1100px;margin:0 auto;">
+  <p style="font-size:16px;line-height:1.85;color:var(--text);max-width:700px;margin-bottom:20px;">For decades, the company was its cash engine. The auto forging business — supplying crankshafts and axle beams to every major vehicle manufacturer — generated the margins, the relationships, and the credibility that made everything else possible. When the founder-chairman announced a push into defence and next-generation mobility, the instinct was to run it through the same machine.</p>
+  <p style="font-size:16px;line-height:1.85;color:var(--text);max-width:700px;margin-bottom:20px;">The machine was the problem. A business built for efficiency — quarterly cadence, high volume, tight tolerances, predictable customers — is structurally incapable of nurturing a business that requires decade-long conviction, irregular revenue, and the tolerance to lose money for years before winning a single contract. Running both through one operating model does not produce a diversified company. It produces a suppressed one.</p>
+  <p style="font-size:16px;line-height:1.85;color:var(--text);max-width:700px;margin-bottom:20px;">The question this brief examines is not whether the new bets are right. They are. The question is whether the structure in place is capable of delivering them — or whether the cash engine, the company's greatest asset, has quietly become the cage.</p>
+  <p style="font-size:16px;line-height:1.85;font-style:italic;color:var(--text-muted);max-width:700px;border-left:3px solid var(--accent);padding-left:20px;">This brief traces the operating model conflict to its structural root and asks what a conglomerate must do differently — not just to diversify, but to allow two fundamentally different businesses to thrive inside one organisation.</p>
+</div>
+
+<div class="main">
+
+<!-- ── 01. EXECUTIVE SUMMARY ─────────────────────────────────────── -->
+<section class="section" id="exec">
+  <div class="sec-hdr">
+    <span class="sec-n">01</span>
+    <span class="sec-t">Executive Summary</span>
+    <div class="sec-line"></div>
+  </div>
+
+  <div class="mandate-bar">
+    <span><div style="font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--text-dim);margin-bottom:2px">Subject</div><strong>Large Indian Engineering Conglomerate · Diversified Industrial Group</strong></span>
+    <span><div style="font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--text-dim);margin-bottom:2px">Mandate</div><strong>Operations strategy for simultaneous dual pivot — Defence + EV — while protecting the auto core</strong></span>
+    <span><div style="font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--text-dim);margin-bottom:2px">Commissioned by</div><strong>Board of Directors</strong></span>
+  </div>
+
+  <div class="rec-box">
+    <div class="rec-label">Primary Recommendation</div>
+    <div class="rec-text">Structurally separate the Defence division as an autonomous business unit with its own leadership DNA, P&amp;L, operating rules, and quality systems. This is not a reorganisation — it is the structural prerequisite for the defence growth loop to become self-sustaining before the auto cash engine begins its inevitable decline.</div>
+  </div>
+
+  <div class="sup-grid">
+    <div class="sup-card">
+      <div class="sup-n" style="color:var(--auto)">01</div>
+      <div class="sup-t">The conflict is structural, not cultural</div>
+      <div class="sup-d">Three businesses at three incompatible lifecycle stages are being governed by one management system. The mature auto division's operating rules actively suppress the defence division's growth capability — not by intention, but by structure. No cultural intervention resolves a structural problem.</div>
+    </div>
+    <div class="sup-card">
+      <div class="sup-n" style="color:var(--defence)">02</div>
+      <div class="sup-t">Capital allocation rules must differ by stage</div>
+      <div class="sup-d">Applying auto's ROIC hurdles and quarterly delivery benchmarks to a defence start-up is a category error. Each division is at a different lifecycle stage and requires a different capital allocation logic. The current unified approach penalises the only division with genuine long-run growth potential.</div>
+    </div>
+    <div class="sup-card">
+      <div class="sup-n" style="color:var(--ev)">03</div>
+      <div class="sup-t">Rebirth is possible — one ingredient is missing</div>
+      <div class="sup-d">Four of six conditions for a genuine corporate rebirth are present. The missing ingredient: disrupting the existing auto business from within. the company is protecting the auto franchise rather than cannibalising it. Without this, the pivot remains a diversification, not a transformation.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── 02. PORTFOLIO DIAGNOSTIC ──────────────────────────────────── -->
+<section class="section" id="portfolio">
+  <div class="sec-hdr">
+    <span class="sec-n">02</span>
+    <span class="sec-t">Portfolio Diagnostic — Three Businesses, One Skin</span>
+    <div class="sec-line"></div>
+  </div>
+
+  <div class="svg-wrap">
+    <div class="svg-cap">Corporate Lifecycle Map · the company Portfolio Position</div>
+    <svg viewBox="0 0 860 300" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-height:300px">
+      <defs>
+        <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L8,3 z" fill="#484F58"/>
+        </marker>
+      </defs>
+
+      <!-- Grid lines -->
+      <line x1="60" y1="240" x2="820" y2="240" stroke="#21262D" stroke-width="1"/>
+      <line x1="60" y1="30" x2="60" y2="250" stroke="#21262D" stroke-width="1" marker-end="url(#arr)"/>
+
+      <!-- Y-axis label -->
+      <text x="16" y="140" fill="#484F58" font-size="9" letter-spacing="1" transform="rotate(-90,16,140)" text-anchor="middle" font-family="system-ui">VALUE CREATION POTENTIAL</text>
+
+      <!-- Lifecycle curve -->
+      <path d="M 70,235 C 160,230 230,80 390,60 C 530,42 620,170 810,238"
+            fill="none" stroke="#21262D" stroke-width="2.5" stroke-dasharray="0"/>
+      <!-- Filled area under curve -->
+      <path d="M 70,235 C 160,230 230,80 390,60 C 530,42 620,170 810,238 L 810,242 L 70,242 Z"
+            fill="url(#curveGrad)" opacity="0.15"/>
+      <defs>
+        <linearGradient id="curveGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stop-color="#3B82F6" stop-opacity="0.3"/>
+          <stop offset="45%" stop-color="#8B5CF6" stop-opacity="0.5"/>
+          <stop offset="100%" stop-color="#EF4444" stop-opacity="0.2"/>
+        </linearGradient>
+      </defs>
+
+      <!-- Stage x-positions: Start=115, YoungGrowth=195, HighGrowth=280, MatureGrowth=370, MatureStable=470, Decline=590 -->
+
+      <!-- Stage labels on x-axis -->
+      <text x="115" y="260" fill="#484F58" font-size="9" text-anchor="middle" font-family="system-ui">Start-up</text>
+      <text x="200" y="260" fill="#484F58" font-size="9" text-anchor="middle" font-family="system-ui">Young</text>
+      <text x="200" y="270" fill="#484F58" font-size="9" text-anchor="middle" font-family="system-ui">Growth</text>
+      <text x="290" y="260" fill="#484F58" font-size="9" text-anchor="middle" font-family="system-ui">High</text>
+      <text x="290" y="270" fill="#484F58" font-size="9" text-anchor="middle" font-family="system-ui">Growth</text>
+      <text x="375" y="260" fill="#484F58" font-size="9" text-anchor="middle" font-family="system-ui">Mature</text>
+      <text x="375" y="270" fill="#484F58" font-size="9" text-anchor="middle" font-family="system-ui">Growth</text>
+      <text x="470" y="260" fill="#484F58" font-size="9" text-anchor="middle" font-family="system-ui">Mature</text>
+      <text x="470" y="270" fill="#484F58" font-size="9" text-anchor="middle" font-family="system-ui">Stable</text>
+      <text x="610" y="260" fill="#484F58" font-size="9" text-anchor="middle" font-family="system-ui">Decline</text>
+
+      <!-- Stage dividers -->
+      <line x1="155" y1="238" x2="155" y2="245" stroke="#21262D" stroke-width="1"/>
+      <line x1="243" y1="238" x2="243" y2="245" stroke="#21262D" stroke-width="1"/>
+      <line x1="330" y1="238" x2="330" y2="245" stroke="#21262D" stroke-width="1"/>
+      <line x1="420" y1="238" x2="420" y2="245" stroke="#21262D" stroke-width="1"/>
+      <line x1="530" y1="238" x2="530" y2="245" stroke="#21262D" stroke-width="1"/>
+
+      <!-- EV / Courtship — x≈115, on curve y≈228 -->
+      <circle cx="115" cy="228" r="18" fill="#10B981" opacity="0.25"/>
+      <circle cx="115" cy="228" r="18" fill="none" stroke="#10B981" stroke-width="2"/>
+      <text x="115" y="232" fill="#10B981" font-size="9" font-weight="700" text-anchor="middle" font-family="system-ui">EV</text>
+      <text x="115" y="203" fill="#10B981" font-size="10" font-weight="700" text-anchor="middle" font-family="system-ui">EV / New Energy</text>
+      <text x="115" y="216" fill="#10B981" font-size="9" text-anchor="middle" font-family="system-ui">Courtship · ~0% Rev</text>
+
+      <!-- Defence / Go-Go — x≈200, on curve y≈190 -->
+      <circle cx="200" cy="190" r="26" fill="#F59E0B" opacity="0.2"/>
+      <circle cx="200" cy="190" r="26" fill="none" stroke="#F59E0B" stroke-width="2.5"/>
+      <text x="200" y="193" fill="#F59E0B" font-size="10" font-weight="700" text-anchor="middle" font-family="system-ui">DEF</text>
+      <text x="200" y="150" fill="#F59E0B" font-size="10" font-weight="700" text-anchor="middle" font-family="system-ui">Defence</text>
+      <text x="200" y="163" fill="#F59E0B" font-size="9" text-anchor="middle" font-family="system-ui">Go-Go · ~12% Rev</text>
+
+      <!-- Auto / Mature Stable — x≈470, on curve y≈85 -->
+      <circle cx="470" cy="85" r="42" fill="#3B82F6" opacity="0.15"/>
+      <circle cx="470" cy="85" r="42" fill="none" stroke="#3B82F6" stroke-width="2.5"/>
+      <text x="470" y="82" fill="#3B82F6" font-size="11" font-weight="700" text-anchor="middle" font-family="system-ui">AUTO</text>
+      <text x="470" y="96" fill="#3B82F6" font-size="9" text-anchor="middle" font-family="system-ui">~55% Rev</text>
+      <text x="548" y="62" fill="#3B82F6" font-size="10" font-weight="700" font-family="system-ui">Auto (ICE)</text>
+      <text x="548" y="75" fill="#3B82F6" font-size="9" font-family="system-ui">Mature Stable → Aristocracy</text>
+
+      <!-- One skin warning -->
+      <rect x="60" y="10" width="540" height="20" rx="3" fill="#EF4444" opacity="0.08" stroke="#EF4444" stroke-width="1" stroke-dasharray="4,3"/>
+      <text x="330" y="23" fill="#EF4444" font-size="9" font-weight="600" letter-spacing="1" text-anchor="middle" font-family="system-ui">ALL THREE GOVERNED BY ONE MANAGEMENT SYSTEM</text>
+
+      <!-- Legend -->
+      <circle cx="650" cy="30" r="6" fill="#3B82F6" opacity="0.6"/>
+      <text x="660" y="34" fill="#8B949E" font-size="9" font-family="system-ui">Auto · Mature Stable</text>
+      <circle cx="650" cy="50" r="5" fill="#F59E0B" opacity="0.6"/>
+      <text x="660" y="54" fill="#8B949E" font-size="9" font-family="system-ui">Defence · Go-Go</text>
+      <circle cx="650" cy="70" r="4" fill="#10B981" opacity="0.6"/>
+      <text x="660" y="74" fill="#8B949E" font-size="9" font-family="system-ui">EV · Courtship</text>
+      <text x="640" y="90" fill="#484F58" font-size="8" font-family="system-ui">Circle size ∝ revenue share</text>
+    </svg>
+  </div>
+
+  <table class="tbl">
+    <thead>
+      <tr>
+        <th>Division</th>
+        <th>Lifecycle Stage</th>
+        <th>Revenue (~FY24)</th>
+        <th>FCF Sign</th>
+        <th>Dominant Loop</th>
+        <th>Management DNA Required</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="chip ch-a">Auto (ICE)</span></td>
+        <td>Mature Stable → Aristocracy</td>
+        <td>~₹8,500 Cr (~55%)</td>
+        <td style="color:var(--ev)">Large positive</td>
+        <td>B loops dominant. Efficiency, delivery, OEE. (E) decaying silently.</td>
+        <td>Operator — capital discipline, moat defence, return excess FCF</td>
+      </tr>
+      <tr>
+        <td><span class="chip ch-d">Defence + Aero</span></td>
+        <td>Go-Go (Young Growth)</td>
+        <td>~₹1,850 Cr (~12%)</td>
+        <td style="color:var(--constraint)">Negative / breakeven</td>
+        <td>R loop running: ATAGS credibility → orders → capability → credibility. Fragile.</td>
+        <td>Builder — vision, risk tolerance, government relationship depth, 7-yr horizon</td>
+      </tr>
+      <tr>
+        <td><span class="chip ch-e">EV / New Energy</span></td>
+        <td>Courtship / Infancy</td>
+        <td>Nascent</td>
+        <td style="color:var(--constraint)">Pre-revenue</td>
+        <td>No loops established. Vision only. 3P test applies: Possible? Plausible? Probable?</td>
+        <td>Visionary Scaler — unit economics discipline, team build, optionality preservation</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout callout-danger" style="margin-top:16px">
+    <span class="callout-icon">⚠</span>
+    <div><strong>The conglomerate trap:</strong> Cross-subsidisation from a mature division to a genuinely declining division destroys value. Cross-subsidisation from a mature division to a genuine start-up is correct capital allocation — IF the start-up is given lifecycle-appropriate governance. the company is doing the right thing (funding defence from auto) through the wrong mechanism (one management system for both).</div>
+  </div>
+</section>
+
+<!-- ── 03. OPERATING MODEL CONFLICT ──────────────────────────────── -->
+<section class="section" id="conflict">
+  <div class="sec-hdr">
+    <span class="sec-n">03</span>
+    <span class="sec-t">The Operating Model Conflict — Two Businesses, One Nervous System</span>
+    <div class="sec-line"></div>
+  </div>
+
+  <p style="margin-bottom:20px;color:var(--text-muted);font-size:13px">Each stage of a company's growth requires a different management DNA. A business built to scale efficiently runs on discipline, cadence, and quarterly rhythm. A business built to pioneer runs on long bets, tolerance for ambiguity, and years without returns. When both live inside one operating model, one of them loses — and it is almost always the pioneer. No cultural programme resolves this. Structure must change.</p>
+
+  <div class="svg-wrap">
+    <div class="svg-cap">PAEI Strength by Division — Required Profile vs. Current Single-System Reality</div>
+    <svg viewBox="0 0 760 280" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-height:280px">
+      <!-- Column headers -->
+      <text x="200" y="22" fill="#3B82F6" font-size="12" font-weight="700" text-anchor="middle" font-family="system-ui">AUTO (ICE)</text>
+      <text x="200" y="35" fill="#8B949E" font-size="9" text-anchor="middle" font-family="system-ui">Mature Stable</text>
+      <text x="430" y="22" fill="#F59E0B" font-size="12" font-weight="700" text-anchor="middle" font-family="system-ui">DEFENCE</text>
+      <text x="430" y="35" fill="#8B949E" font-size="9" text-anchor="middle" font-family="system-ui">Go-Go</text>
+      <text x="630" y="22" fill="#10B981" font-size="12" font-weight="700" text-anchor="middle" font-family="system-ui">EV / NEW ENERGY</text>
+      <text x="630" y="35" fill="#8B949E" font-size="9" text-anchor="middle" font-family="system-ui">Courtship</text>
+
+      <!-- Row labels -->
+      <text x="65" y="80" fill="#F0F6FC" font-size="13" font-weight="800" text-anchor="middle" font-family="system-ui">P</text>
+      <text x="65" y="82" fill="#8B949E" font-size="9" text-anchor="middle" dy="12" font-family="system-ui">Producer</text>
+      <text x="65" y="135" fill="#F0F6FC" font-size="13" font-weight="800" text-anchor="middle" font-family="system-ui">A</text>
+      <text x="65" y="137" fill="#8B949E" font-size="9" text-anchor="middle" dy="12" font-family="system-ui">Admin</text>
+      <text x="65" y="190" fill="#EF4444" font-size="13" font-weight="800" text-anchor="middle" font-family="system-ui">E</text>
+      <text x="65" y="192" fill="#8B949E" font-size="9" text-anchor="middle" dy="12" font-family="system-ui">Entrepreneur</text>
+      <text x="65" y="245" fill="#F0F6FC" font-size="13" font-weight="800" text-anchor="middle" font-family="system-ui">I</text>
+      <text x="65" y="247" fill="#8B949E" font-size="9" text-anchor="middle" dy="12" font-family="system-ui">Integrator</text>
+
+      <!-- AUTO bars: P=88, A=85, E=18, I=55 -->
+      <!-- P row -->
+      <rect x="105" y="65" width="190" height="24" rx="3" fill="#0D2340" stroke="#21262D" stroke-width="1"/>
+      <rect x="105" y="65" width="167" height="24" rx="3" fill="#3B82F6" opacity="0.8"/>
+      <text x="280" y="81" fill="#F0F6FC" font-size="10" font-weight="700" font-family="system-ui">88</text>
+      <!-- A row -->
+      <rect x="105" y="120" width="190" height="24" rx="3" fill="#0D2340" stroke="#21262D" stroke-width="1"/>
+      <rect x="105" y="120" width="162" height="24" rx="3" fill="#3B82F6" opacity="0.8"/>
+      <text x="276" y="136" fill="#F0F6FC" font-size="10" font-weight="700" font-family="system-ui">85</text>
+      <!-- E row — LOW, this is the problem -->
+      <rect x="105" y="175" width="190" height="24" rx="3" fill="#2D0A0A" stroke="#EF4444" stroke-width="1.5"/>
+      <rect x="105" y="175" width="34" height="24" rx="3" fill="#EF4444" opacity="0.7"/>
+      <text x="145" y="191" fill="#F0F6FC" font-size="10" font-weight="700" font-family="system-ui">18</text>
+      <text x="240" y="191" fill="#EF4444" font-size="9" font-family="system-ui">↓ DECAYING</text>
+      <!-- I row -->
+      <rect x="105" y="230" width="190" height="24" rx="3" fill="#0D2340" stroke="#21262D" stroke-width="1"/>
+      <rect x="105" y="230" width="104" height="24" rx="3" fill="#3B82F6" opacity="0.5"/>
+      <text x="217" y="246" fill="#F0F6FC" font-size="10" font-weight="700" font-family="system-ui">55</text>
+
+      <!-- DEFENCE bars: P=42, A=35, E=82, I=50 -->
+      <!-- P row -->
+      <rect x="335" y="65" width="190" height="24" rx="3" fill="#1A1200" stroke="#21262D" stroke-width="1"/>
+      <rect x="335" y="65" width="80" height="24" rx="3" fill="#F59E0B" opacity="0.6"/>
+      <text x="423" y="81" fill="#F0F6FC" font-size="10" font-weight="700" font-family="system-ui">42</text>
+      <!-- A row -->
+      <rect x="335" y="120" width="190" height="24" rx="3" fill="#1A1200" stroke="#21262D" stroke-width="1"/>
+      <rect x="335" y="120" width="66" height="24" rx="3" fill="#F59E0B" opacity="0.6"/>
+      <text x="409" y="136" fill="#F0F6FC" font-size="10" font-weight="700" font-family="system-ui">35</text>
+      <!-- E row — HIGH, this is the required strength -->
+      <rect x="335" y="175" width="190" height="24" rx="3" fill="#2D1A00" stroke="#F59E0B" stroke-width="1.5"/>
+      <rect x="335" y="175" width="156" height="24" rx="3" fill="#F59E0B" opacity="0.85"/>
+      <text x="499" y="191" fill="#1A1200" font-size="10" font-weight="800" font-family="system-ui">82</text>
+      <text x="340" y="191" fill="#1A1200" font-size="9" font-weight="700" font-family="system-ui">↑ REQUIRED</text>
+      <!-- I row -->
+      <rect x="335" y="230" width="190" height="24" rx="3" fill="#1A1200" stroke="#21262D" stroke-width="1"/>
+      <rect x="335" y="230" width="95" height="24" rx="3" fill="#F59E0B" opacity="0.5"/>
+      <text x="438" y="246" fill="#F0F6FC" font-size="10" font-weight="700" font-family="system-ui">50</text>
+
+      <!-- EV bars: P=10, A=8, E=88, I=20 -->
+      <!-- P row -->
+      <rect x="535" y="65" width="190" height="24" rx="3" fill="#022C22" stroke="#21262D" stroke-width="1"/>
+      <rect x="535" y="65" width="19" height="24" rx="3" fill="#10B981" opacity="0.5"/>
+      <text x="560" y="81" fill="#F0F6FC" font-size="10" font-weight="700" font-family="system-ui">10</text>
+      <!-- A row -->
+      <rect x="535" y="120" width="190" height="24" rx="3" fill="#022C22" stroke="#21262D" stroke-width="1"/>
+      <rect x="535" y="120" width="15" height="24" rx="3" fill="#10B981" opacity="0.5"/>
+      <text x="555" y="136" fill="#F0F6FC" font-size="10" font-weight="700" font-family="system-ui">8</text>
+      <!-- E row -->
+      <rect x="535" y="175" width="190" height="24" rx="3" fill="#022C22" stroke="#10B981" stroke-width="1.5"/>
+      <rect x="535" y="175" width="167" height="24" rx="3" fill="#10B981" opacity="0.8"/>
+      <text x="710" y="191" fill="#022C22" font-size="10" font-weight="800" font-family="system-ui">88</text>
+      <!-- I row -->
+      <rect x="535" y="230" width="190" height="24" rx="3" fill="#022C22" stroke="#21262D" stroke-width="1"/>
+      <rect x="535" y="230" width="38" height="24" rx="3" fill="#10B981" opacity="0.5"/>
+      <text x="580" y="246" fill="#F0F6FC" font-size="10" font-weight="700" font-family="system-ui">20</text>
+
+      <!-- Vertical dividers -->
+      <line x1="310" y1="50" x2="310" y2="265" stroke="#21262D" stroke-width="1" stroke-dasharray="4,3"/>
+      <line x1="520" y1="50" x2="520" y2="265" stroke="#21262D" stroke-width="1" stroke-dasharray="4,3"/>
+
+      <!-- Score scale note -->
+      <text x="105" y="278" fill="#484F58" font-size="9" font-family="system-ui">Score 0–100. Indicative diagnostic profile, not a precise measurement.</text>
+    </svg>
+  </div>
+
+  <div class="svg-wrap">
+    <div class="svg-cap">The (E) Suppression Loop — How the Structure Generates the Conflict</div>
+    <svg viewBox="0 0 700 220" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-height:220px">
+      <defs>
+        <marker id="arrR" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L8,3 z" fill="#EF4444"/>
+        </marker>
+        <marker id="arrG" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L8,3 z" fill="#8B949E"/>
+        </marker>
+      </defs>
+
+      <!-- Node 1: Auto (P)+(A) Dominance — top centre -->
+      <rect x="240" y="14" width="220" height="42" rx="6" fill="#0D2340" stroke="#3B82F6" stroke-width="1.5"/>
+      <text x="350" y="33" fill="#3B82F6" font-size="11" font-weight="700" text-anchor="middle" font-family="system-ui">Auto (P)+(A) Coalition</text>
+      <text x="350" y="48" fill="#8B949E" font-size="9" text-anchor="middle" font-family="system-ui">OEE · JIT · IATF 16949 · Quarterly KPIs</text>
+
+      <!-- Node 2: Decisions filtered — right -->
+      <rect x="520" y="88" width="165" height="42" rx="6" fill="#161B22" stroke="#21262D" stroke-width="1.5"/>
+      <text x="603" y="107" fill="#F0F6FC" font-size="10" font-weight="700" text-anchor="middle" font-family="system-ui">Decisions Filtered</text>
+      <text x="603" y="121" fill="#8B949E" font-size="9" text-anchor="middle" font-family="system-ui">Efficiency lens applied to all</text>
+
+      <!-- Node 3: Defence (E) suppressed — bottom centre -->
+      <rect x="240" y="163" width="220" height="42" rx="6" fill="#2D0A0A" stroke="#EF4444" stroke-width="2"/>
+      <text x="350" y="182" fill="#EF4444" font-size="11" font-weight="700" text-anchor="middle" font-family="system-ui">Defence (E) Suppressed</text>
+      <text x="350" y="197" fill="#8B949E" font-size="9" text-anchor="middle" font-family="system-ui">Innovation slowed · timelines compressed</text>
+
+      <!-- Node 4: Capability atrophies — left -->
+      <rect x="15" y="88" width="175" height="42" rx="6" fill="#161B22" stroke="#21262D" stroke-width="1.5"/>
+      <text x="103" y="107" fill="#F0F6FC" font-size="10" font-weight="700" text-anchor="middle" font-family="system-ui">Defence Capability</text>
+      <text x="103" y="121" fill="#EF4444" font-size="9" text-anchor="middle" font-family="system-ui">Atrophies over time</text>
+
+      <!-- Arrows forming the reinforcing loop -->
+      <!-- 1 → 2 (top right) -->
+      <path d="M 460,35 Q 560,35 565,88" fill="none" stroke="#EF4444" stroke-width="1.5" marker-end="url(#arrR)"/>
+      <text x="540" y="62" fill="#EF4444" font-size="10" font-weight="700" font-family="system-ui">+</text>
+
+      <!-- 2 → 3 (right to bottom) -->
+      <path d="M 560,130 Q 560,184 462,184" fill="none" stroke="#EF4444" stroke-width="1.5" marker-end="url(#arrR)"/>
+      <text x="572" y="162" fill="#EF4444" font-size="10" font-weight="700" font-family="system-ui">+</text>
+
+      <!-- 3 → 4 (bottom to left) -->
+      <path d="M 240,184 Q 145,184 145,132" fill="none" stroke="#EF4444" stroke-width="1.5" marker-end="url(#arrR)"/>
+      <text x="152" y="162" fill="#EF4444" font-size="10" font-weight="700" font-family="system-ui">+</text>
+
+      <!-- 4 → 1 (left to top) -->
+      <path d="M 145,88 Q 145,35 240,35" fill="none" stroke="#EF4444" stroke-width="1.5" marker-end="url(#arrR)"/>
+      <text x="155" y="60" fill="#EF4444" font-size="10" font-weight="700" font-family="system-ui">+</text>
+
+      <!-- R- loop label -->
+      <circle cx="350" cy="109" r="22" fill="none" stroke="#EF4444" stroke-width="1" stroke-dasharray="3,2"/>
+      <text x="350" y="106" fill="#EF4444" font-size="11" font-weight="800" text-anchor="middle" font-family="system-ui">R−</text>
+      <text x="350" y="119" fill="#EF4444" font-size="8" text-anchor="middle" font-family="system-ui">DESTRUCTIVE</text>
+    </svg>
+  </div>
+
+  <p style="font-size:13px;color:var(--text-muted);line-height:1.6">The loop runs without anyone intending it. No bad actors. No cultural failure. The structure generates the behaviour — and will continue to do so until the structure changes. Cultural programmes, leadership workshops, and strategy offsites do not break structural loops.</p>
+</section>
+
+<!-- ── 04. LEVERAGE ALTITUDE ─────────────────────────────────────── -->
+<section class="section" id="leverage">
+  <div class="sec-hdr">
+    <span class="sec-n">04</span>
+    <span class="sec-t">Where the company Is Acting vs. Where Leverage Lives</span>
+    <div class="sec-line"></div>
+  </div>
+
+  <div class="callout callout-info">
+    <span class="callout-icon">◈</span>
+    <div><strong>The counterintuitive principle:</strong> Leverage is inverse to intuitiveness. The interventions management reaches for first are always the weakest. The most powerful interventions are the least visible — and face the highest political resistance.</div>
+  </div>
+
+  <div class="svg-wrap" style="margin-top:16px">
+    <div class="svg-cap">12-Level Leverage Ladder · the company Intervention Map</div>
+    <svg viewBox="0 0 760 510" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-height:510px">
+
+      <!-- LEGEND BAR -->
+      <rect x="0" y="0" width="760" height="24" fill="#0D1117"/>
+      <rect x="8" y="6" width="8" height="13" rx="2" fill="#EF4444"/>
+      <text x="20" y="16" fill="#EF4444" font-size="9" font-weight="700" font-family="system-ui">LP 10–12 the company Zone</text>
+      <rect x="156" y="6" width="8" height="13" rx="2" fill="#D97706"/>
+      <text x="168" y="16" fill="#D97706" font-size="9" font-weight="700" font-family="system-ui">LP 8–9 Transition</text>
+      <rect x="292" y="6" width="8" height="13" rx="2" fill="#818CF8"/>
+      <text x="304" y="16" fill="#818CF8" font-size="9" font-weight="700" font-family="system-ui">LP 5–7 Influence</text>
+      <rect x="428" y="6" width="8" height="13" rx="2" fill="#10B981"/>
+      <text x="440" y="16" fill="#10B981" font-size="9" font-weight="700" font-family="system-ui">LP 2–4 Intervention Zone ← leverage lives here</text>
+      <rect x="662" y="6" width="8" height="13" rx="2" fill="#F59E0B"/>
+      <text x="674" y="16" fill="#F59E0B" font-size="9" font-weight="700" font-family="system-ui">LP 1</text>
+
+      <!-- ZONE BACKGROUNDS (top=LP1=highest, bottom=LP12=lowest) -->
+      <rect x="0" y="24" width="760" height="38" fill="#1C1400"/>
+      <rect x="0" y="62" width="760" height="114" fill="#021610"/>
+      <rect x="0" y="138" width="760" height="38" fill="#031E14"/>
+      <rect x="0" y="176" width="760" height="114" fill="#0B0B22"/>
+      <rect x="0" y="290" width="760" height="76" fill="#1A1000"/>
+      <rect x="0" y="366" width="760" height="120" fill="#140404"/>
+
+      <!-- LEFT COLOR STRIPS -->
+      <rect x="0" y="24" width="7" height="38" fill="#F59E0B"/>
+      <rect x="0" y="62" width="7" height="38" fill="#10B981"/>
+      <rect x="0" y="100" width="7" height="38" fill="#10B981"/>
+      <rect x="0" y="138" width="7" height="38" fill="#10B981"/>
+      <rect x="0" y="176" width="7" height="38" fill="#818CF8"/>
+      <rect x="0" y="214" width="7" height="38" fill="#818CF8"/>
+      <rect x="0" y="252" width="7" height="38" fill="#818CF8"/>
+      <rect x="0" y="290" width="7" height="38" fill="#D97706"/>
+      <rect x="0" y="328" width="7" height="38" fill="#D97706"/>
+      <rect x="0" y="366" width="7" height="38" fill="#EF4444"/>
+      <rect x="0" y="404" width="7" height="38" fill="#EF4444"/>
+      <rect x="0" y="442" width="7" height="38" fill="#EF4444"/>
+
+      <!-- ROW DIVIDERS -->
+      <line x1="9" y1="62" x2="608" y2="62" stroke="#1E2730" stroke-width="1"/>
+      <line x1="9" y1="100" x2="608" y2="100" stroke="#1E2730" stroke-width="1"/>
+      <line x1="9" y1="138" x2="608" y2="138" stroke="#10B981" stroke-width="1" opacity="0.25"/>
+      <line x1="9" y1="176" x2="608" y2="176" stroke="#10B981" stroke-width="1" opacity="0.25"/>
+      <line x1="9" y1="214" x2="608" y2="214" stroke="#1E2730" stroke-width="1"/>
+      <line x1="9" y1="252" x2="608" y2="252" stroke="#1E2730" stroke-width="1"/>
+      <line x1="9" y1="290" x2="608" y2="290" stroke="#1E2730" stroke-width="1"/>
+      <line x1="9" y1="328" x2="608" y2="328" stroke="#1E2730" stroke-width="1"/>
+      <line x1="9" y1="366" x2="608" y2="366" stroke="#1E2730" stroke-width="1"/>
+      <line x1="9" y1="404" x2="608" y2="404" stroke="#1E2730" stroke-width="1"/>
+      <line x1="9" y1="442" x2="608" y2="442" stroke="#1E2730" stroke-width="1"/>
+
+      <!-- LP4 highlight border -->
+      <rect x="0" y="138" width="608" height="38" fill="none" stroke="#10B981" stroke-width="1.5" stroke-dasharray="6,3"/>
+
+      <!-- ZONE LABELS (far right) -->
+      <text x="752" y="46" fill="#F59E0B" font-size="8" font-weight="700" text-anchor="end" font-family="system-ui">TRANSCENDENCE</text>
+      <text x="752" y="110" fill="#10B981" font-size="8" font-weight="800" text-anchor="end" font-family="system-ui">INTERVENTION</text>
+      <text x="752" y="121" fill="#10B981" font-size="8" font-weight="800" text-anchor="end" font-family="system-ui">ZONE ↑</text>
+      <text x="752" y="232" fill="#818CF8" font-size="8" font-weight="700" text-anchor="end" font-family="system-ui">INFLUENCE</text>
+      <text x="752" y="243" fill="#818CF8" font-size="8" font-weight="700" text-anchor="end" font-family="system-ui">ZONE</text>
+      <text x="752" y="417" fill="#EF4444" font-size="8" font-weight="800" text-anchor="end" font-family="system-ui">the company ACTS</text>
+      <text x="752" y="428" fill="#EF4444" font-size="8" font-weight="800" text-anchor="end" font-family="system-ui">HERE ↓</text>
+
+      <!-- LP 1 (y=24) GOLD -->
+      <text x="12" y="46" fill="#F59E0B" font-size="17" font-weight="900" font-family="system-ui">1</text>
+      <text x="44" y="37" fill="#8B949E" font-size="11" font-weight="700" font-family="system-ui">Transcendence</text>
+      <text x="44" y="52" fill="#484F58" font-size="10" font-family="system-ui">Question the paradigm itself — does "defence forever" remain valid?</text>
+
+      <!-- LP 2 (y=62) GREEN -->
+      <text x="12" y="84" fill="#10B981" font-size="17" font-weight="900" font-family="system-ui">2</text>
+      <text x="44" y="75" fill="#F0F6FC" font-size="11" font-weight="700" font-family="system-ui">Paradigm — Change the self-concept</text>
+      <text x="44" y="90" fill="#8B949E" font-size="10" font-family="system-ui">"Forging company" → "Strategic precision manufacturer for national security"</text>
+      <rect x="614" y="68" width="82" height="24" rx="4" fill="#10B981" opacity="0.35" stroke="#10B981" stroke-width="1"/>
+      <text x="655" y="84" fill="#10B981" font-size="10" font-weight="800" text-anchor="middle" font-family="system-ui">STEP 5</text>
+
+      <!-- LP 3 (y=100) GREEN -->
+      <text x="12" y="122" fill="#10B981" font-size="17" font-weight="900" font-family="system-ui">3</text>
+      <text x="44" y="113" fill="#F0F6FC" font-size="11" font-weight="700" font-family="system-ui">Goal — Dual-goal architecture</text>
+      <text x="44" y="128" fill="#8B949E" font-size="10" font-family="system-ui">Auto goal ≠ Defence goal. Cannot govern both under one goal hierarchy.</text>
+      <rect x="614" y="106" width="82" height="24" rx="4" fill="#10B981" opacity="0.35" stroke="#10B981" stroke-width="1"/>
+      <text x="655" y="122" fill="#10B981" font-size="10" font-weight="800" text-anchor="middle" font-family="system-ui">STEP 4</text>
+
+      <!-- LP 4 (y=138) GREEN — PRIMARY INTERVENTION -->
+      <text x="12" y="162" fill="#10B981" font-size="19" font-weight="900" font-family="system-ui">4</text>
+      <text x="44" y="151" fill="#F0F6FC" font-size="12" font-weight="800" font-family="system-ui">Self-Organisation — Defence Business Unit</text>
+      <text x="44" y="167" fill="#10B981" font-size="10" font-weight="700" font-family="system-ui">Own P&amp;L · Own leadership (E-dominant) · Own quality system · Own capital rules</text>
+      <rect x="614" y="141" width="82" height="32" rx="4" fill="#10B981" opacity="0.85"/>
+      <text x="655" y="156" fill="#001A0F" font-size="11" font-weight="900" text-anchor="middle" font-family="system-ui">★ STEP 3</text>
+      <text x="655" y="168" fill="#001A0F" font-size="8" font-weight="700" text-anchor="middle" font-family="system-ui">PRIMARY</text>
+
+      <!-- LP 5 (y=176) INDIGO -->
+      <text x="12" y="198" fill="#818CF8" font-size="17" font-weight="900" font-family="system-ui">5</text>
+      <text x="44" y="189" fill="#F0F6FC" font-size="11" font-weight="700" font-family="system-ui">Rules — Separate operating standards</text>
+      <text x="44" y="204" fill="#8B949E" font-size="10" font-family="system-ui">Defence: AQAP 2110, 7-yr cycles, capability KPIs — not IATF 16949 + quarterly delivery</text>
+      <rect x="614" y="182" width="82" height="24" rx="4" fill="#818CF8" opacity="0.3" stroke="#818CF8" stroke-width="1"/>
+      <text x="655" y="198" fill="#818CF8" font-size="10" font-weight="800" text-anchor="middle" font-family="system-ui">STEP 2</text>
+
+      <!-- LP 6 (y=214) INDIGO -->
+      <text x="12" y="236" fill="#818CF8" font-size="17" font-weight="900" font-family="system-ui">6</text>
+      <text x="44" y="227" fill="#F0F6FC" font-size="11" font-weight="700" font-family="system-ui">Information — Separate the P&amp;L visibility</text>
+      <text x="44" y="242" fill="#8B949E" font-size="10" font-family="system-ui">Board sees Defence P&amp;L independently today? If no: start here. Zero cost.</text>
+      <rect x="614" y="220" width="82" height="24" rx="4" fill="#818CF8" opacity="0.3" stroke="#818CF8" stroke-width="1"/>
+      <text x="655" y="236" fill="#818CF8" font-size="10" font-weight="800" text-anchor="middle" font-family="system-ui">STEP 1</text>
+
+      <!-- LP 7 (y=252) INDIGO -->
+      <text x="12" y="274" fill="#818CF8" font-size="17" font-weight="900" font-family="system-ui">7</text>
+      <text x="44" y="265" fill="#F0F6FC" font-size="11" font-weight="700" font-family="system-ui">Reinforcing loops — Protect the Defence R+ loop</text>
+      <text x="44" y="280" fill="#8B949E" font-size="10" font-family="system-ui">ATAGS → credibility → orders → capability. Fragile. Protect before any restructuring.</text>
+      <text x="655" y="274" fill="#484F58" font-size="9" text-anchor="middle" font-family="system-ui">Protect.</text>
+
+      <!-- LP 8 (y=290) AMBER -->
+      <text x="12" y="312" fill="#D97706" font-size="17" font-weight="900" font-family="system-ui">8</text>
+      <text x="44" y="303" fill="#8B949E" font-size="11" font-weight="700" font-family="system-ui">Balancing loops — Auto quality gates, OEE, JIT delivery controls</text>
+      <text x="44" y="318" fill="#6B7280" font-size="10" font-family="system-ui">Healthy in auto. Risk: exporting these to defence as the universal standard.</text>
+      <text x="655" y="312" fill="#6B7280" font-size="9" text-anchor="middle" font-family="system-ui">Don't export.</text>
+
+      <!-- LP 9 (y=328) AMBER -->
+      <text x="12" y="350" fill="#D97706" font-size="17" font-weight="900" font-family="system-ui">9</text>
+      <text x="44" y="341" fill="#8B949E" font-size="11" font-weight="700" font-family="system-ui">Delays — ICE decline: 10–15 yr runway · Defence revenue maturity: 7–10 yr</text>
+      <text x="44" y="356" fill="#6B7280" font-size="10" font-family="system-ui">Margin of safety = gap between these two delays. Narrow. Plan the critical path now.</text>
+      <text x="655" y="350" fill="#6B7280" font-size="9" text-anchor="middle" font-family="system-ui">Map it.</text>
+
+      <!-- LP 10 (y=366) RED -->
+      <text x="12" y="388" fill="#EF4444" font-size="17" font-weight="900" font-family="system-ui">10</text>
+      <text x="50" y="379" fill="#6B7280" font-size="11" font-family="system-ui">Physical structure — new defence forging lines, plant CapEx, geography</text>
+      <text x="50" y="394" fill="#484F58" font-size="10" font-family="system-ui">Necessary. Structure remains unchanged after CapEx. Not leverage.</text>
+      <text x="655" y="388" fill="#EF4444" font-size="9" font-weight="700" text-anchor="middle" font-family="system-ui">the company HERE</text>
+
+      <!-- LP 11 (y=404) RED -->
+      <text x="12" y="426" fill="#EF4444" font-size="17" font-weight="900" font-family="system-ui">11</text>
+      <text x="50" y="417" fill="#6B7280" font-size="11" font-family="system-ui">Buffers — working capital, auto FCF, capacity reserves</text>
+      <text x="50" y="432" fill="#484F58" font-size="10" font-family="system-ui">Necessary. Does not resolve the operating model conflict.</text>
+      <text x="655" y="426" fill="#EF4444" font-size="9" font-weight="700" text-anchor="middle" font-family="system-ui">the company HERE</text>
+
+      <!-- LP 12 (y=442) RED — WEAKEST -->
+      <text x="12" y="464" fill="#EF4444" font-size="17" font-weight="900" font-family="system-ui">12</text>
+      <text x="50" y="455" fill="#6B7280" font-size="11" font-family="system-ui">Numbers — CapEx targets, ROIC hurdles, quarterly KPIs, headcount</text>
+      <text x="50" y="470" fill="#484F58" font-size="10" font-family="system-ui">Adjusting these leaves the structure intact. The conflict persists.</text>
+      <text x="655" y="460" fill="#EF4444" font-size="9" font-weight="700" text-anchor="middle" font-family="system-ui">Weakest</text>
+
+      <!-- CLIMB ARROW (the company zone → intervention zone) -->
+      <line x1="706" y1="456" x2="706" y2="180" stroke="#8B5CF6" stroke-width="1.5" stroke-dasharray="4,3"/>
+      <polygon points="706,177 700,190 712,190" fill="#8B5CF6"/>
+      <text x="722" y="330" fill="#8B5CF6" font-size="8" font-weight="700" font-family="system-ui" transform="rotate(90,722,330)">CLIMB TO LEVERAGE</text>
+
+      <!-- TWO-QUESTION TEST -->
+      <rect x="614" y="290" width="128" height="72" rx="5" fill="#0D1117" stroke="#21262D" stroke-width="1"/>
+      <text x="622" y="306" fill="#F59E0B" font-size="8" font-weight="800" letter-spacing="0.8" font-family="system-ui">TWO-QUESTION TEST</text>
+      <line x1="622" y1="310" x2="734" y2="310" stroke="#21262D" stroke-width="1"/>
+      <text x="622" y="324" fill="#8B949E" font-size="9" font-family="system-ui">1. Will structure absorb it?</text>
+      <text x="630" y="336" fill="#8B949E" font-size="9" font-family="system-ui">→ Climb the ladder.</text>
+      <text x="622" y="350" fill="#8B949E" font-size="9" font-family="system-ui">2. Changing who sets rules?</text>
+      <text x="630" y="362" fill="#10B981" font-size="9" font-weight="700" font-family="system-ui">→ LP4. That is the move.</text>
+    </svg>
+  </div>
+</section>
+
+<!-- ── 05. STRUCTURAL ARCHETYPES ─────────────────────────────────── -->
+<section class="section" id="archetypes">
+  <div class="sec-hdr">
+    <span class="sec-n">05</span>
+    <span class="sec-t">Two Structural Archetypes Running Simultaneously</span>
+    <div class="sec-line"></div>
+  </div>
+
+  <div class="two-col">
+    <div class="svg-wrap">
+      <div class="svg-cap">Archetype 1 — Limits to Growth</div>
+      <svg viewBox="0 0 340 200" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-height:200px">
+        <defs>
+          <marker id="a1" markerWidth="7" markerHeight="5" refX="6" refY="2.5" orient="auto">
+            <path d="M0,0 L0,5 L7,2.5 z" fill="#F59E0B"/>
+          </marker>
+          <marker id="a2" markerWidth="7" markerHeight="5" refX="6" refY="2.5" orient="auto">
+            <path d="M0,0 L0,5 L7,2.5 z" fill="#EF4444"/>
+          </marker>
+        </defs>
+        <!-- Defence growth loop R+ -->
+        <ellipse cx="100" cy="100" rx="70" ry="55" fill="none" stroke="#F59E0B" stroke-width="1.5" stroke-dasharray="4,2"/>
+        <text x="100" y="95" fill="#F59E0B" font-size="10" font-weight="700" text-anchor="middle" font-family="system-ui">Defence</text>
+        <text x="100" y="108" fill="#F59E0B" font-size="10" font-weight="700" text-anchor="middle" font-family="system-ui">Growth (R+)</text>
+        <text x="100" y="120" fill="#8B949E" font-size="8" text-anchor="middle" font-family="system-ui">ATAGS → orders → capability</text>
+
+        <!-- B wall -->
+        <rect x="195" y="60" width="130" height="80" rx="6" fill="#0D2340" stroke="#3B82F6" stroke-width="2"/>
+        <text x="260" y="95" fill="#3B82F6" font-size="10" font-weight="700" text-anchor="middle" font-family="system-ui">Auto (B Wall)</text>
+        <text x="260" y="110" fill="#8B949E" font-size="8" text-anchor="middle" font-family="system-ui">OEE · JIT · IATF · KPIs</text>
+        <text x="260" y="123" fill="#EF4444" font-size="9" font-weight="700" text-anchor="middle" font-family="system-ui">blocks Defence growth</text>
+
+        <!-- Arrow from defence growth hitting the wall -->
+        <path d="M 168,100 L 193,100" fill="none" stroke="#F59E0B" stroke-width="2" marker-end="url(#a1)"/>
+        <path d="M 195,100 L 188,100" fill="none" stroke="#EF4444" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="185" y1="93" x2="195" y2="107" stroke="#EF4444" stroke-width="2.5" stroke-linecap="round"/>
+
+        <text x="170" y="86" fill="#8B949E" font-size="8" font-family="system-ui">hits</text>
+
+        <text x="170" y="175" fill="#F59E0B" font-size="8" font-family="system-ui" text-anchor="middle">Defence R+ growth loop exists</text>
+        <text x="170" y="187" fill="#EF4444" font-size="8" font-family="system-ui" text-anchor="middle">Auto B-wall prevents self-sustaining scale</text>
+      </svg>
+    </div>
+
+    <div class="svg-wrap">
+      <div class="svg-cap">Archetype 2 — Shifting the Burden</div>
+      <svg viewBox="0 0 340 200" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-height:200px">
+        <defs>
+          <marker id="b1" markerWidth="7" markerHeight="5" refX="6" refY="2.5" orient="auto">
+            <path d="M0,0 L0,5 L7,2.5 z" fill="#8B949E"/>
+          </marker>
+          <marker id="b2" markerWidth="7" markerHeight="5" refX="6" refY="2.5" orient="auto">
+            <path d="M0,0 L0,5 L7,2.5 z" fill="#8B5CF6"/>
+          </marker>
+        </defs>
+
+        <!-- Problem node -->
+        <rect x="115" y="10" width="110" height="32" rx="5" fill="#161B22" stroke="#21262D" stroke-width="1.5"/>
+        <text x="170" y="30" fill="#F0F6FC" font-size="10" font-weight="700" text-anchor="middle" font-family="system-ui">Operating Conflict</text>
+
+        <!-- Symptomatic fix -->
+        <rect x="10" y="90" width="140" height="38" rx="5" fill="#0D2340" stroke="#3B82F6" stroke-width="1.5"/>
+        <text x="80" y="106" fill="#3B82F6" font-size="10" font-weight="700" text-anchor="middle" font-family="system-ui">Symptomatic Fix</text>
+        <text x="80" y="120" fill="#8B949E" font-size="8" text-anchor="middle" font-family="system-ui">One management system for all</text>
+
+        <!-- Fundamental fix -->
+        <rect x="190" y="90" width="140" height="38" rx="5" fill="#1E0A3C" stroke="#8B5CF6" stroke-width="1.5"/>
+        <text x="260" y="106" fill="#8B5CF6" font-size="10" font-weight="700" text-anchor="middle" font-family="system-ui">Fundamental Fix</text>
+        <text x="260" y="120" fill="#8B949E" font-size="8" text-anchor="middle" font-family="system-ui">Separate Defence operating model</text>
+
+        <!-- Arrows from problem -->
+        <path d="M 145,42 L 90,90" fill="none" stroke="#8B949E" stroke-width="1.5" marker-end="url(#b1)"/>
+        <path d="M 195,42 L 250,90" fill="none" stroke="#8B5CF6" stroke-width="1.5" marker-end="url(#b2)"/>
+
+        <!-- Suppression arrow -->
+        <path d="M 80,128 Q 80,168 200,168 Q 220,168 220,132" fill="none" stroke="#EF4444" stroke-width="1.5" stroke-dasharray="4,2" marker-end="url(#a2)"/>
+        <text x="150" y="180" fill="#EF4444" font-size="8" font-weight="600" text-anchor="middle" font-family="system-ui">symptomatic fix suppresses fundamental fix</text>
+
+        <!-- Labels -->
+        <text x="72" y="148" fill="#3B82F6" font-size="8" font-family="system-ui">Currently chosen</text>
+        <text x="235" y="148" fill="#8B5CF6" font-size="8" font-family="system-ui">Never implemented</text>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- ── 06. REBIRTH SCORECARD ─────────────────────────────────────── -->
+<section class="section" id="rebirth">
+  <div class="sec-hdr">
+    <span class="sec-n">06</span>
+    <span class="sec-t">Rebirth Scorecard — Is This a Transformation or a Diversification?</span>
+    <div class="sec-line"></div>
+  </div>
+
+  <p style="margin-bottom:20px;font-size:13px;color:var(--text-muted)">Only two genuine corporate rebirths have been documented at scale — IBM (1993) and Apple (1997). Both required six conditions. the company is attempting the same. Score: <strong style="color:var(--defence)">4 of 6</strong>.</p>
+
+  <div class="score-grid">
+    <div class="score-item score-ok">
+      <div class="score-icon">✅</div>
+      <div>
+        <div class="score-label">1. Acceptance that the old model does not work</div>
+        <div class="score-detail">ICE long-term decline acknowledged at Board level. Defence and EV pivots are a strategic response, not a hedge. Evidence: ₹5,000+ Cr capex committed to new manufacturing lines.</div>
+      </div>
+    </div>
+    <div class="score-item score-ok">
+      <div class="score-icon">✅</div>
+      <div>
+        <div class="score-label">2. Change agent with credibility and conviction</div>
+        <div class="score-detail">the founder-chairman is a credible, founder-grade change agent. ATAGS pursuit was a long-term bet made before defence indigenisation was fashionable. Conviction is documented in capital allocation, not just communication.</div>
+      </div>
+    </div>
+    <div class="score-item score-warn">
+      <div class="score-icon">⚠️</div>
+      <div>
+        <div class="score-label">3. Specific new mission, not just critique of the old</div>
+        <div class="score-detail">"Defence is an opportunity" is not a mission. A mission names the customer, the capability, and the outcome: "India's preferred precision manufacturing partner for national security systems." This has not been stated at that level of specificity.</div>
+      </div>
+    </div>
+    <div class="score-item score-ok">
+      <div class="score-icon">✅</div>
+      <div>
+        <div class="score-label">4. Genuine capability bridge from old to new</div>
+        <div class="score-detail">Precision forging transfers directly to defence manufacturing — gun barrels, armoured vehicle components, aerospace forgings. The bridge is real. It is not a narrative convenience. ATAGS is the proof.</div>
+      </div>
+    </div>
+    <div class="score-item score-miss">
+      <div class="score-icon">❌</div>
+      <div>
+        <div class="score-label">5. Disrupting the existing business from within</div>
+        <div class="score-detail">Apple killed the iPod with the iPhone. IBM sold the PC division. the company is protecting the auto business rather than cannibalising it. The auto division's management continues to govern defence. Without this move, the pivot is diversification with a rebirth narrative.</div>
+      </div>
+    </div>
+    <div class="score-item score-ok">
+      <div class="score-icon">✅</div>
+      <div>
+        <div class="score-label">6. External tailwind</div>
+        <div class="score-detail">India's Defence Acquisition Procedure (DAP) 2020, IDEX, and Make in India in Defence represent a structural demand shift that is government-mandated, not cyclical. The tailwind is real and multi-decade. the company entered at the right time.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="delta-box" style="margin-top:20px">
+    <div class="delta-title">The Missing Ingredient — What Ingredient 5 Requires</div>
+    <div class="delta-grid">
+      <div class="delta-from">
+        <div class="delta-label" style="color:var(--constraint)">Current State</div>
+        Auto management system governs all three divisions. Defence treated as a vertical within the forging business. No structural disruption of the auto franchise.
+      </div>
+      <div class="delta-arrow">→</div>
+      <div class="delta-to">
+        <div class="delta-label" style="color:var(--ev)">Required State</div>
+        Defence Business Unit structurally independent. Auto division explicitly positioned as the funding engine for the pivot, not the model for it. Management DNA separated by division.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── 07. CAPITAL ALLOCATION ────────────────────────────────────── -->
+<section class="section" id="capital">
+  <div class="sec-hdr">
+    <span class="sec-n">07</span>
+    <span class="sec-t">Capital Allocation — Three Divisions, Three Different Rules</span>
+    <div class="sec-line"></div>
+  </div>
+
+  <p style="margin-bottom:20px;font-size:13px;color:var(--text-muted)">The most destructive capital allocation error is applying the decision heuristics of the wrong lifecycle stage. Each division is at a different stage. Each requires a different allocation logic. Using one logic for all three is not discipline — it is a category error.</p>
+
+  <table class="tbl">
+    <thead>
+      <tr>
+        <th>Division</th>
+        <th>Stage</th>
+        <th>Stage-correct allocation rule</th>
+        <th>Current risk / likely error</th>
+        <th>Corrective action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="chip ch-a">Auto (ICE)</span></td>
+        <td>Mature Stable</td>
+        <td>Return excess FCF. Buybacks / dividends. Apply strict ROIC &gt; WACC test to every investment. Maximize debt capacity. Defend moat — do not extend it.</td>
+        <td style="color:var(--constraint)">Reinvesting auto FCF into capacity expansion when the right action is moat defence + capital return. Empire-building instinct from the founding era.</td>
+        <td>Set explicit FCF return ratio for auto. Any new auto capex requires ROIC case vs. reference class of past auto investments.</td>
+      </tr>
+      <tr class="highlight">
+        <td><span class="chip ch-d">Defence</span></td>
+        <td>Go-Go / Young Growth</td>
+        <td>Invest aggressively. Accept negative FCF for 7–10 years. Evaluate on capability build and order pipeline — not ROIC. Equity-style governance, not debt-style.</td>
+        <td style="color:var(--constraint)">Applying auto ROIC hurdles to defence projects. Demanding quarterly delivery milestones on 7-year gestation contracts. Treating defence losses as underperformance rather than investment.</td>
+        <td>Separate defence P&L with its own capital budget and its own success metrics: order pipeline, AQAP certifications achieved, government relationship depth, technology capability milestones.</td>
+      </tr>
+      <tr>
+        <td><span class="chip ch-e">EV / New Energy</span></td>
+        <td>Courtship / Infancy</td>
+        <td>Option-value thinking only. Preserve optionality. Apply the 3P test before any committed spend: Possible? Plausible? Probable? Equity financing only — no debt in start-up phase.</td>
+        <td style="color:var(--constraint)">Committing to EV capacity before the product question is answered (which EV components does a forging company actually make?). Premature capital commitment to a business whose model is unresolved.</td>
+        <td>Establish EV as an R&amp;D and partnership unit — not a production unit — until the component map for EV forgings is confirmed. Cap spend at option-exploration level.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout callout-warn" style="margin-top:16px">
+    <span class="callout-icon">▲</span>
+    <div><strong>The crossover risk:</strong> Auto FCF (~₹1,700–1,900 Cr estimated annual) is currently funding the defence pivot. If ICE auto demand declines faster than defence revenues become self-sustaining, the funding engine disappears before the pivot pays off. The critical path: defence must reach FCF-positive before auto revenue begins structural decline. Current estimate: defence self-sustaining ~2031–2033. ICE structural decline in India: 2034–2038. Margin of safety: narrow but present — if defence structural separation happens now.</div>
+  </div>
+</section>
+
+<!-- ── 08. INTERVENTION SEQUENCE ─────────────────────────────────── -->
+<section class="section" id="intervention">
+  <div class="sec-hdr">
+    <span class="sec-n">08</span>
+    <span class="sec-t">Intervention Sequence — Five Steps, Ascending Leverage</span>
+    <div class="sec-line"></div>
+  </div>
+
+  <p style="margin-bottom:28px;font-size:13px;color:var(--text-muted)">Sequence matters. High-leverage interventions (LP4, LP2) cannot land without the trust and structural capacity built by earlier steps. Attempting LP2 (paradigm) before LP6 (information) is skipping a foundation. Each step enables the next.</p>
+
+  <div class="steps">
+
+    <div class="step">
+      <div class="step-l">
+        <div class="step-dot" style="background:var(--intervention-dim);border-color:var(--intervention);color:var(--intervention)">6</div>
+        <div class="step-line-v"></div>
+      </div>
+      <div class="step-r">
+        <div class="step-lp">LP 6 · Information Flows</div>
+        <div class="step-t">Separate the information architecture</div>
+        <div class="step-d">Create a standalone Defence P&amp;L visible to the Board independently of the auto revenue line. Today, defence performance is either consolidated into forging revenue or reported as a segment footnote. The Board cannot govern what it cannot see separately. This step costs nothing and reveals everything — which is why it faces political resistance from those whose metrics currently look better consolidated.</div>
+        <span class="step-horizon">Horizon: Immediate — next Board reporting cycle</span>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-l">
+        <div class="step-dot" style="background:var(--intervention-dim);border-color:var(--intervention);color:var(--intervention)">5</div>
+        <div class="step-line-v"></div>
+      </div>
+      <div class="step-r">
+        <div class="step-lp">LP 5 · Rules</div>
+        <div class="step-t">Establish separate operating rules for Defence</div>
+        <div class="step-d">Replace auto-derived KPIs with defence-appropriate metrics: AQAP certification milestones, government acceptance testing timelines, order pipeline value, capability build indicators. Stop applying quarterly delivery targets and ROIC hurdles to a business operating on 7-year contract cycles. The rules change is the first signal to the organisation that defence is being governed differently.</div>
+        <span class="step-horizon">Horizon: Months 1–3</span>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-l">
+        <div class="step-dot" style="background:var(--intervention-dim);border-color:var(--intervention);color:var(--intervention);font-size:11px;font-weight:900">★4</div>
+        <div class="step-line-v"></div>
+      </div>
+      <div class="step-r">
+        <div class="step-lp">LP 4 · Self-Organisation · PRIMARY INTERVENTION</div>
+        <div class="step-t">Establish the Defence Business Unit as a structurally independent entity</div>
+        <div class="step-d">Own P&amp;L. Own leadership with an (E)-dominant profile — a builder, not an operator. Own quality system (AQAP independent from IATF 16949). Own culture. Own government relationship management. Own capital budget with equity-style governance. This is not a reorganisation chart change — it is giving the defence division the structural capacity to evolve its own operating model without auto (P)+(A) interference. The defence R+ loop (ATAGS → credibility → orders → capability) becomes self-sustaining only when this step is complete.</div>
+        <span class="step-horizon">Horizon: Months 3–12 · Requires Board resolution</span>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-l">
+        <div class="step-dot" style="background:var(--intervention-dim);border-color:var(--intervention);color:var(--intervention)">3</div>
+        <div class="step-line-v"></div>
+      </div>
+      <div class="step-r">
+        <div class="step-lp">LP 3 · Goal</div>
+        <div class="step-t">Articulate a dual-goal architecture at Board level</div>
+        <div class="step-d">Auto goal: protect and efficiently harvest the mature cash engine. Defend the forging moat. Return capital disciplinedly. Defence goal: become India's preferred precision manufacturing partner for strategic systems — ATAGS follow-on, armoured vehicles, aerospace forgings, eventual defence exports. These are structurally incompatible goals. Running them under one goal hierarchy forces constant trade-offs that always resolve in favour of the larger, more immediate auto business.</div>
+        <span class="step-horizon">Horizon: Concurrent with LP4 · Board-level declaration</span>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-l">
+        <div class="step-dot" style="background:var(--intervention-dim);border-color:var(--intervention);color:var(--intervention)">2</div>
+      </div>
+      <div class="step-r">
+        <div class="step-lp">LP 2 · Paradigm</div>
+        <div class="step-t">Commit to the paradigm shift — publicly and irrevocably</div>
+        <div class="step-d">From: "We are India's largest forging company, serving global OEMs." To: "We are a strategic precision manufacturing company, serving India's national security imperatives and global industrial customers." This is a CEO-level statement made in the Annual Report, investor communications, and internal all-hands — not a tagline change. Without the paradigm commitment, every LP4 and LP5 intervention will gradually be absorbed and reversed by the existing identity. Organisations revert to their self-concept under pressure. The self-concept must change first.</div>
+        <span class="step-horizon">Horizon: 12–18 months · After LP4 is operational</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── 09. EV COMPONENT MATH ─────────────────────────────────────── -->
+<section class="section" id="ev-math">
+  <div class="sec-hdr">
+    <span class="sec-n">09</span>
+    <span class="sec-t">EV Component Math — Which Forgings Survive the Transition?</span>
+    <div class="sec-line"></div>
+  </div>
+
+  <p style="margin-bottom:20px;color:var(--text-muted);font-size:13px">The earlier diagnostic posed a question and did not answer it: <em>which auto forgings actually disappear when the powertrain goes electric?</em> The answer changes the size of the threat — and therefore the correct capital response. A blanket "auto is dying" narrative overstates the danger. The transition is selective, not total. Roughly 40% of auto forging value is powertrain-bound and structurally at risk; roughly 60% is powertrain-agnostic and survives — and the EV architecture creates new forging demand that did not exist in ICE.</p>
+
+  <div class="svg-wrap">
+    <div class="svg-cap">Auto Forging Portfolio · ICE → EV Survival Map</div>
+    <svg viewBox="0 0 760 250" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-height:250px">
+      <!-- Title row -->
+      <text x="20" y="24" fill="#8B949E" font-size="10" font-weight="700" letter-spacing="1" font-family="system-ui">100% OF CURRENT AUTO FORGING REVENUE</text>
+
+      <!-- Stacked horizontal bar: At Risk (40%) | Retained (60%) -->
+      <!-- bar from x=20 to x=740, width=720 -->
+      <!-- At risk: 40% = 288px -->
+      <rect x="20" y="36" width="288" height="56" fill="#EF4444" opacity="0.25" stroke="#EF4444" stroke-width="1.5"/>
+      <text x="164" y="60" fill="#EF4444" font-size="13" font-weight="800" text-anchor="middle" font-family="system-ui">~40% AT RISK</text>
+      <text x="164" y="78" fill="#F0F6FC" font-size="9" text-anchor="middle" font-family="system-ui">Powertrain-bound · disappears with ICE</text>
+      <!-- Retained: 60% = 432px -->
+      <rect x="308" y="36" width="432" height="56" fill="#10B981" opacity="0.22" stroke="#10B981" stroke-width="1.5"/>
+      <text x="524" y="60" fill="#10B981" font-size="13" font-weight="800" text-anchor="middle" font-family="system-ui">~60% RETAINED</text>
+      <text x="524" y="78" fill="#F0F6FC" font-size="9" text-anchor="middle" font-family="system-ui">Powertrain-agnostic · survives the transition</text>
+
+      <!-- New EV demand (additive, below) -->
+      <text x="20" y="124" fill="#8B949E" font-size="10" font-weight="700" letter-spacing="1" font-family="system-ui">NEW DEMAND THE EV ARCHITECTURE CREATES (ADDITIVE)</text>
+      <rect x="20" y="136" width="340" height="48" fill="#3B82F6" opacity="0.22" stroke="#3B82F6" stroke-width="1.5"/>
+      <text x="190" y="158" fill="#3B82F6" font-size="12" font-weight="800" text-anchor="middle" font-family="system-ui">EV-SPECIFIC FORGINGS</text>
+      <text x="190" y="174" fill="#F0F6FC" font-size="9" text-anchor="middle" font-family="system-ui">Battery housings · motor shafts · e-axle components</text>
+
+      <!-- Net verdict callout box on right -->
+      <rect x="378" y="136" width="362" height="48" rx="5" fill="#1E0A3C" stroke="#8B5CF6" stroke-width="1.5"/>
+      <text x="392" y="155" fill="#8B5CF6" font-size="10" font-weight="800" font-family="system-ui">NET POSITION</text>
+      <text x="392" y="170" fill="#F0F6FC" font-size="9.5" font-family="system-ui">Not existential. 40% at terminal risk over 10–15 yr,</text>
+      <text x="392" y="181" fill="#F0F6FC" font-size="9.5" font-family="system-ui">partially offset by new EV forging demand.</text>
+
+      <!-- Time axis note -->
+      <text x="20" y="214" fill="#484F58" font-size="9" font-family="system-ui">Estimated share of forging revenue by end-use. Directional split based on component function, not the company-disclosed segment data.</text>
+      <text x="20" y="232" fill="#484F58" font-size="9" font-family="system-ui">"At risk" does not mean immediate loss — it means structural decline over the ICE runway, not a cliff.</text>
+    </svg>
+  </div>
+
+  <table class="tbl">
+    <thead>
+      <tr>
+        <th>Forging component</th>
+        <th>Function</th>
+        <th>ICE → EV status</th>
+        <th>Mechanism</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Crankshaft</td>
+        <td>Converts piston motion to rotation</td>
+        <td><span class="chip ch-w">Lost</span></td>
+        <td>No reciprocating engine in an EV. Component ceases to exist.</td>
+      </tr>
+      <tr>
+        <td>Camshaft</td>
+        <td>Valve timing</td>
+        <td><span class="chip ch-w">Lost</span></td>
+        <td>No valvetrain. Eliminated entirely.</td>
+      </tr>
+      <tr>
+        <td>Connecting rod</td>
+        <td>Links piston to crankshaft</td>
+        <td><span class="chip ch-w">Lost</span></td>
+        <td>Reciprocating-mass component. Gone.</td>
+      </tr>
+      <tr>
+        <td>Flywheel / clutch components</td>
+        <td>Smooths rotation, engages transmission</td>
+        <td><span class="chip ch-w">Lost</span></td>
+        <td>EVs use single-speed reduction gear; no flywheel, no multi-plate clutch.</td>
+      </tr>
+      <tr>
+        <td>Front-axle beams, steering knuckles</td>
+        <td>Suspension geometry, steering pivot</td>
+        <td><span class="chip ch-e">Retained</span></td>
+        <td>Vehicle still steers and bears load regardless of powertrain.</td>
+      </tr>
+      <tr>
+        <td>Control arms, suspension links</td>
+        <td>Wheel location, ride control</td>
+        <td><span class="chip ch-e">Retained</span></td>
+        <td>Powertrain-agnostic. EVs are heavier — load case arguably increases.</td>
+      </tr>
+      <tr>
+        <td>Brake calipers, hubs</td>
+        <td>Braking, wheel mounting</td>
+        <td><span class="chip ch-e">Retained</span></td>
+        <td>Friction braking remains even with regen; hubs unchanged.</td>
+      </tr>
+      <tr>
+        <td>Structural / chassis forgings</td>
+        <td>Load-bearing body structure</td>
+        <td><span class="chip ch-e">Retained</span></td>
+        <td>Heavier battery mass increases structural forging demand.</td>
+      </tr>
+      <tr>
+        <td>Battery enclosure / tray structures</td>
+        <td>Houses and protects the pack</td>
+        <td><span class="chip ch-a">New</span></td>
+        <td>Did not exist in ICE. Net-new forging/extrusion opportunity.</td>
+      </tr>
+      <tr>
+        <td>Motor shafts, e-axle housings</td>
+        <td>Transmits electric-motor torque</td>
+        <td><span class="chip ch-a">New</span></td>
+        <td>EV-specific precision rotating parts — directly in the company's metallurgy competence.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout callout-info" style="margin-top:16px">
+    <span class="callout-icon">◈</span>
+    <div><strong>Capital implication:</strong> Because the EV threat is selective (40%), not total, the correct EV response is <em>not</em> a defensive production build-out. It is a focused R&amp;D and partnership posture aimed at capturing the new categories (battery structures, e-axle, motor shafts) where the company's forging metallurgy already wins — funded at option-exploration level, not committed-capacity level. This sharpens the Capital Allocation recommendation for the EV division (§07).</div>
+  </div>
+</section>
+
+<!-- ── 10. BCG EXPERIENCE CURVE ──────────────────────────────────── -->
+<section class="section" id="experience-curve">
+  <div class="sec-hdr">
+    <span class="sec-n">10</span>
+    <span class="sec-t">The Experience Curve — Why the Defence Advantage Compounds</span>
+    <div class="sec-line"></div>
+  </div>
+
+  <p style="margin-bottom:20px;color:var(--text-muted);font-size:13px">Unit cost falls by a roughly constant percentage every time cumulative production volume doubles. The rate of decline differs by where a business sits on the curve. A mature business has already travelled most of its curve — doublings are slow and the cost reductions are nearly exhausted. A young business is on the steep early section — every doubling delivers large cost and capability gains, and doublings come fast because the base is small. This is the single most important dynamic the earlier diagnostic named but did not draw: <strong>the comparative advantage gap between Defence and Auto widens over time, structurally, in Defence's favour.</strong></p>
+
+  <div class="svg-wrap">
+    <div class="svg-cap">Experience Curves · Defence (steep, early) vs. Auto (flat, exhausted)</div>
+    <svg viewBox="0 0 760 340" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-height:340px">
+      <defs>
+        <marker id="arrEC" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L8,3 z" fill="#484F58"/>
+        </marker>
+      </defs>
+      <!-- Axes -->
+      <line x1="70" y1="40" x2="70" y2="290" stroke="#21262D" stroke-width="1.5" marker-end="url(#arrEC)"/>
+      <line x1="70" y1="290" x2="720" y2="290" stroke="#21262D" stroke-width="1.5" marker-end="url(#arrEC)"/>
+      <text x="24" y="165" fill="#8B949E" font-size="10" letter-spacing="1" transform="rotate(-90,24,165)" text-anchor="middle" font-family="system-ui">UNIT COST / COST POSITION</text>
+      <text x="395" y="316" fill="#8B949E" font-size="10" letter-spacing="1" text-anchor="middle" font-family="system-ui">CUMULATIVE PRODUCTION VOLUME (log) →</text>
+
+      <!-- AUTO curve: starts low-left already near bottom, very flat. Already far along its curve. -->
+      <path d="M 90,150 C 200,135 360,128 540,124 C 620,122 680,121 715,121"
+            fill="none" stroke="#3B82F6" stroke-width="3"/>
+      <!-- Auto current position marker -->
+      <circle cx="600" cy="122" r="7" fill="#3B82F6"/>
+      <circle cx="600" cy="122" r="13" fill="none" stroke="#3B82F6" stroke-width="1.5" opacity="0.5"/>
+      <text x="600" y="108" fill="#3B82F6" font-size="10" font-weight="700" text-anchor="middle" font-family="system-ui">Auto: here</text>
+      <text x="618" y="142" fill="#8B949E" font-size="9" font-family="system-ui">curve nearly flat — learning exhausted</text>
+
+      <!-- DEFENCE curve: starts high-left, steep descent, early on its curve -->
+      <path d="M 95,75 C 140,90 175,140 215,185 C 255,228 300,250 360,262"
+            fill="none" stroke="#F59E0B" stroke-width="3"/>
+      <!-- Defence current position marker -->
+      <circle cx="155" cy="118" r="7" fill="#F59E0B"/>
+      <circle cx="155" cy="118" r="13" fill="none" stroke="#F59E0B" stroke-width="1.5" opacity="0.5"/>
+      <text x="200" y="92" fill="#F59E0B" font-size="10" font-weight="700" text-anchor="start" font-family="system-ui">Defence: here</text>
+      <text x="200" y="106" fill="#8B949E" font-size="9" font-family="system-ui">steep section — each doubling cuts cost sharply</text>
+
+      <!-- Direction of travel arrow on defence curve -->
+      <path d="M 175,135 L 260,225" stroke="#F59E0B" stroke-width="1" stroke-dasharray="3,2" marker-end="url(#arrEC)" opacity="0.7"/>
+      <text x="270" y="245" fill="#F59E0B" font-size="9" font-family="system-ui">direction of travel →</text>
+
+      <!-- Legend -->
+      <rect x="540" y="200" width="170" height="74" rx="5" fill="#0D1117" stroke="#21262D" stroke-width="1"/>
+      <rect x="552" y="214" width="20" height="4" rx="2" fill="#F59E0B"/>
+      <text x="580" y="219" fill="#8B949E" font-size="9" font-family="system-ui">Defence — steep, early</text>
+      <rect x="552" y="234" width="20" height="4" rx="2" fill="#3B82F6"/>
+      <text x="580" y="239" fill="#8B949E" font-size="9" font-family="system-ui">Auto — flat, mature</text>
+      <text x="552" y="262" fill="#10B981" font-size="9" font-weight="700" font-family="system-ui">Gap widens with volume.</text>
+    </svg>
+  </div>
+
+  <table class="tbl">
+    <thead>
+      <tr>
+        <th>Dimension</th>
+        <th><span class="chip ch-d">Defence</span></th>
+        <th><span class="chip ch-a">Auto (ICE)</span></th>
+        <th>Strategic consequence</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Position on curve</td>
+        <td>Steep early section</td>
+        <td>Flat tail — fully travelled</td>
+        <td>Defence has most of its cost-down ahead; Auto has nearly none.</td>
+      </tr>
+      <tr>
+        <td>Cost gain per volume doubling</td>
+        <td>Large (15–25% typical for complex precision)</td>
+        <td>Marginal (low single digits)</td>
+        <td>A rupee of volume buys far more competitive advantage in Defence.</td>
+      </tr>
+      <tr>
+        <td>Speed of doublings</td>
+        <td>Fast — small base</td>
+        <td>Slow — vast installed base</td>
+        <td>Defence improves quickly; Auto is effectively static.</td>
+      </tr>
+      <tr class="highlight">
+        <td>Return on incremental investment</td>
+        <td>High and rising</td>
+        <td>Low and flat</td>
+        <td><strong>Investment should be sequenced toward Defence — the curve says so independently of the lifecycle argument.</strong></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout callout-info" style="margin-top:16px">
+    <span class="callout-icon">◈</span>
+    <div><strong>This is a second, independent argument for the same conclusion.</strong> The lifecycle analysis (§02) says Defence deserves growth-stage capital because of <em>where it is in its life</em>. The experience curve says Defence deserves incremental capital because of <em>where it is on its learning curve</em>. Two different lenses, same investment-sequencing verdict — which is exactly the kind of convergence a board should weight heavily.</div>
+  </div>
+</section>
+
+<!-- ── 11. CROSSOVER TIMELINE ────────────────────────────────────── -->
+<section class="section" id="crossover">
+  <div class="sec-hdr">
+    <span class="sec-n">11</span>
+    <span class="sec-t">The Crossover — The One Chart the Board Must Hold</span>
+    <div class="sec-line"></div>
+  </div>
+
+  <p style="margin-bottom:20px;color:var(--text-muted);font-size:13px">Everything in this brief reduces to a single race. The Auto cash engine funds the Defence build. Auto revenue will decline as ICE gives way to EV. Defence revenue will rise. The question that decides whether the strategy survives: <strong>does Defence become self-sustaining before Auto's cash generation begins its structural decline?</strong> The gap between those two moments is the entire margin of safety. It is narrow. The recommendation in §01 exists because acting now widens it; delay narrows it toward zero.</p>
+
+  <div class="svg-wrap">
+    <div class="svg-cap">Revenue Trajectories · Auto decline vs. Defence + EV growth · 2024–2040</div>
+    <svg viewBox="0 0 760 380" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-height:380px">
+      <defs>
+        <linearGradient id="safeBand" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stop-color="#10B981" stop-opacity="0.0"/>
+          <stop offset="100%" stop-color="#10B981" stop-opacity="0.18"/>
+        </linearGradient>
+      </defs>
+      <!-- Axes -->
+      <line x1="70" y1="30" x2="70" y2="320" stroke="#21262D" stroke-width="1.5"/>
+      <line x1="70" y1="320" x2="730" y2="320" stroke="#21262D" stroke-width="1.5"/>
+      <text x="28" y="175" fill="#8B949E" font-size="10" letter-spacing="1" transform="rotate(-90,28,175)" text-anchor="middle" font-family="system-ui">DIVISION REVENUE (indexed)</text>
+
+      <!-- X-axis year ticks: 2024 at x=90 ... 2040 at x=710 ; span 620 over 16 yrs ≈ 38.75/yr -->
+      <!-- gridlines -->
+      <line x1="90" y1="30" x2="90" y2="320" stroke="#161B22" stroke-width="1"/>
+      <line x1="245" y1="30" x2="245" y2="320" stroke="#161B22" stroke-width="1"/>
+      <line x1="400" y1="30" x2="400" y2="320" stroke="#161B22" stroke-width="1"/>
+      <line x1="555" y1="30" x2="555" y2="320" stroke="#161B22" stroke-width="1"/>
+      <line x1="710" y1="30" x2="710" y2="320" stroke="#161B22" stroke-width="1"/>
+      <text x="90" y="336" fill="#8B949E" font-size="9" text-anchor="middle" font-family="system-ui">2024</text>
+      <text x="245" y="336" fill="#8B949E" font-size="9" text-anchor="middle" font-family="system-ui">2028</text>
+      <text x="400" y="336" fill="#8B949E" font-size="9" text-anchor="middle" font-family="system-ui">2032</text>
+      <text x="555" y="336" fill="#8B949E" font-size="9" text-anchor="middle" font-family="system-ui">2036</text>
+      <text x="710" y="336" fill="#8B949E" font-size="9" text-anchor="middle" font-family="system-ui">2040</text>
+
+      <!-- Margin-of-safety band: defence-self-sustaining (~2032, x≈400) to auto-decline-onset (~2035, x≈516) -->
+      <rect x="400" y="30" width="116" height="290" fill="url(#safeBand)"/>
+      <line x1="400" y1="30" x2="400" y2="320" stroke="#10B981" stroke-width="1.5" stroke-dasharray="5,3"/>
+      <line x1="516" y1="30" x2="516" y2="320" stroke="#EF4444" stroke-width="1.5" stroke-dasharray="5,3"/>
+      <text x="404" y="48" fill="#10B981" font-size="9" font-weight="700" font-family="system-ui">Defence FCF-positive</text>
+      <text x="404" y="59" fill="#10B981" font-size="9" font-family="system-ui">~2031–2033</text>
+      <text x="512" y="48" fill="#EF4444" font-size="9" font-weight="700" text-anchor="end" font-family="system-ui">Auto decline onset</text>
+      <text x="512" y="59" fill="#EF4444" font-size="9" text-anchor="end" font-family="system-ui">~2034–2038</text>
+      <text x="458" y="304" fill="#10B981" font-size="9" font-weight="800" text-anchor="middle" font-family="system-ui">MARGIN</text>
+      <text x="458" y="315" fill="#10B981" font-size="9" font-weight="800" text-anchor="middle" font-family="system-ui">OF SAFETY</text>
+
+      <!-- AUTO curve: high, flat-ish, then declining after x≈516 -->
+      <path d="M 90,90 C 200,86 360,84 500,88 C 560,92 620,140 710,210"
+            fill="none" stroke="#3B82F6" stroke-width="3"/>
+      <text x="100" y="80" fill="#3B82F6" font-size="11" font-weight="700" font-family="system-ui">Auto (ICE)</text>
+      <circle cx="500" cy="88" r="4" fill="#3B82F6"/>
+
+      <!-- DEFENCE+EV curve: low-left rising, accelerating, S-curve -->
+      <path d="M 90,288 C 200,282 300,260 380,225 C 460,190 560,150 710,120"
+            fill="none" stroke="#F59E0B" stroke-width="3"/>
+      <text x="100" y="300" fill="#F59E0B" font-size="11" font-weight="700" font-family="system-ui">Defence + EV</text>
+
+      <!-- Crossover point (~where curves meet, x≈610, y≈140) -->
+      <circle cx="610" cy="142" r="8" fill="none" stroke="#F0F6FC" stroke-width="2"/>
+      <circle cx="610" cy="142" r="3" fill="#F0F6FC"/>
+      <line x1="610" y1="142" x2="650" y2="100" stroke="#8B949E" stroke-width="1"/>
+      <text x="654" y="98" fill="#F0F6FC" font-size="10" font-weight="700" font-family="system-ui">Crossover</text>
+      <text x="654" y="110" fill="#8B949E" font-size="9" font-family="system-ui">~2037: Defence + EV</text>
+      <text x="654" y="121" fill="#8B949E" font-size="9" font-family="system-ui">&gt; Auto revenue</text>
+
+      <!-- Legend / read note -->
+      <text x="90" y="362" fill="#484F58" font-size="9" font-family="system-ui">Indicative trajectories for board framing — not a forecast. Dates are planning ranges, not point estimates. The shape, not the precise year, is the message.</text>
+    </svg>
+  </div>
+
+  <div class="two-col">
+    <div class="callout callout-danger" style="margin:0">
+      <span class="callout-icon">⚠</span>
+      <div><strong>The failure mode.</strong> If Defence is <em>not</em> structurally separated now, its self-sustaining date slips right (the green line moves later). If EV erodes ICE faster than expected, Auto's decline-onset moves left (the red line moves earlier). Both forces compress the margin-of-safety band. If the lines cross — Auto declining before Defence stands on its own — the funding engine fails mid-pivot. That is the scenario the recommendation is built to prevent.</div>
+    </div>
+    <div class="callout callout-info" style="margin:0">
+      <span class="callout-icon">◈</span>
+      <div><strong>The lever on the timeline.</strong> The single action that most widens the band is LP4 — structural separation of the Defence BU (§04, §08). It pulls Defence's self-sustaining date <em>earlier</em> by removing the auto operating-model drag on the Defence growth loop. Every quarter of delay is a quarter the band narrows on its own.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── 12. TOC FIVE FOCUSING STEPS ───────────────────────────────── -->
+<section class="section" id="toc">
+  <div class="sec-hdr">
+    <span class="sec-n">12</span>
+    <span class="sec-t">The Constraint Sequence — Earning the Right to Expand</span>
+    <div class="sec-line"></div>
+  </div>
+
+  <p style="margin-bottom:20px;color:var(--text-muted);font-size:13px">The intervention sequence in §08 is correct on <em>altitude</em> but skips two steps a constraint-discipline review would insist on. Before elevating a constraint — before spending capital and political capital on a structural reorganisation — you first exploit what already exists and subordinate the rest of the system to it. Skipping straight to "create the Defence BU" risks elevating before exploiting: building expensive new structure when cheaper, faster moves were available first. The five-step sequence below sits the §08 recommendation inside the full discipline.</p>
+
+  <div class="svg-wrap">
+    <div class="svg-cap">Five Focusing Steps Applied · Defence Capability as the System Constraint</div>
+    <svg viewBox="0 0 760 230" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-height:230px">
+      <defs>
+        <marker id="arrTOC" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L8,3 z" fill="#8B5CF6"/>
+        </marker>
+      </defs>
+      <!-- 5 step boxes in a row, width 130 each, gap -->
+      <!-- Step 1 -->
+      <rect x="14" y="40" width="134" height="120" rx="6" fill="#161B22" stroke="#10B981" stroke-width="1.5"/>
+      <circle cx="34" cy="62" r="13" fill="#10B981" opacity="0.25" stroke="#10B981" stroke-width="1.5"/>
+      <text x="34" y="66" fill="#10B981" font-size="11" font-weight="800" text-anchor="middle" font-family="system-ui">1</text>
+      <text x="56" y="60" fill="#10B981" font-size="10" font-weight="700" font-family="system-ui">IDENTIFY</text>
+      <text x="56" y="72" fill="#8B949E" font-size="8" font-family="system-ui">the constraint</text>
+      <text x="24" y="96" fill="#F0F6FC" font-size="9" font-family="system-ui">Defence capability</text>
+      <text x="24" y="108" fill="#F0F6FC" font-size="9" font-family="system-ui">build — not capital,</text>
+      <text x="24" y="120" fill="#F0F6FC" font-size="9" font-family="system-ui">not demand.</text>
+      <text x="24" y="140" fill="#10B981" font-size="8" font-weight="700" font-family="system-ui">✓ done in §03</text>
+
+      <!-- Step 2 -->
+      <rect x="158" y="40" width="134" height="120" rx="6" fill="#161B22" stroke="#F59E0B" stroke-width="2"/>
+      <circle cx="178" cy="62" r="13" fill="#F59E0B" opacity="0.25" stroke="#F59E0B" stroke-width="1.5"/>
+      <text x="178" y="66" fill="#F59E0B" font-size="11" font-weight="800" text-anchor="middle" font-family="system-ui">2</text>
+      <text x="200" y="60" fill="#F59E0B" font-size="10" font-weight="700" font-family="system-ui">EXPLOIT</text>
+      <text x="200" y="72" fill="#8B949E" font-size="8" font-family="system-ui">no capital</text>
+      <text x="168" y="96" fill="#F0F6FC" font-size="9" font-family="system-ui">Informal authority,</text>
+      <text x="168" y="108" fill="#F0F6FC" font-size="9" font-family="system-ui">ring-fenced talent,</text>
+      <text x="168" y="120" fill="#F0F6FC" font-size="9" font-family="system-ui">protected hours now.</text>
+      <text x="168" y="140" fill="#F59E0B" font-size="8" font-weight="700" font-family="system-ui">✗ missing from §08</text>
+
+      <!-- Step 3 -->
+      <rect x="302" y="40" width="134" height="120" rx="6" fill="#161B22" stroke="#F59E0B" stroke-width="2"/>
+      <circle cx="322" cy="62" r="13" fill="#F59E0B" opacity="0.25" stroke="#F59E0B" stroke-width="1.5"/>
+      <text x="322" y="66" fill="#F59E0B" font-size="11" font-weight="800" text-anchor="middle" font-family="system-ui">3</text>
+      <text x="344" y="60" fill="#F59E0B" font-size="10" font-weight="700" font-family="system-ui">SUBORDINATE</text>
+      <text x="312" y="90" fill="#F0F6FC" font-size="9" font-family="system-ui">Auto decisions bend</text>
+      <text x="312" y="102" fill="#F0F6FC" font-size="9" font-family="system-ui">to protect the</text>
+      <text x="312" y="114" fill="#F0F6FC" font-size="9" font-family="system-ui">Defence R+ loop.</text>
+      <text x="312" y="140" fill="#F59E0B" font-size="8" font-weight="700" font-family="system-ui">✗ missing from §08</text>
+
+      <!-- Step 4 -->
+      <rect x="446" y="40" width="134" height="120" rx="6" fill="#1E0A3C" stroke="#8B5CF6" stroke-width="2.5"/>
+      <circle cx="466" cy="62" r="13" fill="#8B5CF6" opacity="0.35" stroke="#8B5CF6" stroke-width="1.5"/>
+      <text x="466" y="66" fill="#8B5CF6" font-size="11" font-weight="800" text-anchor="middle" font-family="system-ui">4</text>
+      <text x="488" y="60" fill="#8B5CF6" font-size="10" font-weight="700" font-family="system-ui">ELEVATE</text>
+      <text x="488" y="72" fill="#8B949E" font-size="8" font-family="system-ui">spend capital</text>
+      <text x="456" y="96" fill="#F0F6FC" font-size="9" font-family="system-ui">Create the Defence</text>
+      <text x="456" y="108" fill="#F0F6FC" font-size="9" font-family="system-ui">BU — own P&amp;L,</text>
+      <text x="456" y="120" fill="#F0F6FC" font-size="9" font-family="system-ui">leadership, rules.</text>
+      <text x="456" y="140" fill="#8B5CF6" font-size="8" font-weight="800" font-family="system-ui">★ the §01 rec</text>
+
+      <!-- Step 5 -->
+      <rect x="590" y="40" width="156" height="120" rx="6" fill="#161B22" stroke="#3B82F6" stroke-width="1.5"/>
+      <circle cx="610" cy="62" r="13" fill="#3B82F6" opacity="0.25" stroke="#3B82F6" stroke-width="1.5"/>
+      <text x="610" y="66" fill="#3B82F6" font-size="11" font-weight="800" text-anchor="middle" font-family="system-ui">5</text>
+      <text x="632" y="60" fill="#3B82F6" font-size="10" font-weight="700" font-family="system-ui">DON'T STALL</text>
+      <text x="600" y="90" fill="#F0F6FC" font-size="9" font-family="system-ui">After the BU, the</text>
+      <text x="600" y="102" fill="#F0F6FC" font-size="9" font-family="system-ui">constraint moves —</text>
+      <text x="600" y="114" fill="#F0F6FC" font-size="9" font-family="system-ui">likely to skilled</text>
+      <text x="600" y="126" fill="#F0F6FC" font-size="9" font-family="system-ui">defence engineers.</text>
+      <text x="600" y="146" fill="#3B82F6" font-size="8" font-weight="700" font-family="system-ui">re-identify, repeat</text>
+
+      <!-- flow arrows -->
+      <path d="M 148,100 L 156,100" stroke="#8B5CF6" stroke-width="1.5" marker-end="url(#arrTOC)"/>
+      <path d="M 292,100 L 300,100" stroke="#8B5CF6" stroke-width="1.5" marker-end="url(#arrTOC)"/>
+      <path d="M 436,100 L 444,100" stroke="#8B5CF6" stroke-width="1.5" marker-end="url(#arrTOC)"/>
+      <path d="M 580,100 L 588,100" stroke="#8B5CF6" stroke-width="1.5" marker-end="url(#arrTOC)"/>
+
+      <!-- bottom loop note -->
+      <text x="380" y="190" fill="#8B949E" font-size="10" font-weight="600" text-anchor="middle" font-family="system-ui">Exploit and Subordinate are the cheap, fast moves that buy time while the structural Elevate is built.</text>
+      <text x="380" y="208" fill="#484F58" font-size="9" text-anchor="middle" font-family="system-ui">The recommendation does not change. The sequence to reach it does.</text>
+    </svg>
+  </div>
+
+  <table class="tbl">
+    <thead>
+      <tr>
+        <th>Step</th>
+        <th>What it means here</th>
+        <th>Concrete move at the company</th>
+        <th>Cost / speed</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>1 · Identify</strong></td>
+        <td>Name the true system constraint</td>
+        <td>The binding constraint is Defence <em>capability build under an auto operating model</em> — not capital and not order demand. Both of those are available; the capability cannot compound under the wrong rules.</td>
+        <td>Done</td>
+      </tr>
+      <tr class="highlight">
+        <td><strong>2 · Exploit</strong></td>
+        <td>Get maximum output from the constraint <em>with no new investment</em></td>
+        <td>Before any reorganisation: grant the Defence head informal sign-off authority over Defence hiring and scheduling; ring-fence the existing defence engineering team from auto firefighting; protect their hours from auto delivery crises. Zero capital, weeks not quarters.</td>
+        <td>Near-zero · fast</td>
+      </tr>
+      <tr class="highlight">
+        <td><strong>3 · Subordinate</strong></td>
+        <td>Make the rest of the system serve the constraint</td>
+        <td>Explicit rule: auto-division decisions that touch shared resources (tooling, metallurgy lab, senior engineering time) subordinate to protecting the Defence R+ loop. The non-constraint stops dictating to the constraint.</td>
+        <td>Low · policy change</td>
+      </tr>
+      <tr>
+        <td><strong>4 · Elevate</strong></td>
+        <td>Now invest to break the constraint</td>
+        <td>Create the structurally independent Defence Business Unit — own P&amp;L, (E)-dominant leadership, AQAP quality system, equity-style capital governance. This is the §01 recommendation. It is earned, not skipped to.</td>
+        <td>High · 3–12 months</td>
+      </tr>
+      <tr>
+        <td><strong>5 · Don't let inertia set in</strong></td>
+        <td>The constraint will move — go back to Step 1</td>
+        <td>Once the BU exists, the next constraint is almost certainly skilled defence engineering talent (a national shortage), not structure. Re-identify and repeat. Do not keep solving yesterday's constraint.</td>
+        <td>Continuous</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout callout-warn" style="margin-top:16px">
+    <span class="callout-icon">▲</span>
+    <div><strong>Why this matters for sequencing.</strong> Steps 2 and 3 can begin <em>this quarter</em> at almost no cost, and they directly widen the crossover margin (§11) while the slow structural work of Step 4 proceeds. A board nervous about a full reorganisation can be shown that the first, reversible moves cost nothing and start immediately — lowering the political barrier to the eventual structural decision.</div>
+  </div>
+</section>
+
+<!-- ── 13. HORIZONTAL DEPLOYMENT ─────────────────────────────────── -->
+<section class="section" id="horizontal">
+  <div class="sec-hdr">
+    <span class="sec-n">13</span>
+    <span class="sec-t">The Horizontal Deployment Hypothesis — Tested</span>
+    <div class="sec-line"></div>
+  </div>
+
+  <p style="margin-bottom:20px;color:var(--text-muted);font-size:13px">A hypothesis worth stating is worth closing: <em>can the traction gained in Defence be deployed horizontally across all of the company's domains?</em> The answer is a qualified yes — and the qualification is the whole point. What transfers horizontally is <strong>process technology</strong>. What does not transfer is the <strong>operating model</strong>. Conflating the two is precisely the error that produces the operating-model conflict diagnosed in §03. The transfer is real on one axis and structurally impossible on the other.</p>
+
+  <div class="delta-box">
+    <div class="delta-title">What Transfers vs. What Does Not</div>
+    <div class="delta-grid">
+      <div class="delta-to">
+        <div class="delta-label" style="color:var(--ev)">Transfers Horizontally ✓</div>
+        <strong>Process technology &amp; metallurgy.</strong> Precision-forging tolerances, advanced metallurgy, heat-treatment, NDT and inspection capability, machining of complex geometries. These are physics-level competences. A tighter tolerance learned for a gun barrel genuinely makes a better e-axle shaft. This axis is real and is the company's deepest moat.
+      </div>
+      <div class="delta-arrow">vs.</div>
+      <div class="delta-from">
+        <div class="delta-label" style="color:var(--constraint)">Does NOT Transfer ✗</div>
+        <strong>Operating model &amp; management DNA.</strong> The PAEI profile that lets Defence succeed (E-dominant, long-cycle, risk-tolerant) is the <em>opposite</em> of what Auto needs (P+A-dominant, efficiency, quarterly cadence). Pushing the Defence operating model onto Auto would wreck the cash engine; pushing Auto's onto Defence is exactly what is suppressing it today.
+      </div>
+    </div>
+  </div>
+
+  <table class="tbl" style="margin-top:20px">
+    <thead>
+      <tr>
+        <th>Asset</th>
+        <th>Horizontally deployable?</th>
+        <th>Why</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Precision-forging &amp; metallurgy know-how</td>
+        <td style="color:var(--ev)">Yes — fully</td>
+        <td>Physics is domain-agnostic. The same competence serves defence, EV, aerospace, and industrial.</td>
+      </tr>
+      <tr>
+        <td>Quality-systems <em>discipline</em> (the habit of rigour)</td>
+        <td style="color:var(--defence)">Partly</td>
+        <td>The discipline transfers; the specific <em>standard</em> does not — AQAP ≠ IATF. Importing the wrong standard imports the wrong cadence.</td>
+      </tr>
+      <tr>
+        <td>Customer-relationship model</td>
+        <td style="color:var(--constraint)">No</td>
+        <td>Government / MoD procurement is a different game from global OEM supply — different buyers, cycles, incentives.</td>
+      </tr>
+      <tr>
+        <td>Operating model / PAEI profile</td>
+        <td style="color:var(--constraint)">No — actively harmful</td>
+        <td>Lifecycle stages require opposite management DNA. Forcing one model across stages is the §03 conflict.</td>
+      </tr>
+      <tr>
+        <td>Brand / "strategic manufacturer" identity</td>
+        <td style="color:var(--ev)">Yes — and should</td>
+        <td>The paradigm shift (LP2, §04) is precisely a horizontal redefinition of identity that lifts all divisions.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout callout-info" style="margin-top:16px">
+    <span class="callout-icon">◈</span>
+    <div><strong>Verdict on the hypothesis.</strong> Horizontal deployment is valid for capability and identity, invalid for operating model. The strategic instinct behind the hypothesis is right — Defence <em>is</em> the spearhead that re-rates the whole company. But the mechanism is the transfer of <em>process competence and self-concept</em>, not the transfer of a single management system. Indeed, the act of separating the operating models (§04) is what <em>lets</em> the capability transfer happen cleanly, because each division can then absorb shared technology on its own terms.</div>
+  </div>
+</section>
+
+<!-- ── 14. PLANNING FALLACY ──────────────────────────────────────── -->
+<section class="section" id="planning-fallacy">
+  <div class="sec-hdr">
+    <span class="sec-n">14</span>
+    <span class="sec-t">Stress-Testing the Plan — Are the Defence Forecasts Inside-View?</span>
+    <div class="sec-line"></div>
+  </div>
+
+  <p style="margin-bottom:20px;color:var(--text-muted);font-size:13px">The crossover margin (§11) depends entirely on when Defence revenue arrives. That date is a forecast — and forecasts of long-gestation, first-of-kind programmes are systematically optimistic because they are built from the inside view (this programme, this plan, these milestones) rather than the outside view (how long comparable programmes actually took). The discipline correction is reference-class forecasting: ignore the specifics of the plan and ask what the base rate of similar programmes says. the company has its own reference class sitting in its own history.</p>
+
+  <div class="svg-wrap">
+    <div class="svg-cap">Inside View vs. Reference Class · Defence Revenue Timeline</div>
+    <svg viewBox="0 0 760 230" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-height:230px">
+      <!-- baseline -->
+      <line x1="60" y1="60" x2="700" y2="60" stroke="#21262D" stroke-width="1"/>
+      <line x1="60" y1="150" x2="700" y2="150" stroke="#21262D" stroke-width="1"/>
+      <text x="60" y="40" fill="#10B981" font-size="10" font-weight="700" font-family="system-ui">INSIDE VIEW — the plan as written</text>
+      <text x="60" y="130" fill="#EF4444" font-size="10" font-weight="700" font-family="system-ui">REFERENCE CLASS — what comparable programmes actually took</text>
+
+      <!-- Inside-view bar (short) -->
+      <rect x="60" y="48" width="240" height="22" rx="3" fill="#10B981" opacity="0.7"/>
+      <text x="180" y="64" fill="#001A0F" font-size="9" font-weight="700" text-anchor="middle" font-family="system-ui">planned: ~5–6 yrs to scale</text>
+      <line x1="300" y1="44" x2="300" y2="74" stroke="#10B981" stroke-width="1.5" stroke-dasharray="3,2"/>
+
+      <!-- Reference-class bar (long) -->
+      <rect x="60" y="138" width="430" height="22" rx="3" fill="#EF4444" opacity="0.6"/>
+      <text x="275" y="154" fill="#F0F6FC" font-size="9" font-weight="700" text-anchor="middle" font-family="system-ui">actual base rate: ~8–11 yrs (ATAGS, indigenous programmes)</text>
+      <line x1="490" y1="134" x2="490" y2="164" stroke="#EF4444" stroke-width="1.5" stroke-dasharray="3,2"/>
+
+      <!-- The gap -->
+      <path d="M 300,82 L 490,124" stroke="#F59E0B" stroke-width="1.5" stroke-dasharray="4,3"/>
+      <rect x="320" y="88" width="180" height="30" rx="4" fill="#2D1A00" stroke="#F59E0B" stroke-width="1"/>
+      <text x="410" y="100" fill="#F59E0B" font-size="9" font-weight="700" text-anchor="middle" font-family="system-ui">THE OPTIMISM GAP</text>
+      <text x="410" y="112" fill="#8B949E" font-size="8" text-anchor="middle" font-family="system-ui">~3–5 yrs of unplanned slippage</text>
+
+      <!-- Year scale -->
+      <text x="60" y="186" fill="#484F58" font-size="9" font-family="system-ui">Each unit ≈ 1 year. Bars indicative — the message is the systematic direction of error, not the exact length.</text>
+      <text x="60" y="204" fill="#484F58" font-size="9" font-family="system-ui">ATAGS itself ran materially longer than its original development timeline — the company's own programme is the reference class.</text>
+    </svg>
+  </div>
+
+  <table class="tbl">
+    <thead>
+      <tr>
+        <th>Forecast input</th>
+        <th>Inside-view risk</th>
+        <th>Reference-class discipline</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Defence revenue ramp (₹5,000 Cr+ ambition)</td>
+        <td>Built from order pipeline × planned conversion — assumes on-time award and acceptance</td>
+        <td>Discount by historical award-to-revenue lag on indigenous defence programmes; ATAGS conversion timeline is the in-house base rate.</td>
+      </tr>
+      <tr>
+        <td>Programme development timelines</td>
+        <td>Milestone plans assume clean trials and single-pass acceptance</td>
+        <td>First-of-kind defence systems routinely require re-trials; build in the empirical re-trial rate, not best case.</td>
+      </tr>
+      <tr>
+        <td>Order-book → cash conversion</td>
+        <td>Order book treated as near-revenue</td>
+        <td>Government payment and acceptance cycles are long and lumpy; apply realised conversion ratios, not booked value.</td>
+      </tr>
+      <tr class="highlight">
+        <td><strong>Crossover margin of safety</strong></td>
+        <td><strong>"Narrow but present" assumes the inside-view date</strong></td>
+        <td><strong>On reference-class dating, Defence self-sufficiency likely slips right — and the margin may already be negative. This is the highest-stakes correction in the brief.</strong></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout callout-danger" style="margin-top:16px">
+    <span class="callout-icon">⚠</span>
+    <div><strong>The compounding danger.</strong> The crossover (§11) was already "narrow but present" on optimistic dating. If the Defence revenue forecast is inside-view — and the base rate says it almost certainly is — then the true margin of safety is thinner than the plan shows, possibly gone. This does not weaken the recommendation; it <em>strengthens its urgency</em>. Reference-class dating is the strongest argument for starting the cheap TOC Exploit/Subordinate moves (§12) immediately and not waiting for the structural reorganisation to complete. When the timeline is more fragile than it looks, you act sooner, not later.</div>
+  </div>
+</section>
+
+</div><!-- /main -->
+
+<!-- CLOSING HOOK -->
+<div style="background:var(--accent);padding:56px 40px;">
+  <div style="max-width:700px;margin:0 auto;">
+    <div style="font-family:'Segoe UI',sans-serif;font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.45);margin-bottom:20px;">Closing · The Right Question</div>
+    <h2 style="font-size:26px;font-weight:700;color:#fff;line-height:1.35;margin-bottom:24px;">The cage is not a failure. It is the cash engine doing exactly what it was built to do.</h2>
+    <p style="font-size:16px;line-height:1.8;color:rgba(255,255,255,0.82);margin-bottom:18px;">Every organisation that has ever tried to pivot from one era to the next has faced this. The old business is not hostile to the new one. It is simply optimised for different conditions — and optimisation is incompatible with experimentation.</p>
+    <p style="font-size:16px;line-height:1.8;color:rgba(255,255,255,0.82);margin-bottom:18px;">The danger is not that the new bets fail. The danger is that they are never given the conditions to succeed — that the operating model built for the harvest stage quietly starves the growth stage before it ever finds out whether it was right.</p>
+    <div style="font-size:18px;font-style:italic;font-weight:500;color:#fff;border-left:3px solid rgba(255,255,255,0.35);padding-left:24px;margin:32px 0;line-height:1.7;">
+      The question is not whether to diversify.<br>It is whether the structure you built to win the last war can survive long enough to fight the next one.
+    </div>
+    <p style="font-size:16px;line-height:1.8;color:rgba(255,255,255,0.82);">The answer is almost always no — unless the structure itself changes first.</p>
+    <div style="margin-top:48px;border-top:1px solid rgba(255,255,255,0.15);padding-top:36px;">
+      <div style="font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.4);margin-bottom:16px;">Take With You</div>
+      <div style="font-size:20px;font-style:italic;font-weight:500;line-height:1.65;color:#fff;border-left:3px solid rgba(255,255,255,0.35);padding-left:24px;">
+        The stronger the cash engine, the weaker the new bet.
+      </div>
+    </div>
+    <div style="font-size:11px;color:rgba(255,255,255,0.35);margin-top:36px;">Amplified Insight · June 2026</div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <strong>Analytical approach:</strong> Corporate lifecycle positioning · Operating model conflict diagnosis · Structural loop analysis · Depth-of-intervention mapping · Capital allocation by lifecycle stage · Management DNA matching by stage · Constraint sequencing · Experience-curve economics · Reference-class forecasting · End-use component survival analysis. All analysis applied to publicly available disclosures. Data approximate; directional only. Financial figures estimated from public reporting.<br><br>
+  <strong>Prepared by:</strong> Amplified Insight · aanandladgaonkar@amplifiedinsight.com · Vadodara<br>
+  <strong>Session:</strong> DEPLOY · 24 June 2026 · Working partner mode<br>
+  This brief is a diagnostic instrument. It is not investment advice and does not constitute a recommendation to buy or sell securities.
+</div>
+
+<script>
+// Smooth scroll for nav links
+document.querySelectorAll('.nav a').forEach(a => {
+  a.addEventListener('click', e => {
+    e.preventDefault();
+    const target = document.querySelector(a.getAttribute('href'));
+    if(target) target.scrollIntoView({behavior:'smooth'});
+  });
+});
+</script>
+</body>
+</html>

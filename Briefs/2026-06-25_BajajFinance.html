@@ -1,0 +1,1534 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Bajaj Finance — Credit Cycle Diagnostic | Amplified Insight</title>
+
+
+<style>
+:root {
+  --bg:            #f8fafc;
+  --bg2:           #ffffff;
+  --bg3:           #f1f5f9;
+  --border:        #e2e8f0;
+  --text1:         #0f172a;
+  --text2:         #475569;
+  --text3:         #94a3b8;
+  --navy:          #1e3a5f;
+  --navy2:         #2d5a8e;
+  --gold:          #b5892a;
+  --gold-bg:       #fef9ed;
+  --red:           #dc2626;
+  --red-bg:        #fef2f2;
+  --amber:         #d97706;
+  --amber-bg:      #fffbeb;
+  --green:         #059669;
+  --green-bg:      #ecfdf5;
+  --blue:          #2563eb;
+  --blue-bg:       #eff6ff;
+}
+[data-theme="dark"] {
+  --bg:            #0d1117;
+  --bg2:           #161b22;
+  --bg3:           #1c2128;
+  --border:        #30363d;
+  --text1:         #e6edf3;
+  --text2:         #8b949e;
+  --text3:         #484f58;
+  --navy:          #58a6ff;
+  --navy2:         #79c0ff;
+  --gold:          #e3b341;
+  --gold-bg:       #272115;
+  --red:           #f85149;
+  --red-bg:        #1a0c0c;
+  --amber:         #e3b341;
+  --amber-bg:      #1f1a08;
+  --green:         #3fb950;
+  --green-bg:      #091d12;
+  --blue:          #58a6ff;
+  --blue-bg:       #0a1628;
+}
+
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Segoe UI',system-ui,-apple-system,sans-serif;
+  background:var(--bg);
+  color:var(--text1);
+  line-height:1.6;
+  font-size:14px;
+  transition:background .25s,color .25s;
+}
+
+/* ── TOPBAR ────────────────────────────────── */
+.topbar{
+  background:var(--navy);
+  color:#fff;
+  padding:0 48px;
+  height:56px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  position:sticky;top:0;z-index:100;
+}
+.topbar-left{display:flex;align-items:center;gap:20px}
+.firm-badge{
+  font-size:10px;letter-spacing:2px;text-transform:uppercase;
+  background:rgba(255,255,255,.12);padding:4px 10px;border-radius:3px;
+  font-weight:600;
+}
+.topbar-title{font-size:13px;font-weight:600;opacity:.9}
+.topbar-right{display:flex;align-items:center;gap:16px}
+.topbar-date{font-size:11px;opacity:.6}
+.toggle{
+  background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);
+  color:#fff;padding:5px 14px;border-radius:20px;
+  cursor:pointer;font-size:11px;font-family:'Segoe UI',system-ui,-apple-system,sans-serif;font-weight:500;
+  transition:background .2s;
+}
+.toggle:hover{background:rgba(255,255,255,.2)}
+
+/* ── HERO VERDICT ──────────────────────────── */
+.verdict{
+  background:linear-gradient(135deg,#0d2744 0%,#1e3a5f 60%,#1a4a75 100%);
+  border-left:5px solid var(--gold);
+  padding:36px 48px 32px;
+  color:#fff;
+}
+.verdict-eyebrow{
+  font-size:10px;letter-spacing:2.5px;text-transform:uppercase;
+  color:rgba(255,255,255,.5);margin-bottom:10px;
+}
+.verdict-text{
+  font-size:17px;font-weight:600;line-height:1.65;
+  max-width:860px;color:rgba(255,255,255,.95);
+}
+.verdict-sub{
+  font-size:12px;color:rgba(255,255,255,.6);
+  margin-top:12px;max-width:720px;line-height:1.6;
+}
+.chips{display:flex;gap:10px;margin-top:18px;flex-wrap:wrap}
+.chip{
+  padding:4px 13px;border-radius:20px;font-size:11px;font-weight:600;
+  letter-spacing:.3px;
+}
+.chip-red{background:rgba(220,38,38,.25);border:1px solid rgba(220,38,38,.4);color:#fca5a5}
+.chip-amber{background:rgba(217,119,6,.25);border:1px solid rgba(217,119,6,.4);color:#fcd34d}
+.chip-green{background:rgba(5,150,105,.2);border:1px solid rgba(5,150,105,.35);color:#6ee7b7}
+.chip-neutral{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.7)}
+
+/* ── LAYOUT ────────────────────────────────── */
+.main{max-width:1120px;margin:0 auto;padding:44px 48px 80px}
+.section{margin-bottom:64px}
+.section-tag{
+  font-size:10px;letter-spacing:2px;text-transform:uppercase;
+  color:var(--gold);font-weight:700;margin-bottom:4px;
+}
+.section-h{font-size:21px;font-weight:800;color:var(--text1);margin-bottom:3px}
+.section-sub{font-size:13px;color:var(--text2);margin-bottom:20px;font-style:italic}
+.rule{height:3px;width:52px;background:linear-gradient(90deg,var(--gold),transparent);margin-bottom:24px;border-radius:2px}
+
+/* ── STAT CARDS ────────────────────────────── */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:18px}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:18px}
+.stat{
+  background:var(--bg2);border:1px solid var(--border);
+  border-radius:8px;padding:18px 20px;
+}
+.stat-lbl{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}
+.stat-val{font-size:26px;font-weight:800;color:var(--text1);line-height:1}
+.stat-sub{font-size:11px;color:var(--text2);margin-top:5px}
+.c-red{color:var(--red)}.c-amber{color:var(--amber)}.c-green{color:var(--green)}.c-blue{color:var(--blue)}
+
+/* ── CARDS ─────────────────────────────────── */
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:22px;margin-bottom:16px}
+.card-h{font-size:13px;font-weight:700;color:var(--text1);margin-bottom:14px}
+
+/* ── VIZ BOX ───────────────────────────────── */
+.viz{
+  background:var(--bg2);border:1px solid var(--border);
+  border-radius:8px;padding:24px;margin:20px 0;
+}
+.viz-lbl{
+  font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;
+  color:var(--text3);margin-bottom:16px;
+}
+
+/* ── TABLES ────────────────────────────────── */
+.tbl-wrap{overflow-x:auto;margin:16px 0}
+table{width:100%;border-collapse:collapse;font-size:12.5px}
+th{
+  background:var(--bg3);padding:9px 13px;text-align:left;
+  font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;
+  color:var(--text2);border-bottom:2px solid var(--border);white-space:nowrap;
+}
+td{padding:9px 13px;border-bottom:1px solid var(--border);color:var(--text1);vertical-align:top}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:var(--bg3)}
+.mono{font-family:'SF Mono','Fira Code',monospace;font-size:12px}
+
+/* ── TAGS ──────────────────────────────────── */
+.tag{display:inline-block;padding:2px 9px;border-radius:4px;font-size:10px;font-weight:700;white-space:nowrap}
+.tag-red{background:var(--red-bg);color:var(--red)}
+.tag-amber{background:var(--amber-bg);color:var(--amber)}
+.tag-green{background:var(--green-bg);color:var(--green)}
+.tag-blue{background:var(--blue-bg);color:var(--blue)}
+.tag-gray{background:var(--bg3);color:var(--text2)}
+
+/* ── CALLOUT BOXES ─────────────────────────── */
+.insight{
+  border-left:4px solid var(--gold);background:var(--gold-bg);
+  padding:14px 18px;border-radius:0 8px 8px 0;margin:18px 0;font-size:12.5px;
+  color:var(--text1);line-height:1.7;
+}
+.insight strong{color:var(--gold);font-weight:700}
+.alert{
+  border-left:4px solid var(--red);background:var(--red-bg);
+  padding:14px 18px;border-radius:0 8px 8px 0;margin:18px 0;font-size:12.5px;
+  color:var(--text1);line-height:1.7;
+}
+.alert strong{color:var(--red);font-weight:700}
+.quote-block{
+  font-size:17px;font-style:italic;color:var(--text2);
+  border-left:4px solid var(--blue);padding:14px 22px;margin:22px 0;line-height:1.65;
+}
+.quote-block cite{display:block;font-size:11px;font-style:normal;margin-top:8px;color:var(--text3)}
+
+/* ── LP TABLE ROWS ─────────────────────────── */
+.lp-active-high td{background:rgba(30,58,95,.07)}
+.lp-active-gold td{background:rgba(181,137,42,.07)}
+.lp-active-red td{background:rgba(220,38,38,.06)}
+.lp-active-amber td{background:rgba(217,119,6,.06)}
+[data-theme="dark"] .lp-active-high td{background:rgba(88,166,255,.06)}
+[data-theme="dark"] .lp-active-gold td{background:rgba(227,179,65,.06)}
+[data-theme="dark"] .lp-active-red td{background:rgba(248,81,73,.06)}
+[data-theme="dark"] .lp-active-amber td{background:rgba(227,179,65,.06)}
+
+.lp-num{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:26px;height:26px;border-radius:50%;font-size:10px;font-weight:800;
+}
+.lp-num-active{background:var(--navy);color:#fff}
+.lp-num-inactive{background:var(--bg3);color:var(--text3)}
+
+/* ── SCENARIO TABLE ────────────────────────── */
+.scenario-base td:first-child{border-left:4px solid var(--green)}
+.scenario-stress td:first-child{border-left:4px solid var(--amber)}
+.scenario-systemic td:first-child{border-left:4px solid var(--red)}
+
+/* ── FOOTER ────────────────────────────────── */
+.footer{
+  background:var(--bg2);border-top:1px solid var(--border);
+  padding:20px 48px;font-size:10.5px;color:var(--text3);
+  display:flex;justify-content:space-between;align-items:center;
+}
+
+/* ── CANVAS containers ─────────────────────── */
+canvas{display:block;max-width:100%}
+
+@media(max-width:768px){
+  .topbar{padding:0 20px}.main{padding:28px 20px}
+  .grid2,.grid3{grid-template-columns:1fr}
+  .verdict{padding:24px 20px}
+}
+</style>
+</head>
+<body>
+
+<!-- ── TOPBAR ──────────────────────────────────────── -->
+<div class="topbar">
+  <div class="topbar-left">
+    <span class="firm-badge">Amplified Insight</span>
+    <span class="topbar-title">Bajaj Finance — Credit Cycle Diagnostic</span>
+  </div>
+  <div class="topbar-right">
+    <span class="topbar-date">25 June 2026 · Vadodara</span>
+    <button class="toggle" onclick="toggleTheme()">◐ Light / Dark</button>
+  </div>
+</div>
+
+<!-- ── VERDICT ─────────────────────────────────────── -->
+<div class="verdict">
+  <div class="verdict-eyebrow">Diagnostic Verdict · Pyramid Principle · Recommendation First</div>
+  <div class="verdict-text">
+    Bajaj Finance's Q4 FY26 GNPA improvement from 1.21% to 1.01% is a provisioning artefact, not an organic credit cycle reversal. Three structural risks are simultaneously building beneath the headline: an undisclosed 12-month-on-book vintage cohort now entering the default peak window, a suppressed rural early-delinquency signal, and a geographic funding mismatch that creates a bilateral squeeze — credit stress rising from below, potential HNI depositor flight from above — with no natural hedge between them.
+  </div>
+  <div class="verdict-sub">
+    Investor recommendation: do not add to position until three named metrics are disclosed (12MOB vintage, rural 0–30 DPD, NCD spread vs. Oct 2024 baseline). Reduce if NCD spreads widen further — the bond market is the honest signal in this system.
+  </div>
+  <div class="chips">
+    <span class="chip chip-red">Reduce on Spread Widening</span>
+    <span class="chip chip-amber">Monitor: 12MOB Vintage</span>
+    <span class="chip chip-amber">Monitor: Rural 0–30 DPD</span>
+    <span class="chip chip-green">Hold: Base Scenario Intact</span>
+    <span class="chip chip-neutral">Re-evaluate Q1 FY27</span>
+  </div>
+</div>
+
+<!-- ── MAIN ────────────────────────────────────────── -->
+<div class="main">
+
+<!-- ══════════════════════════════════════════════════
+     SECTION 01 — MACRO
+══════════════════════════════════════════════════ -->
+<div class="section">
+  <div class="section-tag">Section 01</div>
+  <div class="section-h">The Macroeconomic System</div>
+  <div class="section-sub">The water the fish swims in — before examining the fish</div>
+  <div class="rule"></div>
+
+  <div class="grid3">
+    <div class="stat">
+      <div class="stat-lbl">RBI Repo Rate (Dec 2025)</div>
+      <div class="stat-val c-amber">5.25%</div>
+      <div class="stat-sub">↓ 100 bps in 9 months — sharpest easing cycle in recent history</div>
+    </div>
+    <div class="stat">
+      <div class="stat-lbl">Bank Credit Growth</div>
+      <div class="stat-val c-red">~10%</div>
+      <div class="stat-sub">Despite 100 bps in cuts — transmission broken. Banks not lending through.</div>
+    </div>
+    <div class="stat">
+      <div class="stat-lbl">Household Debt / GDP</div>
+      <div class="stat-val c-red">17.6%</div>
+      <div class="stat-sub">Rising. RBI issued formal public warning — January 2026.</div>
+    </div>
+  </div>
+
+  <!-- Credit Cycle Canvas -->
+  <div class="viz">
+    <div class="viz-lbl">India Credit Cycle — Current Position (June 2026)</div>
+    <canvas id="creditCycleCanvas" height="260"></canvas>
+  </div>
+
+  <div class="tbl-wrap">
+  <table>
+    <thead><tr><th>Macro Signal</th><th>Data Point</th><th>What It Means for NBFCs</th><th>Status</th></tr></thead>
+    <tbody>
+      <tr><td>RBI easing cycle</td><td class="mono">5.25% repo · −100 bps in 9 months</td><td>Should lower NBFC cost of funds — but only if banks pass it through</td><td><span class="tag tag-amber">Partial benefit</span></td></tr>
+      <tr><td>Bank credit growth</td><td class="mono">~10% YoY despite cuts</td><td>Transmission broken. Banks not lending through to NBFCs or consumers.</td><td><span class="tag tag-red">Risk</span></td></tr>
+      <tr><td>Household debt / GDP</td><td class="mono">17.6% · rising</td><td>Borrowers increasingly leveraged — default risk building across the loan book</td><td><span class="tag tag-red">Structural risk</span></td></tr>
+      <tr><td>Consumption engine</td><td class="mono">Debt-led replacing income-led</td><td>NBFC growth = financing the fragility, not the productivity of the economy</td><td><span class="tag tag-red">Structural risk</span></td></tr>
+      <tr><td>MFI sector (canary)</td><td class="mono">NPA +74 bps · PAT −117% · Book −11%</td><td>Same village economy, same income environment, one notch below Bajaj Finance's rural borrower</td><td><span class="tag tag-red">Active stress</span></td></tr>
+      <tr><td>Bank credit to NBFCs</td><td class="mono">₹13.8L Cr — stagnant since Sep 2025</td><td>RBI rolled back risk weight hike (Apr 2025). Regulation changed. Behaviour did not.</td><td><span class="tag tag-red">Funding risk</span></td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="insight">
+    <strong>The structural shift (RBI, January 2026):</strong> India's private consumption — 60% of GDP — is increasingly financed by borrowing rather than by rising real incomes. An NBFC whose primary engine is consumer credit is not growing alongside the economy. It is amplifying the fragility within it. This is the macro frame inside which every Bajaj Finance number must be read.
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     SECTION 02 — NBFC SECTOR
+══════════════════════════════════════════════════ -->
+<div class="section">
+  <div class="section-tag">Section 02</div>
+  <div class="section-h">The NBFC Sector</div>
+  <div class="section-sub">The lane Bajaj Finance runs in — and who is already under water</div>
+  <div class="rule"></div>
+
+  <div class="grid2">
+    <div class="stat">
+      <div class="stat-lbl">NBFC Credit Growth H1 FY26</div>
+      <div class="stat-val c-green">17%</div>
+      <div class="stat-sub">vs Banks at 12%. NBFCs leading — but quality diverging sharply by segment.</div>
+    </div>
+    <div class="stat">
+      <div class="stat-lbl">Bank Credit to NBFCs</div>
+      <div class="stat-val c-red">₹13.8L Cr</div>
+      <div class="stat-sub">Stagnant since Sep 2025. RBI rule changed. Lending behaviour did not follow.</div>
+    </div>
+  </div>
+
+  <!-- NBFC Segment Bar Chart -->
+  <div class="viz">
+    <div class="viz-lbl">NBFC Credit Growth by Segment — H1 FY26 (%)</div>
+    <canvas id="nbfcBarCanvas" height="220"></canvas>
+  </div>
+
+  <div class="alert">
+    <strong>The canary read:</strong> MFIs lend to the same village economy, same agricultural cycle, same discretionary income environment as Bajaj Finance's rural segment (14% of AUM). Their NPA rose 74 bps, their book shrank 11%, and PAT collapsed 117%. Bajaj Finance's CFO confirmed "some pressure" in rural — twice deflecting the leading indicator (0–30 DPD) and offering a lagging composite (annual credit cost) instead. The gap between these two signals is not explained by underwriting quality alone. It is explained by what each entity chooses to disclose.
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     SECTION 03 — BAJAJ FINANCE BUSINESS
+══════════════════════════════════════════════════ -->
+<div class="section">
+  <div class="section-tag">Section 03</div>
+  <div class="section-h">Bajaj Finance — The Business</div>
+  <div class="section-sub">What they do, where they do it, and at what scale</div>
+  <div class="rule"></div>
+
+  <div class="grid3">
+    <div class="stat">
+      <div class="stat-lbl">Total AUM (Q4 FY26)</div>
+      <div class="stat-val">₹5.09T</div>
+      <div class="stat-sub c-green">↑ 22% YoY — crossed ₹5 trillion milestone, March 2026</div>
+    </div>
+    <div class="stat">
+      <div class="stat-lbl">Customer Base</div>
+      <div class="stat-val">115.4M</div>
+      <div class="stat-sub">+4.76M new customers in Q3 FY26 alone</div>
+    </div>
+    <div class="stat">
+      <div class="stat-lbl">PAT Growth Q4 FY26</div>
+      <div class="stat-val c-green">+23%</div>
+      <div class="stat-sub">₹4,839 Cr standalone. NII +20%. Opex/NTI: 33.8%.</div>
+    </div>
+  </div>
+
+  <!-- AUM Donut + Segment bar -->
+  <div class="viz">
+    <div class="viz-lbl">AUM Portfolio Mix — Q4 FY26 · Total ₹5.09 Trillion</div>
+    <div style="display:flex;gap:32px;align-items:center;flex-wrap:wrap">
+      <canvas id="donutCanvas" width="260" height="260" style="flex-shrink:0"></canvas>
+      <div style="flex:1;min-width:260px">
+        <canvas id="aumBarCanvas" height="200"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <div class="insight">
+    <strong>Portfolio read:</strong> Bajaj Finance is not a mortgage lender with a consumer book — it is a consumer credit and MSME machine with a growing mortgage subsidiary. The urban 42% is the engine. The rural 14% is the growth accelerant of FY24–25. The gold loan pivot (₹8,307 Cr, +81% YoY, 1,209 branches) is the tell — a rapid pivot toward collateral-backed lending suggests management is building an internal hedge against the unsecured credit stress it may already see in its own data.
+  </div>
+
+  <div class="tbl-wrap">
+  <table>
+    <thead><tr><th>Business Segment</th><th>AUM Share</th><th>Nature</th><th>Risk Read</th></tr></thead>
+    <tbody>
+      <tr><td>Urban Consumer Finance</td><td class="mono">42%</td><td>Personal loans, EMI cards, consumer durables, 2-wheeler. Unsecured.</td><td><span class="tag tag-amber">Debt-led consumption — macro headwind</span></td></tr>
+      <tr><td>MSME Lending</td><td class="mono">19%</td><td>Small business working capital and growth credit. Income-generating.</td><td><span class="tag tag-blue">Business-cycle dependent</span></td></tr>
+      <tr><td>Commercial Lending</td><td class="mono">16%</td><td>B2B, supply chain, corporate. Larger ticket, structured.</td><td><span class="tag tag-green">More defensible</span></td></tr>
+      <tr><td>Rural Finance</td><td class="mono">14%</td><td>Tier 3–5 towns. Same income environment as MFI borrowers.</td><td><span class="tag tag-red">Stress confirmed — unquantified</span></td></tr>
+      <tr><td>Mortgage (direct)</td><td class="mono">9%</td><td>Home equity, LAP. Asset-backed.</td><td><span class="tag tag-green">Asset-backed — more defensible</span></td></tr>
+      <tr><td>Bajaj Housing Finance (subsidiary)</td><td class="mono">₹1.33L Cr separately</td><td>Home loans. +23% YoY. Separately listed.</td><td><span class="tag tag-green">Rate-sensitive but collateralised</span></td></tr>
+      <tr><td>Gold Loans (new bet)</td><td class="mono">₹8,307 Cr · +81%</td><td>Collateral-backed, 1,209 branches. Fastest growing sub-segment.</td><td><span class="tag tag-amber">Rapid scaling — collateral discipline matters</span></td></tr>
+    </tbody>
+  </table>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     SECTION 04 — CREDIT QUALITY
+══════════════════════════════════════════════════ -->
+<div class="section">
+  <div class="section-tag">Section 04</div>
+  <div class="section-h">The Credit Quality Diagnostic</div>
+  <div class="section-sub">Surface vs. what lies beneath — the provisioning artefact explained</div>
+  <div class="rule"></div>
+
+  <div class="grid3">
+    <div class="stat">
+      <div class="stat-lbl">GNPA — Q4 FY26</div>
+      <div class="stat-val c-amber">1.01%</div>
+      <div class="stat-sub">vs 0.96% Q4 FY25 baseline — sequential improvement but YoY deterioration</div>
+    </div>
+    <div class="stat">
+      <div class="stat-lbl">NNPA — Q4 FY26</div>
+      <div class="stat-val">0.41%</div>
+      <div class="stat-sub">vs 0.44% Q4 FY25 — marginal net improvement</div>
+    </div>
+    <div class="stat">
+      <div class="stat-lbl">Provisioning Coverage (Stage 3)</div>
+      <div class="stat-val c-amber">61%</div>
+      <div class="stat-sub">39% of the stressed book sits at book value — unprovisioned</div>
+    </div>
+  </div>
+
+  <!-- GNPA Trend Chart -->
+  <div class="viz">
+    <div class="viz-lbl">GNPA Trajectory with Stage 2 → Stage 3 Migration Signal</div>
+    <canvas id="gnpaCanvas" height="240"></canvas>
+  </div>
+
+  <div class="insight">
+    <strong>The provisioning artefact mechanism:</strong> GNPA improves in two ways — either borrowers genuinely pay down their dues (organic recovery), or loans are written off and removed from the GNPA numerator (provisioning action). If Q4's improvement was write-off-driven rather than collection-driven, the reported 1.01% is clean on paper while the economic loss has already been absorbed. The Stage 2 → Stage 3 migration in Q3 (watchlist converting to NPA, not recovering) is inconsistent with an organic collection story. The CFO cited "vintage improvements across 3MOB, 6MOB, 9MOB" — but refused 12MOB, which is where the FY24–25 peak-growth cohorts are now sitting.
+  </div>
+
+  <div class="tbl-wrap">
+  <table>
+    <thead><tr><th>Metric</th><th>Q4 FY25</th><th>Q3 FY26</th><th>Q4 FY26</th><th>Diagnostic Read</th></tr></thead>
+    <tbody>
+      <tr><td><strong>GNPA</strong></td><td class="mono">0.96%</td><td class="mono c-red"><strong>1.21%</strong></td><td class="mono c-amber"><strong>1.01%</strong></td><td><span class="tag tag-amber">Sequential ↓ · YoY ↑ · Not organic</span></td></tr>
+      <tr><td><strong>NNPA</strong></td><td class="mono">0.44%</td><td class="mono">0.47%</td><td class="mono">0.41%</td><td><span class="tag tag-green">Marginal improvement</span></td></tr>
+      <tr><td>Stage 3 movement (Q3)</td><td colspan="2" class="mono">—</td><td class="mono c-red">+₹194 Cr ↑</td><td><span class="tag tag-red">NPA growing as watchlist converts</span></td></tr>
+      <tr><td>Stage 2 movement (Q3)</td><td colspan="2" class="mono">—</td><td class="mono c-amber">−₹287 Cr ↓</td><td><span class="tag tag-amber">Watchlist shrinking — converting, not healing</span></td></tr>
+      <tr><td>Provisioning coverage</td><td colspan="2">—</td><td class="mono">61% on Stage 3</td><td><span class="tag tag-amber">39% unprovisioned — sits at book value</span></td></tr>
+      <tr><td>12MOB Vintage (Q1/Q2 FY25)</td><td colspan="3" style="font-style:italic;color:var(--text3)">Not disclosed. CFO deflected. Entering peak default window now (loans 12–18 months old).</td><td><span class="tag tag-red">Undisclosed — highest risk item</span></td></tr>
+      <tr><td>Rural 0–30 DPD (leading indicator)</td><td colspan="3" style="font-style:italic;color:var(--text3)">Deflected twice. CFO confirmed "some pressure." Offered annual credit cost (lagging) instead.</td><td><span class="tag tag-red">Stress confirmed, unquantified</span></td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="alert">
+    <strong>The deflection pattern:</strong> The CFO answered 3MOB, 6MOB, 9MOB (short-tenure cohorts, which look healthy because defaults peak at 12–18 months on book). He refused 12MOB. Rural 0–30 DPD was replaced by annual credit cost — a lagging indicator. NCD spreads were described as "normalised somewhat" without a basis point figure. Three consecutive questions, three leading indicators replaced with lagging composites. This is not a negotiation — it is a paradigm defending itself.
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     SECTION 05 — FUNDING RISK
+══════════════════════════════════════════════════ -->
+<div class="section">
+  <div class="section-tag">Section 05</div>
+  <div class="section-h">The Funding Structural Risk</div>
+  <div class="section-sub">The bilateral squeeze — credit stress rising from below, potential depositor flight from above</div>
+  <div class="rule"></div>
+
+  <div class="grid3">
+    <div class="stat">
+      <div class="stat-lbl">Deposit Book (Q3 FY26)</div>
+      <div class="stat-val c-amber">17%</div>
+      <div class="stat-sub">₹71,037 Cr. CFO's own words: "additive, not load-bearing."</div>
+    </div>
+    <div class="stat">
+      <div class="stat-lbl">Market-Dependent Funding</div>
+      <div class="stat-val c-red">83%</div>
+      <div class="stat-sub">NCDs + Bank lines + ECBs. Subject to market repricing in a stress scenario.</div>
+    </div>
+    <div class="stat">
+      <div class="stat-lbl">Cost of Funds (Q3 FY26)</div>
+      <div class="stat-val c-amber">7.45%</div>
+      <div class="stat-sub">↓ 7 bps from Q2 FY26. Forward guidance: 7.55–7.60% — expected to rise, not fall.</div>
+    </div>
+  </div>
+
+  <div class="grid3">
+    <div class="stat">
+      <div class="stat-lbl">NII Growth Q3 FY26</div>
+      <div class="stat-val c-green">+21%</div>
+      <div class="stat-sub">₹11,317 Cr. Growth driven by AUM expansion — not margin improvement.</div>
+    </div>
+    <div class="stat">
+      <div class="stat-lbl">NII Growth Q4 FY26</div>
+      <div class="stat-val c-green">+20%</div>
+      <div class="stat-sub">₹11,781 Cr. Holding — but RBI cuts not yet fully transmitting to NIM.</div>
+    </div>
+    <div class="stat">
+      <div class="stat-lbl">Deposit Target (Structural)</div>
+      <div class="stat-val c-red">40%+</div>
+      <div class="stat-sub">Safety threshold for load-bearing franchise. At 17% — the structural fix has not been made.</div>
+    </div>
+  </div>
+
+  <div class="insight" style="border-color:var(--navy);background:var(--blue-bg)">
+    <strong>NIM read:</strong> NII is growing 20–21% because AUM is growing 22%. That is volume growth, not margin expansion. The cost of funds at 7.45% was guided to rise to 7.55–7.60% in subsequent quarters — meaning the forward NIM is being squeezed from the liability side even as RBI cuts rates. If rural credit costs also rise (stress scenario), the P&amp;L faces compression from both directions simultaneously: cost of funds up, credit cost up, NIM down.
+  </div>
+
+  <!-- Funding Structure Visual -->
+  <div class="viz">
+    <div class="viz-lbl">Funding Structure · Geographic Mismatch · Bilateral Squeeze Anatomy</div>
+    <canvas id="fundingCanvas" height="300"></canvas>
+  </div>
+
+  <div class="tbl-wrap">
+  <table>
+    <thead><tr><th>Funding Risk</th><th>Data</th><th>CFO Response (call)</th><th>Diagnostic Read</th></tr></thead>
+    <tbody>
+      <tr><td>Deposit franchise depth</td><td class="mono">17% of borrowings</td><td>"Additive, not load-bearing"</td><td><span class="tag tag-amber">Honest — and damning. 83% still exposed.</span></td></tr>
+      <tr><td>Bank credit lines (sector)</td><td class="mono">₹13.8L Cr · stagnant Sep 2025</td><td>"Diversified sources"</td><td><span class="tag tag-red">Diversification claim unverified. Concentration unknown.</span></td></tr>
+      <tr><td>NCD spreads</td><td class="mono">"Normalised somewhat" post-widening</td><td>No basis point figure given</td><td><span class="tag tag-red">Bond market pricing risk above GNPA signal</span></td></tr>
+      <tr><td>Geographic mismatch</td><td class="mono">Metro/Tier 1 deposits → Tier 2/rural loans</td><td>Not addressed directly</td><td><span class="tag tag-red">No natural hedge. Bilateral squeeze unmitigated.</span></td></tr>
+      <tr><td>HNI depositor concentration</td><td class="mono">Undisclosed</td><td>"Average ticket size healthy"</td><td><span class="tag tag-amber">HNI deposits move faster than retail in stress</span></td></tr>
+      <tr><td>NCD maturity profile</td><td class="mono">Undisclosed</td><td>Not asked on call · structural gap</td><td><span class="tag tag-amber">Refinancing risk in a widening spread environment</span></td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="insight">
+    <strong>The NCD signal (most actionable):</strong> Bajaj Finance's NCD spreads widened during the risk-weight period (pre-April 2025). The CFO confirmed they have "normalised somewhat" — not returned to baseline. The NCD market prices credit risk continuously, not quarterly. If spreads remain above the pre-stress baseline while reported GNPA has improved, the bond market and the equity market are pricing the same company differently. Bond markets lead equity markets in pricing credit deterioration. That divergence is the most precise form of information asymmetry in this diagnostic.
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     SECTION 06 — LEADERSHIP
+══════════════════════════════════════════════════ -->
+<div class="section">
+  <div class="section-tag">Section 06</div>
+  <div class="section-h">The Leadership Diagnostic</div>
+  <div class="section-sub">Motivations, incentives, cognitive state — the person behind the narrative</div>
+  <div class="rule"></div>
+
+  <!-- Leadership Timeline Canvas -->
+  <div class="viz">
+    <div class="viz-lbl">Leadership Timeline vs. GNPA Trajectory · 2007 – 2026</div>
+    <canvas id="timelineCanvas" height="240"></canvas>
+  </div>
+
+  <div class="grid2">
+    <div class="card">
+      <div class="card-h">Sandeep Jain — CFO + COO · The Paradigm Defender</div>
+      <div class="tbl-wrap">
+      <table>
+        <tr><td style="color:var(--text2);border:none;padding:5px 0;width:120px">Tenure</td><td style="border:none;padding:5px 0"><strong>18 years</strong> at Bajaj Finance. CFO + COO since Feb 2016 (10 years in seat).</td></tr>
+        <tr><td style="color:var(--text2);border:none;padding:5px 0">Origin</td><td style="border:none;padding:5px 0">Bajaj Auto (internal audit) → Bajaj Finance 2008. Built treasury, investor relations, FP&amp;A, compliance from zero.</td></tr>
+        <tr><td style="color:var(--text2);border:none;padding:5px 0">Career stage</td><td style="border:none;padding:5px 0"><span class="tag tag-amber">Peak — defending legacy, not proving capability</span></td></tr>
+        <tr><td style="color:var(--text2);border:none;padding:5px 0">What he built</td><td style="border:none;padding:5px 0">Transformed mono-line auto finance into ₹5 trillion diversified NBFC. The story IS his work.</td></tr>
+        <tr><td style="color:var(--text2);border:none;padding:5px 0">Survived</td><td style="border:none;padding:5px 0">Anup Saha's 15-month tenure. Rajeev Jain's return. Still standing — highest signal of board alignment.</td></tr>
+      </table>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-h">Rajeev Jain — MD + Executive Vice-Chairman · The Founder Returns</div>
+      <div class="tbl-wrap">
+      <table>
+        <tr><td style="color:var(--text2);border:none;padding:5px 0;width:120px">Tenure</td><td style="border:none;padding:5px 0">Joined 2007 as CEO. MD from 2015. Stepped back April 2024. <strong>Returned July 21, 2025.</strong></td></tr>
+        <tr><td style="color:var(--text2);border:none;padding:5px 0">Nature</td><td style="border:none;padding:5px 0">Founder-architect. Nearly 19 years. The Bajaj Finance franchise is his professional biography.</td></tr>
+        <tr><td style="color:var(--text2);border:none;padding:5px 0">Return signal</td><td style="border:none;padding:5px 0"><span class="tag tag-red">Board wanted stability during stress — stabilise, do not disrupt</span></td></tr>
+        <tr><td style="color:var(--text2);border:none;padding:5px 0">Term</td><td style="border:none;padding:5px 0">Until 31 March 2028. Continuity mandate.</td></tr>
+        <tr><td style="color:var(--text2);border:none;padding:5px 0">Cognitive state</td><td style="border:none;padding:5px 0">Same paradigm as CFO — amplified by founder identity.</td></tr>
+      </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="tbl-wrap">
+  <table>
+    <thead><tr><th>Cognitive / Game Theory State</th><th>Mechanism</th><th>Diagnostic Consequence</th></tr></thead>
+    <tbody>
+      <tr class="lp-active-amber"><td><strong>Endowment effect</strong></td><td>Built the portfolio. Overvalues its resilience because he created it. Loss feels like criticism of his own work.</td><td>Discounts negative leading indicators as noise. The 12MOB refusal is instinctive, not calculated.</td></tr>
+      <tr class="lp-active-amber"><td><strong>Competence trap</strong></td><td>18 years surviving demonetisation, IL&amp;FS, COVID. Mental model: "We always come through." Earned pattern recognition becoming a liability.</td><td>The current cycle is structurally different — debt-led consumption, not income-led. The model has not updated. It doesn't know the terrain has changed.</td></tr>
+      <tr class="lp-active-amber"><td><strong>Identity fusion</strong></td><td>"Bajaj Finance's credit quality" = "Sandeep Jain's 18-year track record." Inseparable in his mental model.</td><td>Admitting stress = admitting the strategy he spent 18 years building has cracks. The deflections are not tactical — they are self-protective.</td></tr>
+      <tr class="lp-active-high"><td><strong>Voluntary disclosure principle</strong> (Game theory)</td><td>In rational signalling: good news is volunteered, bad news hides behind "proprietary." He shared 3MOB, 6MOB, 9MOB. He refused 12MOB.</td><td>The asymmetry of what he chose to share vs. withhold is itself the signal. Silence in a signalling game is not neutral — it is a reveal.</td></tr>
+      <tr class="lp-active-high"><td><strong>The coordination trap</strong> (Game theory)</td><td>At 115M customers, any public admission of stress triggers systemic consequences: bank lines tighten sector-wide, HNI depositors move, NCD spreads widen — creating the crisis being avoided.</td><td>His dominant strategy is narrative protection — not because he is dishonest, but because the game forces it. The math of his position makes silence rational.</td></tr>
+      <tr class="lp-active-red"><td><strong>The Anup Saha signal</strong></td><td>Appointed April 2024. No cognitive capture. Resigned 15 months later — "personal reasons." Most coherent hypothesis: saw the credit quality picture clearly and found himself in conflict with the franchise's external narrative.</td><td>Unverifiable. But it fits every data point. The question that sits above every number in this brief.</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="alert">
+    <strong>The unanswerable question:</strong> "What did Anup Saha see in 15 months that Rajeev Jain is now managing?" You cannot ask it in a formal investor call. It cannot be answered in a disclosure. But it is the diagnostic question that gives every other number in this brief its weight. A newly-appointed MD, brought in specifically to manage the quality transition from the growth peak — no legacy to defend, no cognitive capture built over 18 years — leaves after 15 months. The founder returns. The board calls it a continuity decision. The timing is not.
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     SECTION 07 — THE DIAGNOSTIC SESSION
+══════════════════════════════════════════════════ -->
+<div class="section">
+  <div class="section-tag">Section 07</div>
+  <div class="section-h">The Diagnostic Session</div>
+  <div class="section-sub">Live Q&amp;A · Partner-led · CFO resistant · Pre-commitment locked before reveal · 25 June 2026</div>
+  <div class="rule"></div>
+
+  <!-- Pre-commitment box -->
+  <div class="card" style="border-left:4px solid var(--gold)">
+    <div class="card-h">Pre-Commitment Prediction — Locked Before Simulation Opened</div>
+    <div class="quote-block" style="font-size:14px;margin:0">
+      "The Q4 GNPA improvement from 1.21% to 1.01% is a provisioning artefact. Underlying stress continues to build."
+      <cite>— Prediction stated and locked before any CFO response. Diagnostic method: Meadows LP6 frame. Hypothesis: information asymmetry between what management sees and what markets see.</cite>
+    </div>
+  </div>
+
+  <!-- Three-layer reluctance framework -->
+  <div style="margin:22px 0 8px;font-size:13px;font-weight:700;color:var(--text1)">Why the CFO Would Not Quote the Numbers — Three Layers</div>
+  <div class="tbl-wrap">
+  <table>
+    <thead><tr><th width="160">Layer</th><th>Mechanism</th><th>What it looks like in the room</th><th>Diagnostic implication</th></tr></thead>
+    <tbody>
+      <tr style="background:var(--amber-bg)">
+        <td><strong>1 · Cognitive</strong><br/><span style="font-size:10px;color:var(--text2)">Confirmation bias + temporal discounting</span></td>
+        <td>Genuinely believes the 3/6/9 MOB improvement. The 12MOB problem is Q1 FY27 — next year's problem. Present bias makes him optimise for the number in front of him now.</td>
+        <td>Not evasive. Enthusiastic about 3/6/9 MOB. Volunteered vintage data selectively and sincerely.</td>
+        <td>Cannot be argued out of this. He is not hiding — his model has not updated. Paradigm (LP2), not dishonesty.</td>
+      </tr>
+      <tr>
+        <td><strong>2 · Legal / Structural</strong><br/><span style="font-size:10px;color:var(--text2)">MNPI constraint</span></td>
+        <td>Vintage curves at 12MOB granularity, if deteriorating, are material non-public information. He cannot share selectively without triggering disclosure obligations.</td>
+        <td>"That's proprietary data." Legitimate cover. Legally correct. Also conveniently timed.</td>
+        <td>Gives him structural cover for withholding the most diagnostic number. The legal constraint and the strategic incentive are perfectly aligned.</td>
+      </tr>
+      <tr style="background:var(--red-bg)">
+        <td><strong>3 · Game Theory</strong><br/><span style="font-size:10px;color:var(--text2)">Voluntary disclosure + coordination trap</span></td>
+        <td>In rational signalling: <em>good news gets volunteered, bad news hides behind "proprietary."</em> He shared 3/6/9 MOB freely. He refused 12MOB. That asymmetry is itself a signal. At 115M customers, any public admission triggers a self-fulfilling crisis — bank lines tighten, HNI depositors move, NCD spreads widen. The dominant strategy is silence.</td>
+        <td>Returns to the opening anchor (PAT +23%, AUM ₹5T) under sustained pressure. The anchor was planted in the first 90 seconds. Every subsequent deflection points back to it.</td>
+        <td>Not dishonesty — the game forces it. The math of his position makes narrative protection rational. The strongest signals come from what he chose <em>not</em> to say.</td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+
+  <!-- CFO Dialogue Key Exchanges -->
+  <div style="margin:26px 0 8px;font-size:13px;font-weight:700;color:var(--text1)">Key Exchanges — Deflection Pattern Documented</div>
+  <div class="tbl-wrap">
+  <table>
+    <thead><tr><th width="30">#</th><th>Question Asked (Partner)</th><th>CFO Response</th><th>What Was Deflected</th><th>Why It Matters</th></tr></thead>
+    <tbody>
+      <tr>
+        <td>1</td>
+        <td><em>"GNPA improved 1.21% → 1.01%. Was the improvement collection-driven or write-off / technical write-back driven?"</em></td>
+        <td>"Collections improved materially in Q4 — that's the primary driver. Write-offs are normal portfolio hygiene." Cited 3/6/9 MOB improvement as evidence.</td>
+        <td>The write-off quantum for Q4 — the number that would distinguish organic recovery from provisioning action.</td>
+        <td>If write-offs drove the improvement, the GNPA denominator was cleaned, not the underlying book. The Q3 Stage 3 migration makes organic recovery implausible.</td>
+      </tr>
+      <tr>
+        <td>2</td>
+        <td><em>"Stage 3 grew ₹194 Cr while Stage 2 fell ₹287 Cr in Q3 — loans converting, not recovering. What did Stage 2 and Stage 3 do in Q4?"</em></td>
+        <td>"Q4 showed improvement across both stages. I don't have the exact split in front of me. The 12-month view is what matters."</td>
+        <td>Q4 Stage 2 / Stage 3 split. Pivoted to "12-month view" — a longer, smoother lens that obscures the quarterly direction.</td>
+        <td>The Q4 split would confirm or refute whether the Stage 2→3 migration continued. Absence of the number is itself information.</td>
+      </tr>
+      <tr>
+        <td>3</td>
+        <td><em>"What is the 12MOB performance of loans originated Q1/Q2 FY25 — your peak growth phase? Those cohorts are now 12–18 months old."</em></td>
+        <td>"That's proprietary data. What I can tell you is our credit filters didn't change in FY25. 3, 6, 9 MOB improving vs. prior year cohorts."</td>
+        <td>12MOB vintage — the single most diagnostic number. The peak-growth cohort is now in its default window.</td>
+        <td>Shared 3/6/9 MOB freely (short tenure, pre-default window). Refused 12MOB (entering default window). Voluntary disclosure principle: the asymmetry of sharing vs. withholding IS the signal.</td>
+      </tr>
+      <tr>
+        <td>4</td>
+        <td><em>"Is your rural 0–30 DPD — the leading indicator — higher today than 12 months ago, same season, apples to apples?"</em></td>
+        <td>"There's been some seasonal movement... Q4 normalises. I'd have to get back to you on exact numbers. What I can tell you is rural credit cost for the full year is within guided range."</td>
+        <td>Rural 0–30 DPD (leading indicator) replaced with annual credit cost (lagging indicator). Asked the leading question twice. Answered the lagging question twice.</td>
+        <td>The substitution of a leading indicator for a lagging composite is not accidental. Credit cost is backward-looking. 0–30 DPD is forward-looking. He gave you what has already happened, not what is coming.</td>
+      </tr>
+      <tr>
+        <td>5</td>
+        <td><em>"Your NCD spreads — are they tighter today than before the risk-weight period (pre-Oct 2024)? Yes or no?"</em></td>
+        <td>"There was some widening... spreads have normalised somewhat. I won't give a specific basis point number. The direction is favourable." Returned to: "PAT +23%, AUM ₹5T, deposit franchise growing."</td>
+        <td>The specific basis point figure. Returned to the opening anchor — the first and clearest tell of the session.</td>
+        <td>"Normalised somewhat" ≠ returned to baseline. The bond market is pricing Bajaj Finance's credit risk above reported GNPA. When a CFO returns to the opening anchor under pressure, he has run out of runway on the specific question.</td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+
+  <!-- Session Delta -->
+  <div class="card" style="border-left:4px solid var(--green);margin-top:24px">
+    <div class="card-h">Session Delta — What the Prediction Got Right and What It Missed</div>
+    <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Dimension</th><th>Prediction entering</th><th>What the session revealed</th><th>Delta</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>Credit quality</strong></td>
+          <td>GNPA improvement is a provisioning artefact. Stress building underneath.</td>
+          <td>Confirmed by Stage 2→3 migration, 12MOB deflection, rural DPD deflection, and NCD spread divergence from GNPA signal.</td>
+          <td><span class="tag tag-green">Prediction confirmed</span></td>
+        </tr>
+        <tr>
+          <td><strong>Funding risk</strong></td>
+          <td>Not in the original pre-commitment. Entered with credit quality hypothesis only.</td>
+          <td>Geographic mismatch (metro deposits → rural loans) emerged as a <em>second</em> structural risk — the bilateral squeeze. NCD spreads as the bond market signal emerged as a third.</td>
+          <td><span class="tag tag-amber">New risk identified mid-session — not anticipated at pre-commitment</span></td>
+        </tr>
+        <tr>
+          <td><strong>Leadership signal</strong></td>
+          <td>Not in the original pre-commitment.</td>
+          <td>Anup Saha's 15-month tenure — the most important data point not in any investor presentation — emerged from background research, not from the CFO session.</td>
+          <td><span class="tag tag-amber">Discovered in research, not diagnostic — adds weight to prediction</span></td>
+        </tr>
+        <tr>
+          <td><strong>CMA reflex check</strong></td>
+          <td>Stored error pattern: "defaults to operational fix." Watch for this.</td>
+          <td>Session stayed at the structural and paradigm level throughout. No operational fix was reached for. The Meadows frame held at LP6 and above.</td>
+          <td><span class="tag tag-green">Error pattern did not fire — altitude maintained</span></td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     SECTION 08 — MEADOWS FRAME
+══════════════════════════════════════════════════ -->
+<div class="section">
+  <div class="section-tag">Section 08</div>
+  <div class="section-h">The Meadows Intervention Frame</div>
+  <div class="section-sub">Where the real levers are — and why external pressure only ever reaches the weakest ones</div>
+  <div class="rule"></div>
+
+  <div class="tbl-wrap">
+  <table>
+    <thead><tr><th width="60">LP</th><th>Lever</th><th>Bajaj Finance Mapping</th><th>Accessibility from Outside</th></tr></thead>
+    <tbody>
+      <tr class="lp-active-high"><td><span class="lp-num lp-num-active">2</span></td><td><strong>Paradigm — the mindset</strong></td><td>"We always come through." 18-year success model. Built through demonetisation, IL&amp;FS, COVID. Has not encountered a debt-led credit cycle.</td><td><span class="tag tag-red">Inaccessible — only internal crisis breaks it</span></td></tr>
+      <tr class="lp-active-high"><td><span class="lp-num lp-num-active">3</span></td><td><strong>Goal — system's purpose</strong></td><td>Rajeev Jain returned to "stabilise the trajectory." The goal is continuity of the growth narrative, not credit quality revelation.</td><td><span class="tag tag-red">Inaccessible — set by the board</span></td></tr>
+      <tr class="lp-active-gold"><td><span class="lp-num lp-num-active">4</span></td><td><strong>Self-organisation — structural fix</strong></td><td>Deposit franchise must reach 40%+ of borrowings before the cycle turns. At 17%, the structural fix has not been made. Management can still do this. The window is open.</td><td><span class="tag tag-amber">Accessible — management decision, still available</span></td></tr>
+      <tr><td><span class="lp-num lp-num-inactive">5</span></td><td>Rules — incentives, constraints</td><td>RBI risk weight rollback (April 2025). Regulation changed. Bank behaviour toward NBFC lending did not follow.</td><td><span class="tag tag-blue">Regulator holds this lever</span></td></tr>
+      <tr class="lp-active-red"><td><span class="lp-num lp-num-active">6</span></td><td><strong>Information flows — who sees what</strong></td><td>12MOB vintage, rural 0–30 DPD, HNI depositor concentration, NCD spread vs. baseline — none flows to the market. Management has all of it. The diagnostic pivots on this asymmetry.</td><td><span class="tag tag-amber">Partially accessible — via mandatory disclosure improvement</span></td></tr>
+      <tr class="lp-active-amber"><td><span class="lp-num lp-num-active">7</span></td><td><strong>Reinforcing loop — gain</strong></td><td>AUM growth → market confidence → bank lines → AUM growth. Works perfectly at every node. Until one weakens. Then it reverses at the same compounding speed — in the opposite direction.</td><td><span class="tag tag-amber">Cannot be intervened directly — only LP4 can restructure it</span></td></tr>
+      <tr><td><span class="lp-num lp-num-inactive">9</span></td><td>Delays</td><td>12-month-on-book default window. Loans originated at growth peak (Q1/Q2 FY25) enter their danger window now, in Q1–Q2 FY27. The delay is the diagnostic. The outcome is not yet visible in reported GNPA.</td><td><span class="tag tag-gray">Cannot change delays — can only monitor them</span></td></tr>
+      <tr><td><span class="lp-num lp-num-inactive">11</span></td><td>Buffers</td><td>61% provisioning on Stage 3. The buffer is thin. 39% of stressed loans sit at book value.</td><td><span class="tag tag-gray">Management can increase — has not</span></td></tr>
+      <tr><td><span class="lp-num lp-num-inactive">12</span></td><td>Numbers / parameters</td><td>GNPA 1.01% — the number the entire market watches. The weakest lever. The number management reports. The number that does not carry the 12MOB cohort, the rural DPD, or the NCD spread.</td><td><span class="tag tag-gray">Reported number — managed parameter</span></td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="insight">
+    <strong>The investor's dilemma — altitude of the question:</strong> Every analyst question on an earnings call operates at LP12 (numbers). The CFO answers at LP12 with numbers that are accurate and incomplete simultaneously. LP6 (information flows) is where the asymmetry lives — and where it could be addressed through mandatory disclosure. LP4 (structural funding fix) is the one lever management can still pull before the cycle forces it. LP2 and LP3 (paradigm, goal) are inaccessible from outside. They shift only when a crisis makes the cost of maintaining them higher than the cost of admitting the truth. That crisis has not yet arrived.
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     SECTION 09 — SCENARIOS
+══════════════════════════════════════════════════ -->
+<div class="section">
+  <div class="section-tag">Section 09</div>
+  <div class="section-h">Three Scenarios + Investor Recommendation</div>
+  <div class="section-sub">Falsifiable. Named before the outcome is known. Monitored against three specific metrics.</div>
+  <div class="rule"></div>
+
+  <div class="tbl-wrap">
+  <table>
+    <thead><tr><th>Scenario</th><th>Trigger Conditions</th><th>GNPA Range</th><th>Funding Impact</th><th>P&amp;L Impact</th><th>Action</th></tr></thead>
+    <tbody>
+      <tr class="scenario-base">
+        <td><strong class="c-green">BASE</strong></td>
+        <td>Rural stress contained within guided credit cost. 12MOB vintage performs at par with 9MOB. NCD markets stable. Deposit franchise grows to 22–24%. RBI cuts transmit partially.</td>
+        <td class="mono c-green">1.1–1.3%</td>
+        <td>Manageable. Cost of funds improves 15–20 bps. Deposit franchise adds stability at the margin.</td>
+        <td>PAT growth 15–18%. NIM stable at current levels. Provisioning within guided range.</td>
+        <td><span class="tag tag-green">Hold · already priced in at current valuation</span></td>
+      </tr>
+      <tr class="scenario-stress">
+        <td><strong class="c-amber">STRESS</strong></td>
+        <td>12MOB vintage deteriorates 40–60 bps above 9MOB trend. Rural 0–30 DPD rises materially. Bank lines stay stagnant. NCD spreads stay above pre-Oct 2024 baseline.</td>
+        <td class="mono c-amber">1.8–2.2%</td>
+        <td>NCD repricing. Cost of funds rises 30–50 bps. Bank lines do not expand. Deposit franchise insufficient buffer.</td>
+        <td>PAT growth slows to single digits. NIM compresses 20–30 bps. Credit cost guidance revised upward.</td>
+        <td><span class="tag tag-amber">Reduce · not priced in at current valuation</span></td>
+      </tr>
+      <tr class="scenario-systemic">
+        <td><strong class="c-red">SYSTEMIC</strong></td>
+        <td>MFI-style contagion reaches diversified NBFCs. HNI depositor flight triggered by public NPA revision. NCD market repricing sector-wide. RBI emergency intervention required.</td>
+        <td class="mono c-red">3%+</td>
+        <td>Funding cost spike 80–120 bps. Growth must stop to preserve capital. Possible equity raise at distressed valuation.</td>
+        <td>PAT turns negative. Provisioning surge. Deposit franchise withdrawal begins. Regulatory intervention possible.</td>
+        <td><span class="tag tag-red">Hedge or exit · tail risk, not base case</span></td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="card" style="border-left:4px solid var(--gold)">
+    <div class="card-h">Three Falsifiable Metrics to Monitor Before Q1 FY27 Results</div>
+    <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>#</th><th>Metric</th><th>Current Status</th><th>Watch Condition</th><th>Action Trigger</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>1</strong></td>
+          <td>12MOB vintage performance (Q1/Q2 FY25 cohort)</td>
+          <td><span class="tag tag-red">Undisclosed — deflected on call</span></td>
+          <td>Any voluntary or mandated disclosure in Q1 FY27 results</td>
+          <td>Reduce if disclosed and showing deterioration vs. 9MOB trend — stress scenario activated</td>
+        </tr>
+        <tr>
+          <td><strong>2</strong></td>
+          <td>Rural 0–30 DPD (leading delinquency indicator)</td>
+          <td><span class="tag tag-red">Stress confirmed, unquantified</span></td>
+          <td>If Q1 FY27 rural credit cost breaches guided full-year range</td>
+          <td>Stress scenario activated. Re-evaluate position size immediately.</td>
+        </tr>
+        <tr>
+          <td><strong>3</strong></td>
+          <td>NCD spread vs. Oct 2024 pre-stress baseline</td>
+          <td><span class="tag tag-amber">Above baseline — "normalised somewhat"</span></td>
+          <td>Monitor NCD market continuously — it moves before quarterly results</td>
+          <td>If spreads widen from current level: immediate review. Bond market sees the vintage data before equity analysts do.</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     SECTION 10 — CLOSING FRAME
+══════════════════════════════════════════════════ -->
+<div class="section">
+  <div class="section-tag">Section 10</div>
+  <div class="section-h">The Closing Frame</div>
+  <div class="section-sub">The question no investor presentation answers — and the Taleb read from the vault</div>
+  <div class="rule"></div>
+
+  <div class="quote-block">
+    "What did Anup Saha see in 15 months that Rajeev Jain is now managing?"
+    <cite>— The diagnostic question that sits above every number in this brief. It cannot be asked in a formal call. It shapes how every other answer is read.</cite>
+  </div>
+
+  <div class="tbl-wrap">
+  <table>
+    <thead><tr><th>Layer</th><th>What the Diagnostic Found</th><th>Confidence</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Macroeconomy</strong></td><td>India's credit cycle at late-expansion / early-contraction. Debt-led consumption replacing income-led. RBI warning issued. MFI canary in active distress. Bank credit transmission broken.</td><td><span class="tag tag-red">High — confirmed</span></td></tr>
+      <tr><td><strong>NBFC sector</strong></td><td>Credit growth 17% headline. Gold and diversified leading. MFI stress not yet priced into diversified NBFC valuations. Bank funding to NBFCs stagnant despite rule change.</td><td><span class="tag tag-red">High — confirmed</span></td></tr>
+      <tr><td><strong>Business portfolio</strong></td><td>AUM ₹5T, PAT +23%, NII +20% — growth story intact. Gold loan pivot (+81%) signals internal hedge being built. Urban 42% engine still firing.</td><td><span class="tag tag-green">Confirmed — surface strong</span></td></tr>
+      <tr><td><strong>Credit quality</strong></td><td>GNPA improvement is provisioning-driven, not organic. Stage 2→3 migration active in Q3. 12MOB vintage undisclosed and entering default peak window. Rural 0–30 DPD deflected twice.</td><td><span class="tag tag-amber">High — unconfirmable until disclosed</span></td></tr>
+      <tr><td><strong>Funding structure</strong></td><td>83% market-dependent. Geographic mismatch (metro deposits → rural loans). NCD spreads above pre-stress baseline. Bilateral squeeze risk in stress scenario. No natural hedge.</td><td><span class="tag tag-red">High — structural</span></td></tr>
+      <tr><td><strong>Leadership</strong></td><td>CFO: identity fusion + competence trap = paradigm defender. MD: founder stabilising narrative. Anup Saha's 15 months = unresolved signal. Voluntary disclosure asymmetry confirmed in diagnostic session.</td><td><span class="tag tag-amber">Structural read · Saha hypothesis speculative</span></td></tr>
+      <tr><td><strong>Intervention altitude</strong></td><td>LP6 (information flows) and LP7 (reinforcing loop) are the active levers. LP4 (structural funding fix — deposit franchise) is the one management can still make before the cycle forces it. LP2 (paradigm) will not shift without a crisis from inside.</td><td><span class="tag tag-green">Framework confirmed</span></td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="insight">
+    <strong>The Taleb read (Antifragile — from the consulting vault):</strong> Bajaj Finance's loan book is concave — bounded upside (interest income), unbounded downside in a credit cycle turn. The NBFC that grows in Extremistan using Mediocristan models underestimates tail risk by construction. The reported GNPA of 1.01% is a Mediocristan number — averaged, smoothed, provisioned. The bilateral squeeze scenario (rural stress + HNI depositor flight simultaneously) is Extremistan — non-linear, co-dependent, self-amplifying. The management paradigm forged across 18 years of surviving Mediocristan cycles has not yet been tested against the Extremistan shape. The 12MOB vintage cohort will be the first data point. It arrives in Q1 FY27.
+  </div>
+
+  <div class="insight" style="border-color:var(--navy);background:var(--blue-bg)">
+    <strong>The Damodaran read (Corporate Life Cycle — from the vault):</strong> Bajaj Finance is in late-growth phase transitioning to mature. The Damodaran CEO mismatch thesis applies: leadership running growth-phase playbooks (AUM expansion, customer acquisition, new segment entry) during a credit cycle turn that requires harvest-phase thinking (vintage quality, provisioning depth, funding structure). The three-decision framework (invest / finance / divide) — at this stage — should weight financing discipline and capital preservation. The current management posture weights investment (gold loans, new branches, deposit franchise growth) while the financing structure (17% deposits, 83% market) remains unchanged. That sequencing is the LP4 gap.
+  </div>
+</div>
+
+</div><!-- /main -->
+
+<!-- ── FOOTER ──────────────────────────────────────── -->
+<div class="footer">
+  <div>Amplified Insight · Vadodara · Aanand Ladgaonkar · aanandladgaonkar@amplifiedinsight.com</div>
+  <div>Credit Cycle Diagnostic · Bajaj Finance · 25 June 2026 · For Institutional Use · Not for Distribution</div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     JAVASCRIPT — CHARTS + THEME
+══════════════════════════════════════════════════ -->
+<script>
+/* ─── Theme ─────────────────────────────────────── */
+function toggleTheme(){
+  const h=document.documentElement;
+  const next = h.getAttribute('data-theme')==='dark'?'light':'dark';
+  h.setAttribute('data-theme',next);
+  drawAll();
+}
+
+function getVar(v){
+  return getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+}
+
+/* ─── Responsive canvas width ────────────────────── */
+function setCanvasSize(canvas,h){
+  const parent=canvas.parentElement;
+  const w=parent.clientWidth||800;
+  canvas.width=w;
+  canvas.height=h;
+  return {w,h};
+}
+
+/* ─── Rounded rect helper ───────────────────────── */
+function roundRect(ctx,x,y,w,h,r){
+  ctx.beginPath();
+  ctx.moveTo(x+r,y);
+  ctx.lineTo(x+w-r,y);ctx.quadraticCurveTo(x+w,y,x+w,y+r);
+  ctx.lineTo(x+w,y+h-r);ctx.quadraticCurveTo(x+w,y+h,x+w-r,y+h);
+  ctx.lineTo(x+r,y+h);ctx.quadraticCurveTo(x,y+h,x,y+h-r);
+  ctx.lineTo(x,y+r);ctx.quadraticCurveTo(x,y,x+r,y);
+  ctx.closePath();
+}
+
+/* ══════════════════════════════════════════════════
+   CHART 1 — Credit Cycle Sine Wave
+══════════════════════════════════════════════════ */
+function drawCreditCycle(){
+  const canvas=document.getElementById('creditCycleCanvas');
+  if(!canvas)return;
+  const {w,h}=setCanvasSize(canvas,260);
+  const ctx=canvas.getContext('2d');
+  ctx.clearRect(0,0,w,h);
+
+  const text1=getVar('--text1'),text2=getVar('--text2'),text3=getVar('--text3'),
+        border=getVar('--border'),bg2=getVar('--bg2');
+
+  const padL=60,padR=30,padT=40,padB=60;
+  const cw=w-padL-padR, ch=h-padT-padB;
+
+  // Axes
+  ctx.strokeStyle=border;ctx.lineWidth=1;
+  ctx.beginPath();ctx.moveTo(padL,padT);ctx.lineTo(padL,padT+ch);
+  ctx.lineTo(padL+cw,padT+ch);ctx.stroke();
+
+  // Y label
+  ctx.fillStyle=text3;ctx.font='10px Segoe UI';ctx.textAlign='center';
+  ctx.save();ctx.translate(16,padT+ch/2);ctx.rotate(-Math.PI/2);
+  ctx.fillText('Credit Activity',0,0);ctx.restore();
+
+  // Sine wave representing credit cycle
+  // One full cycle from x=0 to cw. "We are here" at 70% through.
+  const stages=[
+    {label:'Recovery',x:0.05,color:'#10b981'},
+    {label:'Expansion',x:0.25,color:'#3b82f6'},
+    {label:'Peak',x:0.5,color:'#f59e0b'},
+    {label:'Early Contraction',x:0.65,color:'#ef4444'},
+    {label:'Contraction',x:0.85,color:'#7f1d1d'},
+  ];
+
+  // Draw segmented sine curve
+  const getY=(t)=>{
+    // t from 0 to 1, sine from -π/2 to 3π/2
+    const angle = -Math.PI/2 + t*2*Math.PI;
+    return padT+ch/2 - (ch*0.42)*Math.sin(angle);
+  };
+
+  // Draw the curve in colored segments
+  const segColors=[
+    {from:0,to:0.22,color:'#10b981'},
+    {from:0.22,to:0.47,color:'#3b82f6'},
+    {from:0.47,to:0.58,color:'#f59e0b'},
+    {from:0.58,to:0.75,color:'#ef4444'},
+    {from:0.75,to:1,color:'#94a3b8',dash:true},
+  ];
+
+  segColors.forEach(seg=>{
+    ctx.beginPath();
+    if(seg.dash) ctx.setLineDash([5,3]); else ctx.setLineDash([]);
+    ctx.strokeStyle=seg.color;ctx.lineWidth=3;
+    const steps=60;
+    for(let i=0;i<=steps;i++){
+      const t=seg.from+(seg.to-seg.from)*i/steps;
+      const x=padL+t*cw;
+      const y=getY(t);
+      if(i===0)ctx.moveTo(x,y);else ctx.lineTo(x,y);
+    }
+    ctx.stroke();
+  });
+  ctx.setLineDash([]);
+
+  // Stage labels
+  stages.forEach(s=>{
+    const x=padL+s.x*cw;
+    const y=getY(s.x)-14;
+    ctx.fillStyle=s.color;ctx.font='bold 10px Segoe UI';ctx.textAlign='center';
+    ctx.fillText(s.label,x,y<padT+8?padT+18:y);
+  });
+
+  // "We are here" marker at 70%
+  const herePct=0.68;
+  const hX=padL+herePct*cw;
+  const hY=getY(herePct);
+
+  ctx.beginPath();ctx.arc(hX,hY,8,0,Math.PI*2);
+  ctx.fillStyle='rgba(239,68,68,.2)';ctx.fill();
+  ctx.beginPath();ctx.arc(hX,hY,5,0,Math.PI*2);
+  ctx.fillStyle='#ef4444';ctx.fill();
+
+  // Annotation box
+  const boxW=170,boxH=22,boxX=hX-boxW/2,boxY=padT+5;
+  ctx.fillStyle='rgba(239,68,68,.12)';
+  roundRect(ctx,boxX,boxY,boxW,boxH,4);ctx.fill();
+  ctx.strokeStyle='#ef4444';ctx.lineWidth=1;
+  roundRect(ctx,boxX,boxY,boxW,boxH,4);ctx.stroke();
+  ctx.fillStyle='#ef4444';ctx.font='bold 10px Segoe UI';ctx.textAlign='center';
+  ctx.fillText('▶ India is here · June 2026',hX,boxY+15);
+
+  // Dashed line from box to point
+  ctx.strokeStyle='#ef4444';ctx.lineWidth=1;ctx.setLineDash([3,2]);
+  ctx.beginPath();ctx.moveTo(hX,boxY+boxH);ctx.lineTo(hX,hY-6);ctx.stroke();
+  ctx.setLineDash([]);
+
+  // Bottom note
+  ctx.fillStyle=text3;ctx.font='10px Segoe UI';ctx.textAlign='left';
+  ctx.fillText('Signals: RBI −100bps · Bank credit stuck at 10% · Household debt rising · MFI NPA +74bps · Debt-led consumption',padL,h-10);
+}
+
+/* ══════════════════════════════════════════════════
+   CHART 2 — NBFC Segment Bar Chart
+══════════════════════════════════════════════════ */
+function drawNBFCBar(){
+  const canvas=document.getElementById('nbfcBarCanvas');
+  if(!canvas)return;
+  const {w,h}=setCanvasSize(canvas,220);
+  const ctx=canvas.getContext('2d');
+  ctx.clearRect(0,0,w,h);
+
+  const text1=getVar('--text1'),text2=getVar('--text2'),text3=getVar('--text3'),border=getVar('--border');
+
+  const data=[
+    {label:'Gold NBFCs',sub:'Leading segment',val:38,color:'#10b981'},
+    {label:'Diversified',sub:'incl. Bajaj Finance',val:19,color:'#2563eb'},
+    {label:'HFCs',sub:'Housing Finance',val:11,color:'#64748b'},
+    {label:'MFIs',sub:'⚠ CANARY',val:-11,color:'#ef4444'},
+  ];
+
+  const padL=20,padR=100,padT=20,padB=60;
+  const cw=w-padL-padR,ch=h-padT-padB;
+
+  // Zero line
+  const maxVal=45,minVal=-20;
+  const range=maxVal-minVal;
+  const zeroY=padT+ch*(maxVal/range);
+
+  // Grid
+  [-20,-10,0,10,20,30,40].forEach(v=>{
+    const y=padT+ch*((maxVal-v)/range);
+    ctx.strokeStyle=v===0?border:'rgba(148,163,184,.3)';
+    ctx.lineWidth=v===0?1.5:.5;
+    ctx.setLineDash(v===0?[]:[3,2]);
+    ctx.beginPath();ctx.moveTo(padL,y);ctx.lineTo(padL+cw,y);ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle=text3;ctx.font='9px Segoe UI';ctx.textAlign='right';
+    ctx.fillText(v+'%',padL-4,y+3);
+  });
+
+  // Bars
+  const bw=Math.min(60, (cw/data.length)*0.6);
+  const gap=(cw-bw*data.length)/(data.length+1);
+
+  data.forEach((d,i)=>{
+    const x=padL+gap+(bw+gap)*i;
+    const barH=Math.abs(d.val)/range*ch;
+    const barY=d.val>=0?zeroY-barH:zeroY;
+
+    roundRect(ctx,x,barY,bw,barH,4);
+    ctx.fillStyle=d.color+(getVar('--bg')==='#0d1117'?'cc':'dd');
+    ctx.fill();
+
+    // Value label
+    ctx.fillStyle=d.color;ctx.font='bold 13px Segoe UI';ctx.textAlign='center';
+    const lblY=d.val>=0?barY-6:barY+barH+14;
+    ctx.fillText((d.val>0?'+':'')+d.val+'%',x+bw/2,lblY);
+
+    // Bottom labels
+    ctx.fillStyle=text2;ctx.font='11px Segoe UI';ctx.textAlign='center';
+    ctx.fillText(d.label,x+bw/2,zeroY+22);
+    ctx.fillStyle=d.color;ctx.font='9px Segoe UI';
+    ctx.fillText(d.sub,x+bw/2,zeroY+34);
+
+    // Canary annotation
+    if(d.val<0){
+      const annY=barY-32;
+      roundRect(ctx,x-2,annY,bw+4,28,4);
+      ctx.fillStyle='rgba(239,68,68,.1)';ctx.fill();
+      ctx.strokeStyle='#ef4444';ctx.lineWidth=1;
+      roundRect(ctx,x-2,annY,bw+4,28,4);ctx.stroke();
+      ctx.fillStyle='#ef4444';ctx.font='bold 8px Segoe UI';ctx.textAlign='center';
+      ctx.fillText('NPA +74bps',x+bw/2,annY+11);
+      ctx.font='8px Segoe UI';
+      ctx.fillText('PAT −117%',x+bw/2,annY+22);
+    }
+  });
+}
+
+/* ══════════════════════════════════════════════════
+   CHART 3 — AUM Donut
+══════════════════════════════════════════════════ */
+function drawDonut(){
+  const canvas=document.getElementById('donutCanvas');
+  if(!canvas)return;
+  const ctx=canvas.getContext('2d');
+  const size=260;
+  canvas.width=size;canvas.height=size;
+
+  const cx=size/2,cy=size/2,outerR=100,innerR=60;
+
+  const segments=[
+    {label:'Urban',pct:42,color:'#1e3a5f'},
+    {label:'MSME',pct:19,color:'#2563eb'},
+    {label:'Commercial',pct:16,color:'#64748b'},
+    {label:'Rural',pct:14,color:'#dc2626'},
+    {label:'Mortgage',pct:9,color:'#10b981'},
+  ];
+
+  let startAngle=-Math.PI/2;
+  segments.forEach(seg=>{
+    const slice=2*Math.PI*(seg.pct/100);
+    ctx.beginPath();
+    ctx.moveTo(cx,cy);
+    ctx.arc(cx,cy,outerR,startAngle,startAngle+slice);
+    ctx.closePath();
+    ctx.fillStyle=seg.color;
+    ctx.fill();
+    // Inner cut
+    ctx.beginPath();
+    ctx.arc(cx,cy,innerR,0,2*Math.PI);
+    ctx.fillStyle=getVar('--bg2');
+    ctx.fill();
+    startAngle+=slice;
+  });
+
+  // Center text
+  ctx.fillStyle=getVar('--text3');ctx.font='10px Segoe UI';ctx.textAlign='center';
+  ctx.fillText('Total AUM',cx,cy-12);
+  ctx.fillStyle=getVar('--navy');ctx.font='bold 15px Segoe UI';
+  ctx.fillText('₹5.09T',cx,cy+5);
+  ctx.fillStyle='#10b981';ctx.font='bold 10px Segoe UI';
+  ctx.fillText('+22% YoY',cx,cy+20);
+}
+
+function drawAUMBar(){
+  const canvas=document.getElementById('aumBarCanvas');
+  if(!canvas)return;
+  const {w,h}=setCanvasSize(canvas,200);
+  const ctx=canvas.getContext('2d');
+  ctx.clearRect(0,0,w,h);
+
+  const text2=getVar('--text2'),text3=getVar('--text3');
+
+  const data=[
+    {label:'Urban Consumer',pct:42,color:'#1e3a5f',note:'Engine'},
+    {label:'MSME',pct:19,color:'#2563eb',note:''},
+    {label:'Commercial',pct:16,color:'#64748b',note:''},
+    {label:'Rural',pct:14,color:'#dc2626',note:'⚠ stress'},
+    {label:'Mortgage',pct:9,color:'#10b981',note:''},
+  ];
+
+  const maxPct=45;
+  const padL=120,padR=60,padT=14,padB=10;
+  const bh=24,gap=10;
+  const cw=w-padL-padR;
+
+  data.forEach((d,i)=>{
+    const y=padT+(bh+gap)*i;
+    const barW=cw*(d.pct/maxPct);
+
+    // Label
+    ctx.fillStyle=getVar('--text1');ctx.font='11px Segoe UI';ctx.textAlign='right';
+    ctx.fillText(d.label,padL-8,y+bh/2+4);
+
+    // Bar
+    roundRect(ctx,padL,y,barW,bh,4);
+    ctx.fillStyle=d.color;ctx.fill();
+
+    // Pct
+    ctx.fillStyle=d.color;ctx.font='bold 11px Segoe UI';ctx.textAlign='left';
+    ctx.fillText(d.pct+'%',padL+barW+6,y+bh/2+4);
+
+    // Note
+    if(d.note){
+      ctx.fillStyle='#ef4444';ctx.font='bold 10px Segoe UI';
+      ctx.fillText(d.note,padL+barW+30,y+bh/2+4);
+    }
+  });
+
+  // Gold loan note at bottom
+  const noteY=padT+(bh+gap)*5+8;
+  ctx.fillStyle=text3;ctx.font='10px Segoe UI';ctx.textAlign='left';
+  ctx.fillText('Gold loans: ₹8,307Cr · +81% YoY · 1,209 branches (new pivot)',padL,noteY);
+  ctx.fillText('Bajaj Housing Finance: ₹1.33L Cr · +23% YoY (separate entity)',padL,noteY+14);
+}
+
+/* ══════════════════════════════════════════════════
+   CHART 4 — GNPA Trend
+══════════════════════════════════════════════════ */
+function drawGNPA(){
+  const canvas=document.getElementById('gnpaCanvas');
+  if(!canvas)return;
+  const {w,h}=setCanvasSize(canvas,240);
+  const ctx=canvas.getContext('2d');
+  ctx.clearRect(0,0,w,h);
+
+  const border=getVar('--border'),text3=getVar('--text3'),text2=getVar('--text2');
+
+  const padL=56,padR=40,padT=50,padB=60;
+  const cw=w-padL-padR,ch=h-padT-padB;
+  const maxGNPA=1.6;
+
+  const getBarX=(i,n)=>{
+    const totalBW=cw*.55;
+    const bw=totalBW/n;
+    const startX=padL+(cw-totalBW)/2;
+    return {x:startX+bw*i+bw*.1,bw:bw*.8};
+  };
+
+  // Grid
+  [0,.4,.8,1.2,1.6].forEach(v=>{
+    const y=padT+ch*(1-v/maxGNPA);
+    ctx.strokeStyle=border;ctx.lineWidth=.5;ctx.setLineDash([3,2]);
+    ctx.beginPath();ctx.moveTo(padL,y);ctx.lineTo(padL+cw,y);ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle=text3;ctx.font='9px Segoe UI';ctx.textAlign='right';
+    ctx.fillText(v.toFixed(1)+'%',padL-6,y+3);
+  });
+
+  // Baseline reference (Q4 FY25 = 0.96%)
+  const baseY=padT+ch*(1-0.96/maxGNPA);
+  ctx.strokeStyle='rgba(148,163,184,.5)';ctx.lineWidth=1.5;ctx.setLineDash([5,3]);
+  ctx.beginPath();ctx.moveTo(padL,baseY);ctx.lineTo(padL+cw,baseY);ctx.stroke();
+  ctx.setLineDash([]);
+  ctx.fillStyle=text3;ctx.font='italic 9px Segoe UI';ctx.textAlign='left';
+  ctx.fillText('Q4 FY25 baseline: 0.96%',padL+4,baseY-4);
+
+  const bars=[
+    {label:'Q4 FY25',sub:'Mar 2025',val:.96,color:'#3b82f6',ann:'Baseline'},
+    {label:'Q3 FY26',sub:'Dec 2025',val:1.21,color:'#ef4444',ann:'Stage 3 +₹194Cr'},
+    {label:'Q4 FY26',sub:'Mar 2026',val:1.01,color:'#f59e0b',ann:'Still > baseline'},
+  ];
+
+  bars.forEach((b,i)=>{
+    const {x,bw}=getBarX(i,3);
+    const barH=ch*(b.val/maxGNPA);
+    const barY=padT+ch-barH;
+
+    roundRect(ctx,x,barY,bw,barH,4);
+    ctx.fillStyle=b.color+'cc';ctx.fill();
+
+    // Value
+    ctx.fillStyle=b.color;ctx.font='bold 14px Segoe UI';ctx.textAlign='center';
+    ctx.fillText(b.val+'%',x+bw/2,barY-8);
+
+    // Annotation bubble
+    if(i===1){
+      const annW=155,annH=32,annX=x+bw/2-annW/2,annY=padT+2;
+      roundRect(ctx,annX,annY,annW,annH,4);
+      ctx.fillStyle='rgba(239,68,68,.1)';ctx.fill();
+      ctx.strokeStyle='#ef4444';ctx.lineWidth=1;
+      roundRect(ctx,annX,annY,annW,annH,4);ctx.stroke();
+      ctx.fillStyle='#ef4444';ctx.font='bold 9px Segoe UI';ctx.textAlign='center';
+      ctx.fillText('Stage 2→3 migration active',x+bw/2,annY+12);
+      ctx.font='9px Segoe UI';
+      ctx.fillText('Stage 3 +₹194Cr · Stage 2 −₹287Cr',x+bw/2,annY+24);
+      // Arrow
+      ctx.strokeStyle='#ef4444';ctx.lineWidth=1;ctx.setLineDash([2,1]);
+      ctx.beginPath();ctx.moveTo(x+bw/2,annY+annH);ctx.lineTo(x+bw/2,barY-2);ctx.stroke();
+      ctx.setLineDash([]);
+    }
+    if(i===2){
+      const annW=120,annH=20,annX=x+bw/2-annW/2,annY=padT+36;
+      roundRect(ctx,annX,annY,annW,annH,4);
+      ctx.fillStyle='rgba(245,158,11,.1)';ctx.fill();
+      ctx.strokeStyle='#f59e0b';ctx.lineWidth=1;
+      roundRect(ctx,annX,annY,annW,annH,4);ctx.stroke();
+      ctx.fillStyle='#f59e0b';ctx.font='bold 9px Segoe UI';ctx.textAlign='center';
+      ctx.fillText('↑ Still above baseline',x+bw/2,annY+14);
+    }
+
+    // X labels
+    ctx.fillStyle=text2;ctx.font='11px Segoe UI';ctx.textAlign='center';
+    ctx.fillText(b.label,x+bw/2,padT+ch+18);
+    ctx.fillStyle=text3;ctx.font='9px Segoe UI';
+    ctx.fillText(b.sub,x+bw/2,padT+ch+30);
+  });
+
+  // Trend dashed line
+  ctx.strokeStyle=text3;ctx.lineWidth=1;ctx.setLineDash([4,3]);
+  const pts=bars.map((b,i)=>{const{x,bw}=getBarX(i,3);return{x:x+bw/2,y:padT+ch*(1-b.val/maxGNPA)};});
+  ctx.beginPath();pts.forEach((p,i)=>i===0?ctx.moveTo(p.x,p.y):ctx.lineTo(p.x,p.y));ctx.stroke();
+  ctx.setLineDash([]);
+}
+
+/* ══════════════════════════════════════════════════
+   CHART 5 — Funding Structure
+══════════════════════════════════════════════════ */
+function drawFunding(){
+  const canvas=document.getElementById('fundingCanvas');
+  if(!canvas)return;
+  const {w,h}=setCanvasSize(canvas,300);
+  const ctx=canvas.getContext('2d');
+  ctx.clearRect(0,0,w,h);
+
+  const text1=getVar('--text1'),text2=getVar('--text2'),text3=getVar('--text3'),border=getVar('--border'),bg2=getVar('--bg2');
+
+  // ── Left panel: funding stack bar ──
+  const panelW=w*0.42;
+  ctx.fillStyle=text3;ctx.font='bold 10px Segoe UI';ctx.textAlign='center';
+  ctx.fillText('FUNDING SOURCES',panelW/2,18);
+
+  const barX=30,barW=panelW-60,barY=34,barH=44;
+
+  // Deposits 17%
+  const depW=barW*.17;
+  roundRect(ctx,barX,barY,depW,barH,0);ctx.fillStyle='#10b981cc';ctx.fill();
+  ctx.fillStyle='#fff';ctx.font='bold 10px Segoe UI';ctx.textAlign='center';
+  if(depW>30)ctx.fillText('17%',barX+depW/2,barY+barH/2+4);
+
+  // Market 83%
+  const mktX=barX+depW;
+  const mktW=barW-depW;
+  roundRect(ctx,mktX,barY,mktW,barH,0);ctx.fillStyle='#1e3a5fcc';ctx.fill();
+  ctx.fillStyle='#fff';ctx.font='bold 12px Segoe UI';ctx.textAlign='center';
+  ctx.fillText('83% Market Dependent',mktX+mktW/2,barY+barH/2+4);
+
+  // Target line at 40%
+  const tX=barX+barW*.40;
+  ctx.strokeStyle='#f59e0b';ctx.lineWidth=1.5;ctx.setLineDash([3,2]);
+  ctx.beginPath();ctx.moveTo(tX,barY-6);ctx.lineTo(tX,barY+barH+6);ctx.stroke();
+  ctx.setLineDash([]);
+  ctx.fillStyle='#f59e0b';ctx.font='bold 9px Segoe UI';ctx.textAlign='center';
+  ctx.fillText('Target 40%',tX,barY-10);
+
+  // Labels below bar
+  const lblY=barY+barH+14;
+  ctx.fillStyle='#10b981';ctx.font='9px Segoe UI';ctx.textAlign='center';
+  ctx.fillText('Deposits',barX+depW/2,lblY);
+  ctx.fillText('₹71,037 Cr',barX+depW/2,lblY+11);
+
+  ctx.fillStyle=text3;ctx.font='9px Segoe UI';
+  ctx.fillText('NCDs',mktX+mktW*.2,lblY);
+  ctx.fillText('Bank Lines',mktX+mktW*.5,lblY);
+  ctx.fillText('ECBs',mktX+mktW*.8,lblY);
+
+  // Gap call-out
+  const gapNote='Current 17% vs Target 40% — gap = structural risk';
+  ctx.fillStyle=text2;ctx.font='italic 10px Segoe UI';ctx.textAlign='center';
+  ctx.fillText(gapNote,panelW/2,barY+barH+46);
+
+  // ── Right panel: Geographic mismatch ──
+  const rX=panelW+20;
+  const rW=w-rX-20;
+
+  ctx.fillStyle=text3;ctx.font='bold 10px Segoe UI';ctx.textAlign='center';
+  ctx.fillText('GEOGRAPHIC MISMATCH',rX+rW/2,18);
+
+  // Deposits box (top)
+  const bxW=rW*.55,bxX=rX+(rW-bxW)/2;
+  roundRect(ctx,bxX,30,bxW,42,6);
+  ctx.strokeStyle='#10b981';ctx.lineWidth=1.5;ctx.stroke();
+  ctx.fillStyle='rgba(5,150,105,.08)';ctx.fill();
+  ctx.fillStyle='#10b981';ctx.font='bold 11px Segoe UI';ctx.textAlign='center';
+  ctx.fillText('DEPOSITS',rX+rW/2,52);
+  ctx.font='9px Segoe UI';ctx.fillText('Metro / Tier 1',rX+rW/2,65);
+
+  // Arrow
+  ctx.strokeStyle=text3;ctx.lineWidth=1.5;
+  ctx.beginPath();ctx.moveTo(rX+rW/2,72);ctx.lineTo(rX+rW/2,110);
+  ctx.stroke();
+  // Arrowhead
+  ctx.beginPath();ctx.moveTo(rX+rW/2-5,104);ctx.lineTo(rX+rW/2,112);ctx.lineTo(rX+rW/2+5,104);
+  ctx.fillStyle=text3;ctx.fill();
+
+  ctx.fillStyle=text3;ctx.font='9px Segoe UI';ctx.textAlign='left';
+  ctx.fillText('funds →',rX+rW/2+8,94);
+
+  // Loans box (bottom)
+  roundRect(ctx,bxX,115,bxW,42,6);
+  ctx.strokeStyle='#ef4444';ctx.lineWidth=1.5;ctx.stroke();
+  ctx.fillStyle='rgba(220,38,38,.08)';ctx.fill();
+  ctx.fillStyle='#ef4444';ctx.font='bold 11px Segoe UI';ctx.textAlign='center';
+  ctx.fillText('LOANS',rX+rW/2,137);
+  ctx.font='9px Segoe UI';ctx.fillText('Tier 2 / Rural',rX+rW/2,150);
+
+  // Bilateral squeeze annotation
+  roundRect(ctx,rX,172,rW,90,6);
+  ctx.strokeStyle='#ef4444';ctx.lineWidth=1;ctx.stroke();
+  ctx.fillStyle='rgba(220,38,38,.06)';ctx.fill();
+  ctx.fillStyle='#ef4444';ctx.font='bold 10px Segoe UI';ctx.textAlign='center';
+  ctx.fillText('BILATERAL SQUEEZE RISK',rX+rW/2,190);
+  ctx.fillStyle=text2;ctx.font='10px Segoe UI';
+  ctx.fillText('Rural credit stress ↑ builds from below',rX+rW/2,206);
+  ctx.fillText('HNI depositor flight ↑ pulls from above',rX+rW/2,220);
+  ctx.fillText('No geographic hedge between the two',rX+rW/2,234);
+  ctx.fillStyle='#ef4444';ctx.font='bold 10px Segoe UI';
+  ctx.fillText('Simultaneous · Non-linear · Self-amplifying',rX+rW/2,250);
+
+  // NCD note at bottom
+  const noteY=h-42;
+  roundRect(ctx,20,noteY,w-40,36,4);
+  ctx.fillStyle='rgba(245,158,11,.08)';ctx.fill();
+  ctx.strokeStyle='#f59e0b';ctx.lineWidth=1;
+  roundRect(ctx,20,noteY,w-40,36,4);ctx.stroke();
+  ctx.fillStyle='#f59e0b';ctx.font='bold 9px Segoe UI';ctx.textAlign='left';
+  ctx.fillText('NCD MARKET SIGNAL:',28,noteY+14);
+  ctx.fillStyle=text2;ctx.font='9px Segoe UI';
+  ctx.fillText('Spreads widened during risk-weight period. CFO: "normalised somewhat" — not returned to pre-Oct 2024 baseline.',28,noteY+26);
+}
+
+/* ══════════════════════════════════════════════════
+   CHART 6 — Leadership Timeline
+══════════════════════════════════════════════════ */
+function drawTimeline(){
+  const canvas=document.getElementById('timelineCanvas');
+  if(!canvas)return;
+  const {w,h}=setCanvasSize(canvas,240);
+  const ctx=canvas.getContext('2d');
+  ctx.clearRect(0,0,w,h);
+
+  const text1=getVar('--text1'),text2=getVar('--text2'),text3=getVar('--text3'),border=getVar('--border');
+
+  // Timeline bar at y=140
+  const tlY=140,padL=50,padR=30;
+  const tlW=w-padL-padR;
+  const tlH=24;
+
+  // Year mapping: 2007=0, 2026=1
+  const toX=(yr)=>padL+tlW*((yr-2007)/19);
+
+  // Era segments
+  const eras=[
+    {from:2007,to:2024.25,color:'#1e3a5f',label:'Rajeev Jain · CEO → MD'},
+    {from:2024.25,to:2025.55,color:'#ef4444',label:'Anup Saha MD'},
+    {from:2025.55,to:2026.5,color:'#1e3a5f',label:'Rajeev Jain returns'},
+  ];
+
+  eras.forEach(e=>{
+    const x1=toX(e.from),x2=toX(Math.min(e.to,2026.25));
+    roundRect(ctx,x1,tlY,x2-x1,tlH,0);
+    ctx.fillStyle=e.color+'dd';ctx.fill();
+    ctx.fillStyle='#fff';ctx.font='bold 9px Segoe UI';ctx.textAlign='center';
+    if(x2-x1>60)ctx.fillText(e.label,x1+(x2-x1)/2,tlY+tlH/2+3);
+  });
+
+  // Key markers
+  const markers=[
+    {yr:2007,lbl:'2007\nJoined CEO',col:text3,above:true},
+    {yr:2015,lbl:'2015\nBecomes MD',col:text3,above:true},
+    {yr:2024.25,lbl:'Apr 2024\nSaha appointed',col:'#ef4444',above:false},
+    {yr:2025.55,lbl:'Jul 2025\nSaha resigns',col:'#ef4444',above:false},
+    {yr:2025.55,lbl:'Rajeev returns',col:'#1e3a5f',above:true},
+  ];
+
+  markers.forEach(m=>{
+    const x=toX(m.yr);
+    ctx.strokeStyle=m.col;ctx.lineWidth=1;
+    const lineTop=m.above?tlY-36:tlY+tlH;
+    const lineBot=m.above?tlY:tlY+tlH+36;
+    ctx.beginPath();ctx.moveTo(x,lineTop);ctx.lineTo(x,lineBot);ctx.stroke();
+    ctx.fillStyle=m.col;ctx.font='8.5px Segoe UI';ctx.textAlign='center';
+    const lines=m.lbl.split('\n');
+    if(m.above){
+      lines.forEach((l,i)=>ctx.fillText(l,x,tlY-36+(i*11)+4));
+    } else {
+      lines.forEach((l,i)=>ctx.fillText(l,x,tlY+tlH+14+(i*11)));
+    }
+  });
+
+  // GNPA overlay line (schematic)
+  const gnpaPoints=[
+    {yr:2007,g:.8},{yr:2015,g:.9},{yr:2020,g:1.4},{yr:2021,g:1.8},
+    {yr:2022,g:1.1},{yr:2023,g:.9},{yr:2024.25,g:.85},{yr:2024.75,g:.96},
+    {yr:2025.25,g:1.21},{yr:2025.55,g:1.21},{yr:2026,g:1.01}
+  ];
+  const maxG=2,minG=.5;
+  const gToY=(g)=>tlY-60-80*((g-minG)/(maxG-minG));
+
+  ctx.strokeStyle='#ef4444';ctx.lineWidth=2;ctx.setLineDash([]);
+  ctx.beginPath();
+  gnpaPoints.forEach((p,i)=>{
+    const x=toX(Math.min(p.yr,2026));
+    const y=gToY(p.g);
+    if(i===0)ctx.moveTo(x,y);else ctx.lineTo(x,y);
+  });
+  ctx.stroke();
+
+  // GNPA label
+  ctx.fillStyle='#ef4444';ctx.font='bold 9px Segoe UI';ctx.textAlign='left';
+  ctx.fillText('GNPA %',padL,gToY(.8)-6);
+
+  // Annotate Anup Saha zone
+  const sahaX1=toX(2024.25),sahaX2=toX(2025.55);
+  roundRect(ctx,sahaX1,20,sahaX2-sahaX1,100,4);
+  ctx.fillStyle='rgba(239,68,68,.06)';ctx.fill();
+
+  // "15 months" callout
+  ctx.fillStyle='#ef4444';ctx.font='bold 8px Segoe UI';ctx.textAlign='center';
+  ctx.fillText('15 months',sahaX1+(sahaX2-sahaX1)/2,h-8);
+  ctx.font='8px Segoe UI';ctx.fillText('"Personal reasons"',sahaX1+(sahaX2-sahaX1)/2,h+2);
+
+  // GNPA peak annotation
+  const peakX=toX(2025.25),peakY=gToY(1.21);
+  ctx.beginPath();ctx.arc(peakX,peakY,4,0,Math.PI*2);
+  ctx.fillStyle='#ef4444';ctx.fill();
+  ctx.fillStyle='#ef4444';ctx.font='bold 9px Segoe UI';ctx.textAlign='left';
+  ctx.fillText('1.21% peak',peakX+6,peakY+3);
+}
+
+/* ─── Draw All ───────────────────────────────────── */
+function drawAll(){
+  requestAnimationFrame(()=>{
+    drawCreditCycle();
+    drawNBFCBar();
+    drawDonut();
+    drawAUMBar();
+    drawGNPA();
+    drawFunding();
+    drawTimeline();
+  });
+}
+
+// Initial draw
+window.addEventListener('load',drawAll);
+window.addEventListener('resize',drawAll);
+</script>
+</body>
+</html>
