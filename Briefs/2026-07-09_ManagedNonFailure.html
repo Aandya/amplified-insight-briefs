@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Alive Is Not the Same as Funded — Amplified Insight</title>
+<style>
+  :root {
+    --bg: #f9f7f4;
+    --surface: #ffffff;
+    --border: #e2ddd7;
+    --text: #1a1a1a;
+    --text-muted: #6b6b6b;
+    --accent: #1d3557;
+    --accent2: #e63946;
+    --accent3: #457b9d;
+    --accent4: #2a9d8f;
+    --accent5: #6d28d9;
+    --tag-bg: #eef2f7;
+    --table-head: #f0ede8;
+    --red-row: #fff0f0;
+    --amber-row: #fffbf0;
+    --green-row: #f0faf2;
+    --purple-row: #f5f0ff;
+  }
+  .dark {
+    --bg: #111214;
+    --surface: #1c1e22;
+    --border: #2e3138;
+    --text: #e8e6e1;
+    --text-muted: #9a9a9a;
+    --accent: #4a90d9;
+    --accent2: #e63946;
+    --accent3: #70b8d8;
+    --accent4: #2a9d8f;
+    --accent5: #a78bfa;
+    --tag-bg: #252830;
+    --table-head: #252830;
+    --red-row: #2d1a1a;
+    --amber-row: #2d2a1a;
+    --green-row: #1a2d1e;
+    --purple-row: #241a30;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Georgia', serif; background: var(--bg); color: var(--text); line-height: 1.75; transition: background 0.3s, color 0.3s; }
+
+  .header { background: var(--accent); color: #fff; padding: 56px 64px 48px; position: relative; }
+  .header-brand { font-family: 'Helvetica Neue', sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 3px; text-transform: uppercase; opacity: 0.6; margin-bottom: 24px; }
+  .header h1 { font-size: 38px; font-weight: 700; line-height: 1.2; max-width: 720px; margin-bottom: 28px; }
+  .header-opening { max-width: 680px; }
+  .header-opening p { font-size: 16px; line-height: 1.8; opacity: 0.88; margin-bottom: 16px; }
+  .header-opening p:last-child { margin-bottom: 0; }
+  .header-opening .question { font-size: 17px; font-style: italic; opacity: 1; font-weight: 500; border-left: 3px solid rgba(255,255,255,0.4); padding-left: 18px; margin-top: 24px; }
+  .header-meta { margin-top: 32px; font-family: 'Helvetica Neue', sans-serif; font-size: 12px; opacity: 0.45; }
+  .toggle-btn { position: absolute; top: 24px; right: 24px; background: rgba(255,255,255,0.14); border: 1px solid rgba(255,255,255,0.28); color: #fff; padding: 6px 14px; border-radius: 4px; cursor: pointer; font-family: 'Helvetica Neue', sans-serif; font-size: 12px; }
+
+  .verdict-bar { background: var(--surface); border-bottom: 1px solid var(--border); padding: 20px 64px; font-family: 'Helvetica Neue', sans-serif; font-size: 13px; color: var(--text-muted); font-style: italic; }
+  .closing-section { background: var(--accent); color: #fff; padding: 56px 64px; }
+  .closing-section .closing-label { font-family: 'Helvetica Neue', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; opacity: 0.55; margin-bottom: 20px; }
+  .closing-section h2 { font-size: 26px; font-weight: 700; line-height: 1.3; max-width: 680px; margin-bottom: 28px; }
+  .closing-section p { font-size: 16px; line-height: 1.8; opacity: 0.85; max-width: 680px; margin-bottom: 18px; }
+  .closing-section .closing-question { font-size: 18px; font-style: italic; font-weight: 500; opacity: 1; border-left: 3px solid rgba(255,255,255,0.4); padding-left: 20px; margin: 32px 0; max-width: 640px; line-height: 1.7; }
+  .closing-section .take-with-you { margin-top: 40px; padding-top: 28px; border-top: 1px solid rgba(255,255,255,0.25); }
+  .closing-section .take-label { font-family: 'Helvetica Neue', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; opacity: 0.55; margin-bottom: 14px; }
+  .closing-section .take-line { font-size: 20px; font-style: italic; font-weight: 500; max-width: 640px; line-height: 1.6; }
+  .closing-section .closing-line { font-family: 'Helvetica Neue', sans-serif; font-size: 13px; opacity: 0.5; margin-top: 36px; }
+
+  .container { max-width: 960px; margin: 0 auto; padding: 52px 64px; }
+  section { margin-bottom: 60px; }
+
+  .section-label { font-family: 'Helvetica Neue', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: var(--accent3); margin-bottom: 10px; }
+  h2 { font-size: 22px; font-weight: 700; margin-bottom: 18px; line-height: 1.3; }
+  h3 { font-size: 16px; font-weight: 700; margin: 28px 0 10px; }
+  p { margin-bottom: 16px; font-size: 15px; }
+
+  .callout { border-left: 4px solid var(--accent2); background: var(--surface); padding: 18px 22px; margin: 24px 0; border-radius: 0 6px 6px 0; font-size: 15px; font-style: italic; }
+
+  table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 13.5px; font-family: 'Helvetica Neue', sans-serif; }
+  th { background: var(--table-head); padding: 10px 14px; text-align: left; font-weight: 600; border-bottom: 2px solid var(--border); font-size: 12px; letter-spacing: 0.3px; }
+  td { padding: 10px 14px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  tr:last-child td { border-bottom: none; }
+
+  .zone-sep td { font-family: 'Helvetica Neue', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; padding: 8px 14px; border-bottom: none; }
+  .zone-surface { background: var(--green-row); }
+  .zone-surface.zone-sep td { color: #2e7d32; }
+  .zone-middle { background: var(--amber-row); }
+  .zone-middle.zone-sep td { color: #b45309; }
+  .zone-failure { background: var(--red-row); }
+  .zone-failure.zone-sep td { color: #b91c1c; }
+  .zone-foundation { background: var(--purple-row); }
+  .zone-foundation.zone-sep td { color: var(--accent5); }
+
+  .badge { display: inline-block; font-family: 'Helvetica Neue', sans-serif; font-size: 11px; font-weight: 700; padding: 3px 9px; border-radius: 3px; white-space: nowrap; }
+  .badge-red { background: #fde8e8; color: #c0392b; }
+  .badge-amber { background: #fef3cd; color: #856404; }
+  .badge-green { background: #d4edda; color: #155724; }
+  .badge-dash { color: var(--text-muted); font-size: 12px; }
+
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 24px 0; }
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 22px; }
+  .card-label { font-family: 'Helvetica Neue', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 8px; }
+  .card-value { font-size: 30px; font-weight: 700; color: var(--accent2); line-height: 1.1; margin-bottom: 6px; }
+  .card-desc { font-size: 13px; color: var(--text-muted); font-family: 'Helvetica Neue', sans-serif; }
+
+  .insight-box { background: var(--surface); border: 1px solid var(--border); border-top: 3px solid var(--accent4); border-radius: 6px; padding: 22px 26px; margin: 22px 0; }
+  .insight-label { font-family: 'Helvetica Neue', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--accent4); margin-bottom: 10px; }
+
+  .diagram-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 28px 24px; margin: 24px 0; overflow-x: auto; }
+
+  /* Causal chain — CSS grid, no SVG */
+  .causal-top { background: var(--accent); color: #fff; border-radius: 6px; padding: 16px 20px; text-align: center; font-family: 'Helvetica Neue', sans-serif; font-size: 13px; font-weight: 700; margin-bottom: 4px; }
+  .causal-arrow-row { text-align: center; color: var(--text-muted); font-size: 20px; line-height: 1.2; margin: 2px 0; }
+  .causal-columns { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 4px 0; }
+  .causal-col { display: flex; flex-direction: column; gap: 4px; }
+  .causal-item { border-radius: 6px; padding: 12px 14px; font-family: 'Helvetica Neue', sans-serif; font-size: 12px; line-height: 1.5; color: #fff; }
+  .causal-consequence { background: var(--accent2); }
+  .causal-factor { background: var(--accent3); }
+  .causal-structural { background: #1d3557; }
+  .causal-item-title { font-weight: 700; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; opacity: 0.8; margin-bottom: 4px; display: block; }
+  .causal-shared-root { background: var(--accent4); color: #fff; border-radius: 6px; padding: 16px 20px; text-align: center; font-family: 'Helvetica Neue', sans-serif; font-size: 13px; font-weight: 700; margin-top: 4px; }
+  .causal-annotation { border: 1.5px dashed var(--accent4); border-radius: 6px; padding: 16px 20px; margin-top: 14px; font-size: 13.5px; font-style: italic; color: var(--text-muted); }
+
+  .divider { height: 1px; background: var(--border); margin: 40px 0; }
+  .footer { background: var(--surface); border-top: 1px solid var(--border); padding: 28px 64px; font-family: 'Helvetica Neue', sans-serif; font-size: 12px; color: var(--text-muted); display: flex; justify-content: space-between; align-items: center; }
+
+  @media (max-width: 720px) {
+    .header, .container, .closing-section, .footer { padding-left: 24px; padding-right: 24px; }
+    .two-col, .causal-columns { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <button class="toggle-btn" onclick="document.body.classList.toggle('dark')">☾ / ☀</button>
+  <div class="header-brand">Amplified Insight · Diagnostic Brief · July 2026</div>
+  <h1>Alive Is Not the Same as Funded</h1>
+  <div class="header-opening">
+    <p>At the moment of merger, the combined entity was the largest telecom operator in its home market by subscriber count — bigger than either rival standing alone. Investors read scale as strength. On paper, for a moment, it was.</p>
+    <p>Within eighteen months, a single court judgment reinterpreted decades of statutory dues, and a liability came due all at once — one several times the size its closest rival was made to carry, for reasons that had nothing to do with either company's management. A rescue followed: deferred payments, then a debt-for-equity swap that made the regulator the company's largest shareholder.</p>
+    <p>The standard read is that a regulatory shock broke a healthy company, and that government stepping in was the good outcome. The real question is why the same shock, applied to three operators in the same industry, produced two still investing to win — and one that has spent five years being kept from collapsing, without ever being funded to compete again.</p>
+    <div class="question">This brief traces that divergence backwards — from the crisis everyone saw to the capital decision nobody made — and asks what "a shareholder stepped in to help" actually reveals about a business, once you stop reading it as good news.</div>
+  </div>
+  <div class="header-meta">Amplified Insight · Aanand Ladgaonkar · Vadodara · July 2026</div>
+</div>
+
+<div class="verdict-bar">
+  This brief traces the rescue backwards — from the balance sheet everyone can see to the belief nobody stated out loud — and asks what a leader should look for the moment a shareholder-of-last-resort becomes necessary, not after.
+</div>
+
+<div class="container">
+
+  <!-- 01 THE PATTERN -->
+  <section>
+    <div class="section-label">01 · The Pattern</div>
+    <h2>A Rescue That Was Never a Bet</h2>
+
+    <p>A capital-intensive industry gets hit by the same shock across every player — a court ruling, a tariff war, a regulatory reinterpretation. Most players absorb it because someone with deep pockets and genuine conviction stands behind them. One player doesn't, because its backers were already quietly retrenching before the shock landed. The shock doesn't create the weakness. It exposes a weakness that was already there, in who was actually willing to keep funding the business.</p>
+
+    <p>What follows looks like a rescue: deferred payments, a debt-for-equity conversion, statements of "continued support." It stabilises the company. It does not fund it to compete. The pattern is specific and repeatable: whenever the party that steps in to prevent collapse has a survival mandate but not a growth mandate, the company that results is optimised to not die — not to win.</p>
+
+    <div class="callout">
+      The standard narrative calls this a regulatory crisis, solved by a timely rescue. The accurate diagnosis: the rescue is real, and it is also the mechanism that guarantees the company will never again be funded like a competitor — only maintained like a liability.
+    </div>
+
+    <div class="two-col">
+      <div class="card">
+        <div class="card-label">Legacy liability, vs. nearest rival</div>
+        <div class="card-value">3x+</div>
+        <div class="card-desc">Same court ruling, applied to all players — liability size determined almost entirely by how long each had existed under the old rule, not by how well any of them was run</div>
+      </div>
+      <div class="card">
+        <div class="card-label">Network footprint funded to compete</div>
+        <div class="card-value">~3/4</div>
+        <div class="card-desc">Capital concentrated in the highest-value markets only; the remainder held at maintenance spend — a managed footprint, not a competitive one</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 02 THE FAILURE STACK -->
+  <section>
+    <div class="section-label">02 · The Failure Stack</div>
+    <h2>Four Layers Deep — And the Deepest One Was Never Discussed</h2>
+
+    <p>Read only the surface, and this looks like a liquidity story. Read to the bottom, and it's a belief story — one nobody with the authority to fix it was ever asked to state plainly.</p>
+
+    <div class="diagram-wrap">
+      <table>
+        <tbody>
+          <tr class="zone-surface zone-sep"><td colspan="2">What was visible — a headline in any given quarter</td></tr>
+          <tr class="zone-surface"><td style="width:140px; font-weight:600;">Events</td><td>A tariff hike. A quarterly dues installment paid. An equity conversion announced.</td></tr>
+
+          <tr class="zone-middle zone-sep"><td colspan="2">What a trend line would show over two years</td></tr>
+          <tr class="zone-middle"><td style="font-weight:600;">Patterns</td><td>Revenue-per-user rising slower than both rivals. Subscriber base shrinking every quarter. The capital-spend gap against the market leader widening, not closing.</td></tr>
+
+          <tr class="zone-failure zone-sep"><td colspan="2">▼ Where the actual failure lived</td></tr>
+          <tr class="zone-failure"><td style="font-weight:600;">Structures</td><td>A capital structure built for a merger, not a fight — legacy debt and a legacy liability inherited from decades before the current business existed, plus a reinforcing spiral: less cash → less network investment → more customer loss → less cash.</td></tr>
+
+          <tr class="zone-foundation zone-sep"><td colspan="2">The layer nobody examined out loud</td></tr>
+          <tr class="zone-foundation"><td style="font-weight:600;">The unstated belief</td><td>Every party with a hand on the balance sheet — the founding shareholders, the lenders, the regulator-turned-shareholder — separately concluded that an uncontrolled collapse cost them more than a managed one. Nobody ever separately concluded the business was worth funding to win.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- 03 ROOT CAUSE -->
+  <section>
+    <div class="section-label">03 · The Root Cause</div>
+    <h2>The Fix That Relieves the Pressure to Ever Really Fix It</h2>
+
+    <p>The rescue — deferred dues, an equity conversion, a statement of continued commitment — did real work. It kept the lights on. It also did something quieter: it removed the pressure that would otherwise have forced someone to say, in writing, whether this business is being funded to compete or merely being kept from failing on anyone's watch. The market stopped panicking. The urgency to answer the harder question evaporated with it.</p>
+
+    <p>This is the shape of a fix that never resolves the thing it appears to resolve. A symptomatic relief — the kind that's visible, fast, and politically easy — draws off the pressure that was driving toward the real fix. The real fix — a named shareholder committing fresh, primary capital with a growth mandate attached — never arrives, because the discomfort that would have forced it has already been relieved by the symptomatic version.</p>
+
+    <div class="callout">
+      A simple test: has the relief made anyone's future obligation to fund growth smaller, or has it made someone's obligation to fund growth larger and more explicit? If the answer is "smaller for everyone," the rescue was the Graveyard, not the cure — pressure absorbed, problem preserved.
+    </div>
+
+    <h3>Why an Identical Shock Produced Three Different Companies</h3>
+    <p>When one company in an industry is hit by a shock and struggles while two others absorb it, the difference is rarely the shock. It's who was standing behind each balance sheet, and with what conviction, before the shock ever landed. One rival's backer treated the business as a long-horizon strategic bet and funded it accordingly, through the pain, repeatedly. Another rival's backers had already begun retrenching — writing the investment down, signalling privately that they no longer viewed the core business as worth further capital — years before the rescue made that quiet retrenchment visible to everyone else.</p>
+  </section>
+
+  <!-- 04 DEPTH OF INTERVENTION -->
+  <section>
+    <div class="section-label">04 · Depth of Intervention</div>
+    <h2>Where Management Acted — and Where the Fix Actually Needed to Land</h2>
+
+    <p>The most counterintuitive fact in a case like this: the interventions a company reaches for first are almost always the least powerful ones. The most powerful interventions are almost never the ones anyone is willing to touch.</p>
+
+    <div class="diagram-wrap">
+      <table>
+        <tbody>
+          <tr class="zone-surface zone-sep"><td colspan="4">▲ Surface — most visible, least powerful</td></tr>
+          <tr class="zone-surface">
+            <td style="width:34px; font-weight:700;">12</td><td style="width:220px;">Raise prices</td><td>Tariff hikes, repeated — visible, easy to announce, weak on its own</td><td><span class="badge badge-green">Management acted here</span></td>
+          </tr>
+          <tr class="zone-surface">
+            <td style="font-weight:700;">11</td><td>Extend payment timelines</td><td>Dues deferrals — buys months, changes nothing structural</td><td><span class="badge badge-green">Management acted here</span></td>
+          </tr>
+
+          <tr class="zone-middle zone-sep"><td colspan="4">Middle — intermediate leverage</td></tr>
+          <tr class="zone-middle">
+            <td style="font-weight:700;">8</td><td>Reprioritise where capital physically goes</td><td>Concentrate network spend in the highest-value markets, hold the rest at maintenance</td><td><span class="badge badge-amber">Management acted here</span></td>
+          </tr>
+          <tr class="zone-middle">
+            <td style="font-weight:700;">6</td><td>Change who sees the capital plan, and when</td><td>Board and shareholder information flow — largely unchanged despite the ownership shift</td><td><span class="badge-dash">—</span></td>
+          </tr>
+
+          <tr class="zone-failure zone-sep"><td colspan="4">▼ The failure zone — where the actual failure lived</td></tr>
+          <tr class="zone-failure">
+            <td style="font-weight:700;">5</td><td>Rewrite the rule that created the liability</td><td>The retroactive dues definition itself — a policy-level fix, industry-wide, never seriously attempted for this company alone</td><td><span class="badge badge-red">Root failure</span></td>
+          </tr>
+          <tr class="zone-failure">
+            <td style="font-weight:700;">4</td><td>Decide, explicitly, who absorbs the shortfall</td><td>Left ambiguous across three parties for years — each individually rational, collectively unresolved</td><td><span class="badge badge-red">Root failure</span></td>
+          </tr>
+
+          <tr class="zone-foundation zone-sep"><td colspan="4">Foundation — deepest, most powerful, rarely touched</td></tr>
+          <tr class="zone-foundation">
+            <td style="font-weight:700;">1</td><td>Change whether anyone actually believes the business can win</td><td>The one intervention that would change every decision downstream — never named as a decision at all</td><td><span class="badge-dash">Never touched</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- 05 FIX SEQUENCE -->
+  <section>
+    <div class="section-label">05 · Fix Sequence</div>
+    <h2>What Should Have Happened, in Order</h2>
+
+    <p>The instinct in a cash crisis is to reach for capital first — a fundraise, an equity round, a rescue package. That instinct is backwards. Capital committed before the constraint is named just refinances the ambiguity.</p>
+
+    <table>
+      <thead><tr><th style="width:40px;">Order</th><th>Move</th><th>Why it comes here, not later</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>Stop the bleeding without new capital</td><td>Cost and network-footprint discipline first — proves the core is worth funding before asking anyone to fund it</td></tr>
+        <tr><td>2</td><td>Force an explicit answer on intent</td><td>Every stakeholder with a hand on the balance sheet states, in writing, whether they are funding a competitor or managing a controlled non-failure — before a rupee of fresh capital moves</td></tr>
+        <tr><td>3</td><td>Only then commit growth capital</td><td>Capital that follows a named commitment behaves differently from capital that follows a rescue — it comes with a mandate, not just a covenant</td></tr>
+      </tbody>
+    </table>
+
+    <div class="insight-box">
+      <div class="insight-label">The sequencing error</div>
+      This case ran the sequence backwards: capital moved (deferrals, equity conversion) years before intent was ever forced into the open. That's why the capital didn't change the trajectory — it removed the pressure that would have forced the harder conversation, instead of following from it.
+    </div>
+  </section>
+
+  <!-- 06 CAUSAL CHAIN -->
+  <section>
+    <div class="section-label">06 · Causal Chain</div>
+    <h2>Tracing the Crisis Back to Its Structural Origin</h2>
+
+    <div class="diagram-wrap">
+      <div class="causal-top">Same shock — a statutory ruling reinterpreting decades of dues — lands on all three operators at once</div>
+      <div class="causal-arrow-row">↓</div>
+      <div class="causal-columns">
+        <div class="causal-col">
+          <div class="causal-item causal-consequence"><span class="causal-item-title">Consequence</span>Liability several times larger than either rival's</div>
+          <div class="causal-item causal-factor"><span class="causal-item-title">Causal factor</span>Existed under the old revenue rules far longer than the newest entrant</div>
+          <div class="causal-item causal-structural"><span class="causal-item-title">Structural root</span>A liability determined by birth date, not by management quality</div>
+        </div>
+        <div class="causal-col">
+          <div class="causal-item causal-consequence"><span class="causal-item-title">Consequence</span>No fresh primary capital arrives when needed most</div>
+          <div class="causal-item causal-factor"><span class="causal-item-title">Causal factor</span>Founding shareholders were already retrenching before the shock, unlike either rival's backers</div>
+          <div class="causal-item causal-structural"><span class="causal-item-title">Structural root</span>Capacity to fund existed elsewhere in the industry; conviction to fund did not exist here</div>
+        </div>
+        <div class="causal-col">
+          <div class="causal-item causal-consequence"><span class="causal-item-title">Consequence</span>Years lost to integration instead of investment</div>
+          <div class="causal-item causal-factor"><span class="causal-item-title">Causal factor</span>Defensive merger of two weakened players, absorbed just months before the shock landed</div>
+          <div class="causal-item causal-structural"><span class="causal-item-title">Structural root</span>No time to stabilise before the second shock hit — one rival never merged, the other merged from strength</div>
+        </div>
+      </div>
+      <div class="causal-arrow-row">↓</div>
+      <div class="causal-shared-root">Shared root: no single party had both the capacity and the conviction to fund recovery — so the company got exactly enough to not collapse, and nothing more</div>
+      <div class="causal-annotation">The managed non-failure trap: once a regulator becomes a shareholder to prevent collapse, every future capital decision inherits a survival ceiling, because the party with the deepest pockets in the room was never trying to win — only trying not to be blamed for the loss.</div>
+    </div>
+  </section>
+
+  <!-- 07 DIAGNOSTIC TESTS -->
+  <section>
+    <div class="section-label">07 · Diagnostic Tests</div>
+    <h2>Three Questions a Leader Can Ask Today — Before the Crisis</h2>
+
+    <table>
+      <thead><tr><th style="width:34px;">#</th><th>Question</th><th>What a bad answer sounds like</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>Who exactly stands behind this balance sheet, and have they ever put a number and a timeline on that support, in writing?</td><td>"They remain committed" — an action cited as proof of a belief that was never actually stated</td></tr>
+        <tr><td>2</td><td>Does the next rescue reduce anyone's future obligation to fund growth, or increase someone's obligation explicitly?</td><td>"The relief gives us headroom" — headroom for what, funded by whom, is left unanswered</td></tr>
+        <tr><td>3</td><td>Facing the same shock as a peer, is your exposure structurally larger for reasons that predate your own management?</td><td>Not asked at all — the liability is treated as a fact of life rather than a comparative signal</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- 08 THREE RULES -->
+  <section>
+    <div class="section-label">08 · Three Rules</div>
+    <h2>Standing Principles From This Case</h2>
+
+    <div class="two-col">
+      <div class="card">
+        <div class="card-label">Rule 1</div>
+        <div class="card-desc" style="font-size:14px; color: var(--text);">A rescue that relieves market pressure is not the same as a rescue that funds competition. Test which one you're looking at before calling it good news.</div>
+      </div>
+      <div class="card">
+        <div class="card-label">Rule 2</div>
+        <div class="card-desc" style="font-size:14px; color: var(--text);">When several parties each individually prefer "not on my watch" to "pay for the fix," the company gets exactly enough capital to not die — and no more, indefinitely.</div>
+      </div>
+    </div>
+    <div class="two-col">
+      <div class="card">
+        <div class="card-label">Rule 3</div>
+        <div class="card-desc" style="font-size:14px; color: var(--text);">When an identical shock produces different outcomes across an industry, the structure was the real variable — not the shock. Compare backers, not just balance sheets.</div>
+      </div>
+      <div class="card">
+        <div class="card-label">Rule 4</div>
+        <div class="card-desc" style="font-size:14px; color: var(--text);">An action (an equity conversion, a board seat, a relief package) is not proof of a belief (a conviction to fund growth). Ask for the belief directly, in writing, every time.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 09 SESSION SUMMARY -->
+  <section>
+    <div class="section-label">09 · Session Summary</div>
+    <h2>Prediction, Delta, What Shifted</h2>
+    <p><strong>Prediction locked before the reveal:</strong> capital structure, stakeholder disengagement, and years of underinvestment in physical infrastructure were named as the constraint — correct in direction, incomplete in mechanism.</p>
+    <p><strong>Delta:</strong> the liability itself was treated as sufficient explanation. It wasn't — a peer carried a comparable liability from the same ruling and remained investment-grade in ambition. The differentiator was never the shock. It was which backers still had both the capacity and the conviction to fund the business through it — and the government's arrival as shareholder was read, at first, as the primary structural anomaly, when it was in fact the downstream symptom of that conviction having already failed elsewhere.</p>
+    <p><strong>What shifted:</strong> the question worth asking a distressed business moved from "what broke the balance sheet" to "who was still willing to bet on it, and did they ever say so in writing" — a question that travels to any rescue situation, not just this one.</p>
+  </section>
+
+</div>
+
+<div class="closing-section">
+  <div class="closing-label">Closing</div>
+  <h2>Alive Is Not the Same as Funded</h2>
+  <p>The combined company was, for a moment, the largest in its market by subscriber count. That fact never stopped being true. It also never mattered, because scale in customers was never the thing anyone was short of. What was short, from the very first year, was a backer who believed in the bet the way a rival's did — enough to keep funding it through the pain, not just enough to keep it from disappearing.</p>
+  <p>A shareholder-of-last-resort arriving to prevent collapse will always look like the crisis being solved. It solves the crisis. It does not solve the question underneath it — because the arrival of a rescuer with a survival mandate is itself proof that the parties with a growth mandate already left the room.</p>
+  <div class="closing-question">The moment you need a shareholder-of-last-resort is not the emergency. It's the read-out. The emergency happened years earlier, quietly, when the people who could have kept funding you decided not to — and nobody with the authority to ask them wrote it down.</div>
+  <div class="take-with-you">
+    <div class="take-label">Take With You</div>
+    <div class="take-line">The rescue that keeps a company alive is the same rescue that guarantees it will never be funded to win.</div>
+  </div>
+  <div class="closing-line">Amplified Insight · Diagnostic Brief · July 2026</div>
+</div>
+
+<div class="footer">
+  <div>Amplified Insight · Diagnostic Series</div>
+  <div>Pattern-first. Anonymised by default. The company is the specimen, not the story.</div>
+</div>
+
+</body>
+</html>
