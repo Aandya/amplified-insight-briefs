@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Busy Is Not the Same as Capable — Amplified Insight</title>
+<style>
+  :root {
+    --bg: #f9f7f4;
+    --surface: #ffffff;
+    --border: #e2ddd7;
+    --text: #1a1a1a;
+    --text-muted: #6b6b6b;
+    --accent: #1d3557;
+    --accent2: #e63946;
+    --accent3: #457b9d;
+    --accent4: #2a9d8f;
+    --accent5: #6d28d9;
+    --tag-bg: #eef2f7;
+    --table-head: #f0ede8;
+    --red-row: #fff0f0;
+    --amber-row: #fffbf0;
+    --green-row: #f0faf2;
+    --purple-row: #f5f0ff;
+    --chart-blue: #2f6fb0;
+    --chart-red: #e63946;
+    --chart-teal: #1f8f7a;
+    --chart-gold: #b5651d;
+    --chart-track: #e6e0d7;
+    --chart-muted: #a39c90;
+  }
+  .dark {
+    --bg: #111214;
+    --surface: #1c1e22;
+    --border: #2e3138;
+    --text: #e8e6e1;
+    --text-muted: #9a9a9a;
+    --accent: #4a90d9;
+    --accent2: #e63946;
+    --accent3: #70b8d8;
+    --accent4: #2a9d8f;
+    --accent5: #a78bfa;
+    --tag-bg: #252830;
+    --table-head: #252830;
+    --red-row: #2d1a1a;
+    --amber-row: #2d2a1a;
+    --green-row: #1a2d1e;
+    --purple-row: #241a30;
+    --chart-blue: #4f8fc4;
+    --chart-red: #e8636f;
+    --chart-teal: #2a9d8f;
+    --chart-gold: #b8790a;
+    --chart-track: #33363c;
+    --chart-muted: #565a62;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Georgia', serif; background: var(--bg); color: var(--text); line-height: 1.75; transition: background 0.3s, color 0.3s; }
+  ::selection { background: var(--accent3); color: #fff; }
+
+  .header { background: var(--accent); color: #fff; padding: 56px 64px 48px; position: relative; }
+  .header-brand { font-family: 'Helvetica Neue', sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 3px; text-transform: uppercase; opacity: 0.6; margin-bottom: 24px; }
+  .header h1 { font-size: 38px; font-weight: 700; line-height: 1.2; max-width: 720px; margin-bottom: 28px; text-wrap: balance; }
+  .header-opening { max-width: 680px; }
+  .header-opening p { font-size: 16px; line-height: 1.8; opacity: 0.88; margin-bottom: 16px; }
+  .header-opening p:last-child { margin-bottom: 0; }
+  .header-opening .question { font-size: 17px; font-style: italic; opacity: 1; font-weight: 500; border-left: 3px solid rgba(255,255,255,0.4); padding-left: 18px; margin-top: 24px; }
+  .header-meta { margin-top: 32px; font-family: 'Helvetica Neue', sans-serif; font-size: 12px; opacity: 0.45; }
+  .toggle-btn { position: absolute; top: 24px; right: 24px; background: rgba(255,255,255,0.14); border: 1px solid rgba(255,255,255,0.28); color: #fff; padding: 6px 14px; border-radius: 4px; cursor: pointer; font-family: 'Helvetica Neue', sans-serif; font-size: 12px; }
+  .toggle-btn:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+
+  .verdict-bar { background: var(--surface); border-bottom: 1px solid var(--border); padding: 20px 64px; font-family: 'Helvetica Neue', sans-serif; font-size: 13px; color: var(--text-muted); font-style: italic; }
+  .closing-section { background: var(--accent); color: #fff; padding: 56px 64px; }
+  .closing-section .closing-label { font-family: 'Helvetica Neue', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; opacity: 0.55; margin-bottom: 20px; }
+  .closing-section h2 { font-size: 26px; font-weight: 700; line-height: 1.3; max-width: 680px; margin-bottom: 28px; text-wrap: balance; }
+  .closing-section p { font-size: 16px; line-height: 1.8; opacity: 0.85; max-width: 680px; margin-bottom: 18px; }
+  .closing-section .closing-question { font-size: 18px; font-style: italic; font-weight: 500; opacity: 1; border-left: 3px solid rgba(255,255,255,0.4); padding-left: 20px; margin: 32px 0; max-width: 640px; line-height: 1.7; }
+  .closing-section .take-with-you { margin-top: 40px; padding-top: 28px; border-top: 1px solid rgba(255,255,255,0.25); }
+  .closing-section .take-label { font-family: 'Helvetica Neue', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; opacity: 0.55; margin-bottom: 14px; }
+  .closing-section .take-line { font-size: 20px; font-style: italic; font-weight: 500; max-width: 640px; line-height: 1.6; }
+  .closing-section .closing-line { font-family: 'Helvetica Neue', sans-serif; font-size: 13px; opacity: 0.5; margin-top: 36px; }
+
+  .container { max-width: 980px; margin: 0 auto; padding: 52px 64px; }
+  section { margin-bottom: 60px; }
+
+  .section-label { font-family: 'Helvetica Neue', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: var(--accent3); margin-bottom: 10px; }
+  h2 { font-size: 22px; font-weight: 700; margin-bottom: 18px; line-height: 1.3; text-wrap: balance; }
+  h3 { font-size: 16px; font-weight: 700; margin: 28px 0 10px; }
+  p { margin-bottom: 16px; font-size: 15px; max-width: 68ch; }
+  .full-width-p { max-width: none; }
+
+  .callout { border-left: 4px solid var(--accent2); background: var(--surface); padding: 18px 22px; margin: 24px 0; border-radius: 0 6px 6px 0; font-size: 15px; font-style: italic; max-width: none; }
+
+  .table-scroll { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 13.5px; font-family: 'Helvetica Neue', sans-serif; font-variant-numeric: tabular-nums; }
+  th { background: var(--table-head); padding: 10px 14px; text-align: left; font-weight: 600; border-bottom: 2px solid var(--border); font-size: 12px; letter-spacing: 0.3px; }
+  td { padding: 10px 14px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  tr:last-child td { border-bottom: none; }
+
+  .zone-sep td { font-family: 'Helvetica Neue', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; padding: 8px 14px; border-bottom: none; }
+  .zone-surface { background: var(--green-row); }
+  .zone-surface.zone-sep td { color: #2e7d32; }
+  .zone-middle { background: var(--amber-row); }
+  .zone-middle.zone-sep td { color: #b45309; }
+  .zone-failure { background: var(--red-row); }
+  .zone-failure.zone-sep td { color: #b91c1c; }
+  .zone-foundation { background: var(--purple-row); }
+  .zone-foundation.zone-sep td { color: var(--accent5); }
+
+  .badge { display: inline-block; font-family: 'Helvetica Neue', sans-serif; font-size: 11px; font-weight: 700; padding: 3px 9px; border-radius: 3px; white-space: nowrap; }
+  .badge-red { background: #fde8e8; color: #c0392b; }
+  .badge-amber { background: #fef3cd; color: #856404; }
+  .badge-green { background: #d4edda; color: #155724; }
+  .badge-dash { color: var(--text-muted); font-size: 12px; }
+
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 24px 0; }
+  .three-col { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin: 24px 0; }
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 22px; }
+  .card-label { font-family: 'Helvetica Neue', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 8px; }
+  .card-value { font-size: 28px; font-weight: 700; color: var(--accent2); line-height: 1.15; margin-bottom: 6px; font-variant-numeric: tabular-nums; }
+  .card-desc { font-size: 13px; color: var(--text-muted); font-family: 'Helvetica Neue', sans-serif; }
+
+  .insight-box { background: var(--surface); border: 1px solid var(--border); border-top: 3px solid var(--accent4); border-radius: 6px; padding: 22px 26px; margin: 22px 0; }
+  .insight-label { font-family: 'Helvetica Neue', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--accent4); margin-bottom: 10px; }
+
+  .open-box { background: var(--surface); border: 1px dashed var(--accent5); border-radius: 6px; padding: 22px 26px; margin: 22px 0; }
+  .open-label { font-family: 'Helvetica Neue', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--accent5); margin-bottom: 10px; }
+
+  .diagram-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 28px 24px; margin: 24px 0; overflow-x: auto; }
+
+  /* ---- Exhibit chrome ---- */
+  .exhibit { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 24px 26px 20px; margin: 22px 0; overflow-x: auto; }
+  .exhibit-label { font-family: 'Helvetica Neue', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--chart-blue); margin-bottom: 6px; }
+  .exhibit-title { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
+  .exhibit-sub { font-family: 'Helvetica Neue', sans-serif; font-size: 12.5px; color: var(--text-muted); margin-bottom: 16px; max-width: 62ch; }
+  .exhibit-note { font-family: 'Helvetica Neue', sans-serif; font-size: 12px; color: var(--text-muted); font-style: italic; margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--border); max-width: none; }
+  .legend-row { display: flex; gap: 18px; margin: 0 0 16px; font-family: 'Helvetica Neue', sans-serif; font-size: 11.5px; color: var(--text-muted); flex-wrap: wrap; }
+  .legend-swatch { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 5px; vertical-align: middle; }
+
+  /* ---- In-cell magnitude bar (sequential, single hue) ---- */
+  .bar-cell { display: flex; align-items: center; gap: 10px; }
+  .bar-track { position: relative; flex: 1; min-width: 60px; height: 14px; background: var(--chart-track); border-radius: 7px; overflow: hidden; }
+  .bar-fill { height: 100%; border-radius: 7px; background: var(--chart-blue); }
+  .bar-fill.muted { background: var(--chart-muted); }
+  .bar-fill.alert { background: var(--chart-red); }
+  .bar-fill.gold { background: var(--chart-gold); }
+  .bar-fill.teal { background: var(--chart-teal); }
+  .bar-value { font-family: 'Helvetica Neue', sans-serif; font-size: 12.5px; font-weight: 700; white-space: nowrap; min-width: 46px; text-align: right; font-variant-numeric: tabular-nums; }
+
+  /* ---- Power ladder (leverage-depth diagram, replaces dense table) ---- */
+  .ladder { margin: 24px 0; }
+  .ladder-zone-heading { font-family: 'Helvetica Neue', sans-serif; font-size: 10.5px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-muted); margin: 22px 0 12px; }
+  .ladder-zone-heading:first-child { margin-top: 0; }
+  .rung { display: flex; gap: 14px; margin-bottom: 18px; }
+  .rung-num { width: 26px; height: 26px; border-radius: 50%; background: var(--tag-bg); display: flex; align-items: center; justify-content: center; font-family: 'Helvetica Neue', sans-serif; font-weight: 700; font-size: 12px; color: var(--text); flex-shrink: 0; }
+  .rung-body { flex: 1; min-width: 0; }
+  .rung-title-row { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; flex-wrap: wrap; margin-bottom: 6px; }
+  .rung-title { font-size: 14.5px; font-weight: 700; }
+  .rung-bartrack { position: relative; height: 12px; background: var(--chart-track); border-radius: 6px; overflow: hidden; margin-bottom: 8px; }
+  .rung-barfill { height: 100%; border-radius: 6px; }
+  .rung-barfill.fill-surface { background: #3f8f52; }
+  .rung-barfill.fill-middle { background: #c07a1e; }
+  .rung-barfill.fill-failure { background: var(--accent2); }
+  .rung-barfill.fill-foundation { background: var(--accent); }
+  .rung-caption { font-family: 'Helvetica Neue', sans-serif; font-size: 12.5px; color: var(--text-muted); line-height: 1.55; max-width: none; }
+
+  /* ---- Dumbbell (prior year / current year, one hue two shades) ---- */
+  .dumbbell { display: flex; flex-direction: column; gap: 4px; min-width: 170px; }
+  .dumbbell-row { display: flex; align-items: center; gap: 8px; }
+  .dumbbell-tag { font-family: 'Helvetica Neue', sans-serif; font-size: 10px; color: var(--text-muted); width: 30px; flex-shrink: 0; }
+  .dumbbell-track { position: relative; flex: 1; height: 11px; background: var(--chart-track); border-radius: 6px; overflow: hidden; }
+  .dumbbell-fill { height: 100%; border-radius: 6px; }
+  .dumbbell-fill.prior { background: var(--chart-muted); }
+  .dumbbell-fill.current { background: var(--chart-blue); }
+  .dumbbell-fill.current.alert { background: var(--chart-red); }
+  .dumbbell-value { font-family: 'Helvetica Neue', sans-serif; font-size: 11.5px; font-weight: 700; min-width: 68px; text-align: right; font-variant-numeric: tabular-nums; }
+
+  /* ---- Diverging bar (above/below a zero baseline) ---- */
+  .diverging-row { display: grid; grid-template-columns: 168px 1fr 62px; align-items: center; gap: 10px; margin-bottom: 10px; font-family: 'Helvetica Neue', sans-serif; font-size: 12.5px; }
+  .diverging-track { position: relative; height: 14px; background: var(--chart-track); border-radius: 7px; }
+  .diverging-center { position: absolute; left: 50%; top: -3px; bottom: -3px; width: 1px; background: var(--text-muted); opacity: 0.5; }
+  .diverging-fill { position: absolute; top: 0; height: 100%; border-radius: 7px; }
+  .diverging-fill.positive { left: 50%; background: var(--chart-blue); }
+  .diverging-fill.negative { right: 50%; background: var(--chart-red); }
+  .diverging-value { font-weight: 700; text-align: right; font-variant-numeric: tabular-nums; }
+  .diverging-zero-labels { display: grid; grid-template-columns: 168px 1fr 62px; gap: 10px; font-family: 'Helvetica Neue', sans-serif; font-size: 10px; color: var(--text-muted); margin-bottom: 6px; }
+  .diverging-zero-labels span:nth-child(2) { text-align: center; }
+
+  /* ---- Stat tile delta ---- */
+  .stat-delta { display: inline-flex; align-items: center; gap: 4px; font-family: 'Helvetica Neue', sans-serif; font-size: 11.5px; font-weight: 700; padding: 2px 8px; border-radius: 4px; margin-left: 8px; vertical-align: middle; }
+  .stat-delta.flag-bad { background: #fde8e8; color: #c0392b; }
+  .stat-delta.flag-good { background: #d4edda; color: #155724; }
+  .stat-delta.flag-neutral { background: var(--tag-bg); color: var(--text-muted); }
+
+  /* Causal chain — CSS grid, no SVG */
+  .causal-top { background: var(--accent); color: #fff; border-radius: 6px; padding: 16px 20px; text-align: center; font-family: 'Helvetica Neue', sans-serif; font-size: 13px; font-weight: 700; margin-bottom: 4px; }
+  .causal-arrow-row { text-align: center; color: var(--text-muted); font-size: 20px; line-height: 1.2; margin: 2px 0; }
+  .causal-columns { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 4px 0; }
+  .causal-col { display: flex; flex-direction: column; gap: 4px; }
+  .causal-item { border-radius: 6px; padding: 12px 14px; font-family: 'Helvetica Neue', sans-serif; font-size: 12px; line-height: 1.5; color: #fff; }
+  .causal-consequence { background: var(--accent2); }
+  .causal-factor { background: var(--accent3); }
+  .causal-structural { background: #1d3557; }
+  .causal-item-title { font-weight: 700; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; opacity: 0.8; margin-bottom: 4px; display: block; }
+  .causal-shared-root { background: var(--accent4); color: #fff; border-radius: 6px; padding: 16px 20px; text-align: center; font-family: 'Helvetica Neue', sans-serif; font-size: 13px; font-weight: 700; margin-top: 4px; }
+  .causal-annotation { border: 1.5px dashed var(--accent4); border-radius: 6px; padding: 16px 20px; margin-top: 14px; font-size: 13.5px; font-style: italic; color: var(--text-muted); max-width: none; }
+
+  .divider { height: 1px; background: var(--border); margin: 40px 0; }
+  .footer { background: var(--surface); border-top: 1px solid var(--border); padding: 28px 64px; font-family: 'Helvetica Neue', sans-serif; font-size: 12px; color: var(--text-muted); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
+  .method-note { background: var(--bg); border-top: 1px solid var(--border); padding: 20px 64px; font-family: 'Helvetica Neue', sans-serif; font-size: 11.5px; color: var(--text-muted); line-height: 1.6; }
+  .method-note .method-label { font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text); margin-right: 6px; }
+
+  @media (max-width: 720px) {
+    .header, .container, .closing-section, .footer { padding-left: 24px; padding-right: 24px; }
+    .two-col, .three-col, .causal-columns { grid-template-columns: 1fr; }
+  }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <button class="toggle-btn" onclick="document.body.classList.toggle('dark')" aria-label="Toggle dark mode">☾ / ☀</button>
+  <div class="header-brand">Amplified Insight · Diagnostic Brief · July 2026</div>
+  <h1>Busy Is Not the Same as Capable</h1>
+  <div class="header-opening">
+    <p>This industrial engineering company is sixty years old and a household name at home. It just closed its best quarter ever. Its order backlog is up 27% from last year. Its Chairperson opened the annual report celebrating "a marked improvement in the quality of orders." Every number said the same thing: up.</p>
+    <p>But look at one quarter inside that same year. New orders jumped 112%. The cost of the people who actually build and deliver that work grew only 8.7%. The company's own auditors noticed something too: how revenue gets booked on long, complicated contracts needed a separate, independent check. They set aside hundreds of crores against money already counted as revenue — in case it never gets collected.</p>
+    <p>The easy read is: great growth, a few wrinkles to iron out. Here's a harder question instead. A backlog proves customers want the work. It says nothing about whether the company can actually deliver it. So who was watching that second number, while the first one still looked this good?</p>
+    <div class="question">This brief works backwards from a record year to the quiet arithmetic sitting underneath it — and asks what a leader should check today, while the numbers still look good.</div>
+  </div>
+  <div class="header-meta">Amplified Insight · Aanand Ladgaonkar · Vadodara · July 2026</div>
+</div>
+
+<div class="verdict-bar">
+  This brief works backwards from a record order book — from the headline everyone read as good news, to the cash arithmetic nobody read at all — and asks what to test before a growing backlog turns into a growing liability.
+</div>
+
+<div class="container">
+
+  <!-- 01 THE PATTERN -->
+  <section>
+    <div class="section-label">01 · The Pattern</div>
+    <h2>When the Order Book Grows Faster Than the Ability to Deliver It</h2>
+
+    <p>Picture any company that builds and installs big, complicated equipment. It wins more work than it has ever won before. Revenue, backlog, profit — all up together. The annual report practically writes itself. But there's a second number nobody puts in the headline: are there enough engineers, enough commissioning teams, enough hands, to actually build and deliver all that new work? That number can grow much slower than the sales number, quietly, for a long time.</p>
+
+    <p>When it does, nothing dramatic happens. The company just reports a record year. The strain shows up first in the boring places — cash coming in slower even though profit is rising, the shakiest kind of revenue growing fastest, cash getting tied up in working capital. None of these look alarming by themselves. Together, they're the earliest, cheapest warning that a company is selling faster than it can deliver.</p>
+
+    <div class="callout">
+      The easy story is "strong demand met by strong execution." The real story: delivery capacity fell behind months before anyone wrote a sentence about it — and the cash-flow statement showed it before anything else did.
+    </div>
+
+    <div class="two-col">
+      <div class="card">
+        <div class="card-label">Order inflow growth, single quarter, vs. prior year</div>
+        <div class="card-value">+112%</div>
+        <div class="card-desc">Against a workforce cost base that grew 8.7% in the same quarter — the constraint isn't demand, it's throughput</div>
+      </div>
+      <div class="card">
+        <div class="card-label">Operating cash generated, year-on-year</div>
+        <div class="card-value">−50%</div>
+        <div class="card-desc">₹1,079.79 Cr the year before to ₹541.55 Cr this year — in the same year profit after tax hit a record ₹720 Cr</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 02 THE FAILURE STACK -->
+  <section>
+    <div class="section-label">02 · The Failure Stack</div>
+    <h2>Four Layers Deep — And the Deepest One Was Never in the Headline</h2>
+
+    <p>Read only the press release, and this is a growth story. Read to the bottom of the financial statements, and it's a story about the one resource that never grew to match it.</p>
+
+    <div class="ladder">
+      <div class="ladder-zone-heading">Surface — most visible, least consequential</div>
+
+      <div class="rung">
+        <div class="rung-num">1</div>
+        <div class="rung-body">
+          <div class="rung-title-row"><span class="rung-title">Events</span><span class="badge badge-green">The headline</span></div>
+          <div class="rung-bartrack"><div class="rung-barfill fill-surface" style="width:20%;"></div></div>
+          <div class="rung-caption">Record quarterly revenue. Order backlog up 27% year-on-year to over ₹13,600 Cr. A dividend sweetened to mark a milestone anniversary.</div>
+        </div>
+      </div>
+
+      <div class="ladder-zone-heading">Middle — visible only if you read the trend line</div>
+
+      <div class="rung">
+        <div class="rung-num">2</div>
+        <div class="rung-body">
+          <div class="rung-title-row"><span class="rung-title">Patterns</span><span class="badge badge-amber">Visible only in the numbers</span></div>
+          <div class="rung-bartrack"><div class="rung-barfill fill-middle" style="width:48%;"></div></div>
+          <div class="rung-caption">Workforce cost grew a fraction as fast as new orders. Margin in the biggest, best-run business shrank even though its revenue grew 15%. Unbilled revenue on the books grew 20% in a single year — faster than invoiced receivables.</div>
+        </div>
+      </div>
+
+      <div class="ladder-zone-heading">The failure zone — where the actual failure lived</div>
+
+      <div class="rung">
+        <div class="rung-num">3</div>
+        <div class="rung-body">
+          <div class="rung-title-row"><span class="rung-title">Structures</span><span class="badge badge-red">Where it failed</span></div>
+          <div class="rung-bartrack"><div class="rung-barfill fill-failure" style="width:75%;"></div></div>
+          <div class="rung-caption">Money and management time flowed toward a newer, unproven bet. The actual bottleneck — engineering and commissioning capacity to deliver the backlog — got no matching investment. One acquisition inside that new bet was bought, then sold back, within two years, after the deal terms couldn't be met.</div>
+        </div>
+      </div>
+
+      <div class="ladder-zone-heading">Foundation — deepest, and driving everything above it</div>
+
+      <div class="rung" style="margin-bottom:0;">
+        <div class="rung-num">4</div>
+        <div class="rung-body">
+          <div class="rung-title-row"><span class="rung-title">The unstated belief</span><span class="badge-dash">Never said out loud</span></div>
+          <div class="rung-bartrack"><div class="rung-barfill fill-foundation" style="width:100%;"></div></div>
+          <div class="rung-caption">Everyone already knew delivery was the real constraint — the executives who named a multi-year quality programme, the auditors who flagged revenue recognition as a key risk. Nobody ever said out loud: "grow the backlog no faster than we can deliver it." So nobody had to act on it.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="exhibit">
+      <div class="exhibit-label">Exhibit 1</div>
+      <div class="exhibit-title">Where the New Orders Are Coming From</div>
+      <div class="exhibit-sub">Share of new orders by industry, this year vs. last. The order book didn't just get bigger — it shifted toward the industries with the longest, hardest-to-build contracts.</div>
+      <div class="legend-row"><span><span class="legend-swatch" style="background:var(--chart-muted);"></span>Year before</span><span><span class="legend-swatch" style="background:var(--chart-blue);"></span>This year</span></div>
+
+      <div class="dumbbell" style="gap:14px;">
+        <div>
+          <div style="font-family:'Helvetica Neue',sans-serif; font-size:12.5px; font-weight:600; margin-bottom:4px;">Power</div>
+          <div class="dumbbell-row"><span class="dumbbell-tag">Prior</span><div class="dumbbell-track"><div class="dumbbell-fill prior" style="width:40%;"></div></div><span class="dumbbell-value">10%</span></div>
+          <div class="dumbbell-row"><span class="dumbbell-tag">Now</span><div class="dumbbell-track"><div class="dumbbell-fill current" style="width:80%;"></div></div><span class="dumbbell-value">20%</span></div>
+        </div>
+        <div>
+          <div style="font-family:'Helvetica Neue',sans-serif; font-size:12.5px; font-weight:600; margin-bottom:4px;">Refinery &amp; petrochemicals</div>
+          <div class="dumbbell-row"><span class="dumbbell-tag">Prior</span><div class="dumbbell-track"><div class="dumbbell-fill prior" style="width:16%;"></div></div><span class="dumbbell-value">4%</span></div>
+          <div class="dumbbell-row"><span class="dumbbell-tag">Now</span><div class="dumbbell-track"><div class="dumbbell-fill current" style="width:48%;"></div></div><span class="dumbbell-value">12%</span></div>
+        </div>
+        <div>
+          <div style="font-family:'Helvetica Neue',sans-serif; font-size:12.5px; font-weight:600; margin-bottom:4px;">Metals &amp; mining</div>
+          <div class="dumbbell-row"><span class="dumbbell-tag">Prior</span><div class="dumbbell-track"><div class="dumbbell-fill prior" style="width:88%;"></div></div><span class="dumbbell-value">22%</span></div>
+          <div class="dumbbell-row"><span class="dumbbell-tag">Now</span><div class="dumbbell-track"><div class="dumbbell-fill current" style="width:52%;"></div></div><span class="dumbbell-value">13%</span></div>
+        </div>
+        <div>
+          <div style="font-family:'Helvetica Neue',sans-serif; font-size:12.5px; font-weight:600; margin-bottom:4px;">Cement</div>
+          <div class="dumbbell-row"><span class="dumbbell-tag">Prior</span><div class="dumbbell-track"><div class="dumbbell-fill prior" style="width:16%;"></div></div><span class="dumbbell-value">4%</span></div>
+          <div class="dumbbell-row"><span class="dumbbell-tag">Now</span><div class="dumbbell-track"><div class="dumbbell-fill current" style="width:24%;"></div></div><span class="dumbbell-value">6%</span></div>
+        </div>
+        <div>
+          <div style="font-family:'Helvetica Neue',sans-serif; font-size:12.5px; font-weight:600; margin-bottom:4px;">Data centres <span class="badge badge-green" style="margin-left:4px;">New this year</span></div>
+          <div class="dumbbell-row"><span class="dumbbell-tag">Prior</span><div class="dumbbell-track"><div class="dumbbell-fill prior" style="width:0%;"></div></div><span class="dumbbell-value">Nil</span></div>
+          <div class="dumbbell-row"><span class="dumbbell-tag">Now</span><div class="dumbbell-track"><div class="dumbbell-fill current" style="width:4%;"></div></div><span class="dumbbell-value">1%</span></div>
+        </div>
+        <div>
+          <div style="font-family:'Helvetica Neue',sans-serif; font-size:12.5px; font-weight:600; margin-bottom:4px;">Everything else (chemicals, food &amp; beverage, and 8 smaller categories)</div>
+          <div class="dumbbell-row"><span class="dumbbell-tag">Prior</span><div class="dumbbell-track"><div class="dumbbell-fill prior" style="width:100%;"></div></div><span class="dumbbell-value">60%</span></div>
+          <div class="dumbbell-row"><span class="dumbbell-tag">Now</span><div class="dumbbell-track"><div class="dumbbell-fill current" style="width:78%;"></div></div><span class="dumbbell-value">47%</span></div>
+        </div>
+      </div>
+      <div class="exhibit-note">In plain terms: Power and Refinery &amp; Petrochemicals — the slowest, most complicated jobs to build — went from 14% of new orders to 32%, combined, in one year. Metals &amp; Mining, a simpler category, shrank. So the backlog isn't just bigger than last year's. It's harder to build than last year's.</div>
+    </div>
+
+    <div class="exhibit">
+      <div class="exhibit-label">Exhibit 2</div>
+      <div class="exhibit-title">Same Order Book, Very Different Machines Underneath It</div>
+      <div class="exhibit-sub">Revenue growth by business unit, this year vs. last. One "record year" headline is hiding a unit that grew 118% sitting right next to one that shrank 19%.</div>
+
+      <div class="diverging-zero-labels"><span></span><span>0%</span><span></span></div>
+      <div class="diverging-row">
+        <div>Core equipment &amp; heating (largest unit)</div>
+        <div class="diverging-track"><div class="diverging-center"></div><div class="diverging-fill positive" style="width:6%;"></div></div>
+        <div class="diverging-value" style="color:var(--chart-blue);">+15%</div>
+      </div>
+      <div class="diverging-row">
+        <div>High-purity water systems (India)</div>
+        <div class="diverging-track"><div class="diverging-center"></div><div class="diverging-fill positive" style="width:12%;"></div></div>
+        <div class="diverging-value" style="color:var(--chart-blue);">+29%</div>
+      </div>
+      <div class="diverging-row">
+        <div>Cooling &amp; heating unit, UK</div>
+        <div class="diverging-track"><div class="diverging-center"></div><div class="diverging-fill positive" style="width:22%;"></div></div>
+        <div class="diverging-value" style="color:var(--chart-blue);">+54%</div>
+      </div>
+      <div class="diverging-row">
+        <div>Cooling unit, USA (data-centre wins)</div>
+        <div class="diverging-track"><div class="diverging-center"></div><div class="diverging-fill positive" style="width:49%;"></div></div>
+        <div class="diverging-value" style="color:var(--chart-blue);">+118%</div>
+      </div>
+      <div class="diverging-row">
+        <div>Boiler unit, Denmark</div>
+        <div class="diverging-track"><div class="diverging-center"></div><div class="diverging-fill negative" style="width:5%;"></div></div>
+        <div class="diverging-value" style="color:var(--chart-red);">−13%</div>
+      </div>
+      <div class="diverging-row">
+        <div>Process-heating unit, Indonesia</div>
+        <div class="diverging-track"><div class="diverging-center"></div><div class="diverging-fill negative" style="width:8%;"></div></div>
+        <div class="diverging-value" style="color:var(--chart-red);">−19%</div>
+      </div>
+      <div class="exhibit-note">In plain terms: the Indonesia unit's own management said its decline came from "project execution and revenue recognition" problems — the exact same issue driving the group-wide story, showing up on its own, in a different country's books. A record year at the group level is just an average. The pieces underneath don't all tell the same story.</div>
+    </div>
+  </section>
+
+  <!-- 03 ROOT CAUSE -->
+  <section>
+    <div class="section-label">03 · The Root Cause</div>
+    <h2>Two Constraints, and Only the Wrong One Got the Capital</h2>
+
+    <p>Two separate problems are stacked on top of each other here. The first is simple: you can't add engineers and commissioning teams as fast as new orders are arriving. In the sharpest quarter, workforce cost grew about one-thirteenth as fast as new bookings. The second problem sits on top of the first: money and management attention aren't going to fix that gap first. They're going, instead, to a newer growth bet that the company's own leadership has already admitted, in writing, "has not been performing as planned."</p>
+
+    <p>This isn't a story about buying the wrong equipment. The company tested its physical assets and acquired goodwill this year and found nothing wrong with either — the plant, the machines, the acquired capability are all healthy by its own measure. The problem is entirely about what gets funded first, not what was built.</p>
+
+    <div class="exhibit">
+      <div class="exhibit-label">Exhibit 3</div>
+      <div class="exhibit-title">Where the Capital Actually Went</div>
+      <div class="exhibit-sub">A segment-by-segment capex split isn't public — worth flagging on its own, since it's the one number that would settle this argument outright. What is public points the same way as everything else here.</div>
+      <div class="three-col">
+        <div class="card">
+          <div class="card-label">Capital work-in-progress<span class="stat-delta flag-neutral">+156%</span></div>
+          <div class="card-value" style="font-size:24px;">₹563 Cr → ₹1,442 Cr</div>
+          <div class="card-desc">Projects under construction, more than doubled in a single year — a genuine forward capital commitment, not a one-off</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Total borrowings<span class="stat-delta flag-bad">+35%</span></div>
+          <div class="card-value" style="font-size:24px;">₹1,693 Cr → ₹2,288 Cr</div>
+          <div class="card-desc">A ₹595 Cr increase, tied by management's own commentary explicitly to funding the newer growth segment's capacity build</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Regular + expansion capex, this year</div>
+          <div class="card-value" style="font-size:24px;">~₹250 Cr</div>
+          <div class="card-desc">Includes a new production line for the core cooling business — the core segment was not starved, but the incremental unit of capital and management attention skewed toward the newer bet</div>
+        </div>
+      </div>
+      <div class="exhibit-note">The gap itself tells you something: capex gets disclosed for the whole company, and discussed in words for each business, but never broken out as a number against each business's own delivery bottleneck. A reader trying to check "is the money following the bottleneck, or the story" can't answer that from what's public. A leadership team confident in its own sequencing would usually be happy to just show the number.</div>
+    </div>
+
+    <div class="exhibit">
+      <div class="exhibit-label">Exhibit 4</div>
+      <div class="exhibit-title">Revenue Recognised vs. Cash Actually Collected</div>
+      <div class="exhibit-sub">Each row is scaled to its own range. Don't compare row to row — watch the gap opening up inside each one, year on year.</div>
+      <div class="legend-row"><span><span class="legend-swatch" style="background:var(--chart-muted);"></span>Year before</span><span><span class="legend-swatch" style="background:var(--chart-blue);"></span>This year</span></div>
+
+      <div style="display:flex; flex-direction:column; gap:16px;">
+        <div>
+          <div style="font-family:'Helvetica Neue',sans-serif; font-size:12.5px; font-weight:600; margin-bottom:4px;">Revenue recognised (₹ Cr)</div>
+          <div class="dumbbell-row"><span class="dumbbell-tag">Prior</span><div class="dumbbell-track"><div class="dumbbell-fill prior" style="width:92%;"></div></div><span class="dumbbell-value">10,369</span></div>
+          <div class="dumbbell-row"><span class="dumbbell-tag">Now</span><div class="dumbbell-track"><div class="dumbbell-fill current" style="width:95%;"></div></div><span class="dumbbell-value">10,694</span></div>
+        </div>
+        <div>
+          <div style="font-family:'Helvetica Neue',sans-serif; font-size:12.5px; font-weight:600; margin-bottom:4px;">Cash generated from operations, before tax (₹ Cr)</div>
+          <div class="dumbbell-row"><span class="dumbbell-tag">Prior</span><div class="dumbbell-track"><div class="dumbbell-fill prior" style="width:95%;"></div></div><span class="dumbbell-value">1,266</span></div>
+          <div class="dumbbell-row"><span class="dumbbell-tag">Now</span><div class="dumbbell-track"><div class="dumbbell-fill current" style="width:67%;"></div></div><span class="dumbbell-value">891</span></div>
+        </div>
+        <div>
+          <div style="font-family:'Helvetica Neue',sans-serif; font-size:12.5px; font-weight:600; margin-bottom:4px;">Net cash actually left after operating (₹ Cr) — the number that pays debt, capex, dividends</div>
+          <div class="dumbbell-row"><span class="dumbbell-tag">Prior</span><div class="dumbbell-track"><div class="dumbbell-fill prior" style="width:95%;"></div></div><span class="dumbbell-value">1,080</span></div>
+          <div class="dumbbell-row"><span class="dumbbell-tag">Now</span><div class="dumbbell-track"><div class="dumbbell-fill current alert" style="width:48%;"></div></div><span class="dumbbell-value">542</span></div>
+        </div>
+        <div>
+          <div style="font-family:'Helvetica Neue',sans-serif; font-size:12.5px; font-weight:600; margin-bottom:4px;">Cash + investments held, year-end (₹ Cr)</div>
+          <div class="dumbbell-row"><span class="dumbbell-tag">Prior</span><div class="dumbbell-track"><div class="dumbbell-fill prior" style="width:95%;"></div></div><span class="dumbbell-value">2,715</span></div>
+          <div class="dumbbell-row"><span class="dumbbell-tag">Now</span><div class="dumbbell-track"><div class="dumbbell-fill current" style="width:87%;"></div></div><span class="dumbbell-value">2,467</span></div>
+        </div>
+      </div>
+      <div class="exhibit-note">In plain terms: revenue moved 3%. The actual cash left over after running the business moved −50%. Someone reading only the revenue line and the profit line would never see this. It only shows up in the cash-flow statement, three layers below the headline.</div>
+    </div>
+
+    <div class="exhibit">
+      <div class="exhibit-label">Exhibit 5</div>
+      <div class="exhibit-title">Anatomy of the ₹464 Crore Allowance</div>
+      <div class="exhibit-sub">The auditors' number is really two separate provisions, moving at different speeds. Here's the full breakdown, not just the headline figure.</div>
+      <div class="table-scroll">
+        <table>
+          <thead><tr><th>Component</th><th>Opening</th><th>Written off</th><th>New provision</th><th>Reversed</th><th>Closing</th></tr></thead>
+          <tbody>
+            <tr>
+              <td style="font-weight:600;">Invoiced receivables, at risk</td>
+              <td>₹312.23 Cr</td>
+              <td style="color:var(--text-muted);">−₹27.01 Cr</td>
+              <td style="color:var(--chart-blue);">+₹141.25 Cr</td>
+              <td style="color:var(--text-muted);">−₹125.70 Cr</td>
+              <td><div class="bar-cell"><div class="bar-track"><div class="bar-fill" style="width:92%;"></div></div><span class="bar-value">₹295.35 Cr</span></div></td>
+            </tr>
+            <tr>
+              <td style="font-weight:600;">Unbilled (contract-asset) revenue, at risk</td>
+              <td>₹141.38 Cr</td>
+              <td style="color:var(--text-muted);">—</td>
+              <td style="color:var(--chart-blue);">+₹51.20 Cr</td>
+              <td style="color:var(--text-muted);">−₹23.93 Cr</td>
+              <td><div class="bar-cell"><div class="bar-track"><div class="bar-fill teal" style="width:53%;"></div></div><span class="bar-value">₹168.65 Cr</span></div></td>
+            </tr>
+            <tr>
+              <td style="font-weight:700;">Combined — the auditors' figure</td>
+              <td colspan="4" style="color:var(--text-muted);">Net new charge to this year's profit: ₹42.82 Cr</td>
+              <td style="font-weight:700;">₹464.00 Cr</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="exhibit-note">Now vs. later: only ₹42.82 Cr of the ₹464 Cr actually hit this year's profit. The rest built up over earlier years — it isn't a sudden crisis. But the unbilled-revenue piece grew 19% this year, against 10% growth in the receivables piece. The hardest-to-check category of revenue is both the biggest risk and the fastest-growing one. That's exactly what the auditors warned about: this compounds going forward, not backward.</div>
+    </div>
+
+    <div class="callout">
+      A simple test: does new money go first to whatever fixes the actual bottleneck, or to whatever makes the best growth story? When it's consistently the second, a company can report record profit while its ability to turn that profit into cash quietly rots — and nobody in charge of the money feels any urgency, because the headline still reads as success.
+    </div>
+
+    <h3>Why the "Record Profit" Number Needs a Second Look</h3>
+    <p>Strip out a one-time gain — most likely a legal case that got resolved in the company's favour, based on a large litigation deposit that vanished from the balance sheet this year — and pre-tax profit growth drops from a headline ~14% to roughly 7%.</p>
+
+    <div class="exhibit">
+      <div class="exhibit-label">Exhibit 6</div>
+      <div class="exhibit-title">The Record Profit, Reconstructed</div>
+      <div class="table-scroll">
+        <table>
+          <thead><tr><th></th><th>Year before</th><th>This year</th></tr></thead>
+          <tbody>
+            <tr><td style="font-weight:600;">Pre-tax profit, before one-off items</td><td>₹884.47 Cr</td><td>₹946.73 Cr</td></tr>
+            <tr><td style="font-weight:600;">+ One-off gain <span class="badge badge-amber" style="margin-left:4px;">Likely a litigation matter resolving in the company's favour</span></td><td>—</td><td>+ ₹61.21 Cr</td></tr>
+            <tr><td style="font-weight:700;">= Pre-tax profit, as reported</td><td style="font-weight:700;">₹884.47 Cr</td><td style="font-weight:700;">₹1,007.94 Cr</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div style="margin-top:18px;">
+        <div class="dumbbell-row"><span class="dumbbell-tag" style="width:110px; color:var(--text-muted);">As reported</span><div class="dumbbell-track"><div class="dumbbell-fill prior" style="width:88%;"></div></div><span class="dumbbell-value">+14%</span></div>
+        <div class="dumbbell-row"><span class="dumbbell-tag" style="width:110px; color:var(--text);">Organic</span><div class="dumbbell-track"><div class="dumbbell-fill current" style="width:44%;"></div></div><span class="dumbbell-value">+7%</span></div>
+      </div>
+      <div class="exhibit-note">In plain terms: a ₹218.45 Cr litigation-related deposit that sat on the balance sheet last year is gone this year, and a ₹50.63 Cr provision reversal shows up in this year's cash-flow statement as a one-off add-back. Roughly half of the headline growth rate is a legal outcome. Not an operating one.</div>
+    </div>
+
+    <h3>The Tax Question That Compounds the Same Squeeze</h3>
+    <p>A third drain shows up the same year, pulling in the same direction: the company paid far more tax in cash than its own profit-and-loss statement said it owed. That's usually a sign that old dues, not this year's growth, drove the payment.</p>
+
+    <div class="exhibit">
+      <div class="exhibit-label">Exhibit 7</div>
+      <div class="exhibit-title">Tax Provided vs. Tax Actually Paid</div>
+      <div class="legend-row"><span><span class="legend-swatch" style="background:var(--chart-muted);"></span>Year before</span><span><span class="legend-swatch" style="background:var(--chart-blue);"></span>This year</span></div>
+      <div style="display:flex; flex-direction:column; gap:16px;">
+        <div>
+          <div style="font-family:'Helvetica Neue',sans-serif; font-size:12.5px; font-weight:600; margin-bottom:4px;">Tax provided for, in the profit &amp; loss account (₹ Cr)</div>
+          <div class="dumbbell-row"><span class="dumbbell-tag">Prior</span><div class="dumbbell-track"><div class="dumbbell-fill prior" style="width:95%;"></div></div><span class="dumbbell-value">299.63</span></div>
+          <div class="dumbbell-row"><span class="dumbbell-tag">Now</span><div class="dumbbell-track"><div class="dumbbell-fill current" style="width:85%;"></div></div><span class="dumbbell-value">268.05</span></div>
+        </div>
+        <div>
+          <div style="font-family:'Helvetica Neue',sans-serif; font-size:12.5px; font-weight:600; margin-bottom:4px;">Tax actually paid in cash, net of refunds (₹ Cr)</div>
+          <div class="dumbbell-row"><span class="dumbbell-tag">Prior</span><div class="dumbbell-track"><div class="dumbbell-fill prior" style="width:51%;"></div></div><span class="dumbbell-value">185.73</span></div>
+          <div class="dumbbell-row"><span class="dumbbell-tag">Now</span><div class="dumbbell-track"><div class="dumbbell-fill current alert" style="width:95%;"></div></div><span class="dumbbell-value">349.49</span></div>
+        </div>
+      </div>
+      <div class="two-col" style="margin-top:20px;">
+        <div class="card">
+          <div class="card-label">Net income-tax position, start of year</div>
+          <div class="card-value" style="color:var(--text); font-size:24px;">₹54.67 Cr</div>
+          <div class="card-desc">Near-neutral — a small net liability</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Net income-tax position, year-end<span class="stat-delta flag-neutral">+142%</span></div>
+          <div class="card-value" style="font-size:24px;">₹132.22 Cr</div>
+          <div class="card-desc">A net asset — cash the company has effectively pre-paid, waiting to be recovered</div>
+        </div>
+      </div>
+      <div class="exhibit-note">In plain terms: the tax the company said it owed actually fell this year. The tax it paid in cash nearly doubled. That gap means old dues were being cleared this year — a third place, alongside receivables and unbilled revenue, where cash quietly left the business in the same twelve months profit hit a record.</div>
+    </div>
+  </section>
+
+  <!-- 04 DEPTH OF INTERVENTION -->
+  <section>
+    <div class="section-label">04 · Depth of Intervention</div>
+    <h2>Where Management Acted — and Where the Fix Actually Needed to Land</h2>
+
+    <p>Here's the strange part: the fixes a company reaches for first are almost always the weakest ones. The strongest fix — changing what the business is actually trying to do — is almost never touched, because it doesn't show up as a line item you can announce in a press release.</p>
+
+    <div class="ladder">
+      <div class="ladder-zone-heading">Surface — most visible, least powerful</div>
+
+      <div class="rung">
+        <div class="rung-num">12</div>
+        <div class="rung-body">
+          <div class="rung-title-row"><span class="rung-title">Announce a quality programme</span><span class="badge badge-green">Management acted here</span></div>
+          <div class="rung-bartrack"><div class="rung-barfill fill-surface" style="width:22%;"></div></div>
+          <div class="rung-caption">A named, multi-year initiative to improve engineering, sourcing, and site execution — real, but a parameter tweak until it is resourced and timed against the constraint directly</div>
+        </div>
+      </div>
+
+      <div class="rung">
+        <div class="rung-num">11</div>
+        <div class="rung-body">
+          <div class="rung-title-row"><span class="rung-title">Hire and train incrementally</span><span class="badge badge-green">Management acted here</span></div>
+          <div class="rung-bartrack"><div class="rung-barfill fill-surface" style="width:30%;"></div></div>
+          <div class="rung-caption">Workforce cost rising modestly — nowhere near the rate new orders are arriving</div>
+        </div>
+      </div>
+
+      <div class="ladder-zone-heading">Middle — intermediate leverage</div>
+
+      <div class="rung">
+        <div class="rung-num">8</div>
+        <div class="rung-body">
+          <div class="rung-title-row"><span class="rung-title">Shift order mix toward larger, more complex jobs</span><span class="badge badge-amber">Worked against itself</span></div>
+          <div class="rung-bartrack"><div class="rung-barfill fill-middle" style="width:46%;"></div></div>
+          <div class="rung-caption">More power and refinery-scale project work booked this year — higher engineering content per contract, landing on a constraint that was already tight</div>
+        </div>
+      </div>
+
+      <div class="rung">
+        <div class="rung-num">6</div>
+        <div class="rung-body">
+          <div class="rung-title-row"><span class="rung-title">Add board-level oversight after the fact</span><span class="badge badge-amber">Caught it late, not early</span></div>
+          <div class="rung-bartrack"><div class="rung-barfill fill-middle" style="width:58%;"></div></div>
+          <div class="rung-caption">A failed acquisition inside the newer growth segment was identified and unwound — real governance, but only once the capital was already spent</div>
+        </div>
+      </div>
+
+      <div class="ladder-zone-heading">The failure zone — where the actual failure lived</div>
+
+      <div class="rung">
+        <div class="rung-num">5</div>
+        <div class="rung-body">
+          <div class="rung-title-row"><span class="rung-title">Gate new-segment capital against constraint relief</span><span class="badge badge-red">Root failure</span></div>
+          <div class="rung-bartrack"><div class="rung-barfill fill-failure" style="width:70%;"></div></div>
+          <div class="rung-caption">A formal rule requiring any new-segment investment to prove it doesn't compete for the same scarce engineering hours as the core backlog — never established</div>
+        </div>
+      </div>
+
+      <div class="rung">
+        <div class="rung-num">4</div>
+        <div class="rung-body">
+          <div class="rung-title-row"><span class="rung-title">Stress-test the revenue-recognition assumptions independently</span><span class="badge badge-red">Root failure</span></div>
+          <div class="rung-bartrack"><div class="rung-barfill fill-failure" style="width:80%;"></div></div>
+          <div class="rung-caption">Cost-to-complete and margin assumptions on the largest, longest jobs left to internal estimation until the external auditors flagged the risk themselves</div>
+        </div>
+      </div>
+
+      <div class="ladder-zone-heading">Foundation — deepest, most powerful, rarely touched</div>
+
+      <div class="rung" style="margin-bottom:0;">
+        <div class="rung-num">1</div>
+        <div class="rung-body">
+          <div class="rung-title-row"><span class="rung-title">Change what the organisation is actually optimising for</span><span class="badge-dash">Never named as a decision</span></div>
+          <div class="rung-bartrack"><div class="rung-barfill fill-foundation" style="width:100%;"></div></div>
+          <div class="rung-caption">Replacing "grow across every segment at once" with "grow the backlog no faster than delivery capacity can absorb it" — the one change that would reorder every decision beneath it</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 05 FIX SEQUENCE -->
+  <section>
+    <div class="section-label">05 · Fix Sequence</div>
+    <h2>What Should Happen, in Order</h2>
+
+    <p>When the backlog looks this strong, the instinct is to keep selling and worry about delivery later. That instinct is backwards. It's exactly how a good year quietly becomes the year the cracks got laid — while nobody was looking, because the topline gave everyone permission not to look.</p>
+
+    <table>
+      <thead><tr><th style="width:40px;">Order</th><th>Move</th><th>Why it comes here, not later</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>Quantify the actual delivery constraint in hours, not headcount</td><td>A workforce number rising 8.7% looks fine in isolation; expressed against 112% order growth, the shortfall is immediately visible and impossible to explain away</td></tr>
+        <tr><td>2</td><td>Freeze new discretionary capital until the constraint is resourced</td><td>Capital committed to a new growth segment before the core constraint is relieved just compounds the same bottleneck under a different name</td></tr>
+        <tr><td>3</td><td>Only then scale the new bet — with its own kill criteria</td><td>A growth segment funded after the core constraint is resolved behaves like an investment; funded before, it behaves like a distraction with a good story attached</td></tr>
+      </tbody>
+    </table>
+
+    <div class="insight-box">
+      <div class="insight-label">The sequencing error</div>
+      This case ran the sequence backwards. Orders sped up. Money for the new segment followed the growth story. The real bottleneck got a name — a quality programme — but never got first call on the money. That's why announcing the programme didn't change anything: it followed the spending instead of controlling it.
+    </div>
+  </section>
+
+  <!-- 06 CAUSAL CHAIN -->
+  <section>
+    <div class="section-label">06 · Causal Chain</div>
+    <h2>Tracing the Record Year Back to Its Structural Origin</h2>
+
+    <div class="diagram-wrap">
+      <div class="causal-top">Same trigger — order bookings surge 112% in a single quarter against the prior year</div>
+      <div class="causal-arrow-row">↓</div>
+      <div class="causal-columns">
+        <div class="causal-col">
+          <div class="causal-item causal-consequence"><span class="causal-item-title">Consequence</span>Operating cash generated falls 50% in the same year profit hits a record</div>
+          <div class="causal-item causal-factor"><span class="causal-item-title">Causal factor</span>Unbilled revenue and receivables grow faster than cash collected; a large tax payment settles prior-year dues on top</div>
+          <div class="causal-item causal-structural"><span class="causal-item-title">Structural root</span>Delivery capacity never scaled with order inflow, so revenue books faster than cash follows it</div>
+        </div>
+        <div class="causal-col">
+          <div class="causal-item causal-consequence"><span class="causal-item-title">Consequence</span>A ₹464 Cr allowance sits against receivables and unbilled revenue, flagged independently by the auditors</div>
+          <div class="causal-item causal-factor"><span class="causal-item-title">Causal factor</span>The riskiest, least-verified revenue category — unbilled, long-cycle contracts — grows fastest and draws the fastest-growing provision against it</div>
+          <div class="causal-item causal-structural"><span class="causal-item-title">Structural root</span>Cost-to-complete estimation on the largest jobs was never independently stress-tested before the auditors made it a matter of record</div>
+        </div>
+        <div class="causal-col">
+          <div class="causal-item causal-consequence"><span class="causal-item-title">Consequence</span>Debt rises 35% to fund a growth segment that admits it "has not performed as planned"</div>
+          <div class="causal-item causal-factor"><span class="causal-item-title">Causal factor</span>Leadership attention and incremental capital chase the newer, more visible growth story rather than the constraint already straining underneath it</div>
+          <div class="causal-item causal-structural"><span class="causal-item-title">Structural root</span>No rule required new-segment capital to prove it wouldn't compete with the core constraint for the same scarce resource — engineering and commissioning hours</div>
+        </div>
+      </div>
+      <div class="causal-arrow-row">↓</div>
+      <div class="causal-shared-root">Shared root: the business never made "deliver what we can actually build" the stated goal — so money and attention went wherever growth looked most fundable, and the real bottleneck quietly absorbed the difference</div>
+      <div class="causal-annotation">The busy-not-capable trap: a growing backlog gets treated as proof the business is healthy — right up until the gap between what's booked and what's delivered gets too big to hide quietly. By then, fixing it costs far more than it would have in the year the numbers still looked good.</div>
+    </div>
+  </section>
+
+  <!-- 07 DIAGNOSTIC TESTS -->
+  <section>
+    <div class="section-label">07 · Diagnostic Tests</div>
+    <h2>Three Questions a Leader Can Ask Today — Before the Crisis</h2>
+
+    <table>
+      <thead><tr><th style="width:34px;">#</th><th>Question</th><th>What a bad answer sounds like</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>Is the cost of the people who deliver the work growing anywhere near the rate new work is arriving?</td><td>"We're hiring as fast as we can" — offered with no ratio attached, so the gap stays invisible</td></tr>
+        <tr><td>2</td><td>Which category of revenue is growing fastest — invoiced and collected, or booked-but-unbilled?</td><td>"Our order book is healthy" — a backlog number, not a conversion number, used to answer a conversion question</td></tr>
+        <tr><td>3</td><td>Does new-segment capital have to prove it doesn't compete with the core constraint before it's approved — or does it just have to look promising?</td><td>"It's a strategic bet on the future" — a growth narrative substituting for a sequencing rule</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- 08 THREE RULES -->
+  <section>
+    <div class="section-label">08 · Three Rules</div>
+    <h2>Standing Principles From This Case</h2>
+
+    <div class="two-col">
+      <div class="card">
+        <div class="card-label">Rule 1</div>
+        <div class="card-desc" style="font-size:14px; color: var(--text);">A record order book proves people want to buy. It says nothing about whether the company can deliver. Two different numbers — and only one of them usually gets reported loudly.</div>
+      </div>
+      <div class="card">
+        <div class="card-label">Rule 2</div>
+        <div class="card-desc" style="font-size:14px; color: var(--text);">The fix that matters most almost never shows up as a line item. A hiring plan or a quality programme is easy to announce. A rule that says "money goes to the bottleneck first" almost never gets written down as a decision at all.</div>
+      </div>
+    </div>
+    <div class="two-col">
+      <div class="card">
+        <div class="card-label">Rule 3</div>
+        <div class="card-desc" style="font-size:14px; color: var(--text);">The riskiest kind of revenue — booked but not yet billed or collected — deserves more scrutiny as it grows, not less. Especially in the year it's growing fastest.</div>
+      </div>
+      <div class="card">
+        <div class="card-label">Rule 4</div>
+        <div class="card-desc" style="font-size:14px; color: var(--text);">A one-time gain dressed up as an operating win passes a first read and fails a second one. Always separate the number that repeats from the number that doesn't, before celebrating either.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 09 SESSION SUMMARY -->
+  <section>
+    <div class="section-label">09 · Session Summary</div>
+    <h2>Prediction, Delta, What Shifted</h2>
+    <p class="full-width-p"><strong>Prediction locked before the reveal:</strong> over the next two to three quarters, at least one of these shows up — cash conversion stays weak relative to reported profit; the allowance against unbilled revenue jumps again, faster than revenue growth; or a cost overrun gets disclosed on one of the biggest, longest contracts in the backlog. The newer growth bet keeps missing its own targets, and money keeps flowing there faster than it flows to the actual bottleneck.</p>
+    <p class="full-width-p"><strong>Delta, named honestly, before any reveal:</strong> the mechanism here is solid — flagged by the auditors, confirmed in the primary financial statements, admitted in the company's own leadership commentary. The <em>reason</em> behind the money flowing this way is not.</p>
+
+    <div class="exhibit">
+      <div class="exhibit-label">Exhibit 8</div>
+      <div class="exhibit-title">Why Push This Hard Into an Underperforming Bet — Four Readings, Same Facts</div>
+      <div class="exhibit-sub">Ownership is concentrated — about 62% held by two founding-family vehicles, unchanged all year — and the dividend stayed conservative. That rules out the obvious motive (propping up the stock price for a scattered shareholder base), without telling us which of these four is the real one.</div>
+      <div class="table-scroll">
+        <table>
+          <thead><tr><th style="width:200px;">Reading</th><th>What supports it</th><th>What cuts against it</th></tr></thead>
+          <tbody>
+            <tr>
+              <td style="font-weight:600;">The professional managers are chasing growth, and the family is letting them</td>
+              <td>Day-to-day spending decisions sit with professional executives, not the family; the family holds oversight seats, not operating roles</td>
+              <td>The board did catch and unwind the failed acquisition — oversight is real, just after the money was already spent, not before</td>
+            </tr>
+            <tr>
+              <td style="font-weight:600;">It's a genuine hedge against a real, slow-moving threat to the core business</td>
+              <td>The core is decades-old boiler and heating equipment; an owner thinking in generations has good reason to fund a transition bet early</td>
+              <td>A hedge that isn't sequenced behind the real bottleneck just becomes a second bottleneck — good intentions, same execution problem</td>
+            </tr>
+            <tr>
+              <td style="font-weight:600;">This is institution-building on a multi-decade clock, not a share-price clock</td>
+              <td>Reserves untouched, borrowing still low by any standard, dividend policy basically unchanged — all consistent with patient money</td>
+              <td>Patient money still has to be spent in the right order; "we can afford to wait" isn't the same as "we're spending this correctly"</td>
+            </tr>
+            <tr>
+              <td style="font-weight:600;">The new segment's reputation is quietly feeding the core business's own order book</td>
+              <td>The cooling business's data-centre wins — the fastest-growing line in the whole company — came through the existing core franchise, not a stand-alone unit</td>
+              <td>Doesn't explain the failed acquisition in the <em>other</em> new segment, which had no visible link back to the core business at all</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="exhibit-note">One fact is worth sitting with no matter which reading is right: the new segment bought a company, couldn't close the deal on the agreed terms, and sold it back to the original owners within two years. Elsewhere in the group, a different acquisition was paid for entirely in the company's own shares, not cash — meaning the stock price itself is already a working currency for future deals. Whichever motive is true, getting the sequencing wrong costs the same way: a share-funded acquisition strategy is only as strong as the market's trust in the numbers behind it, and today's numbers carry an auditor's flag on exactly the line a future deal would need people to believe.</div>
+    </div>
+    <h3>What Would Prove This Wrong</h3>
+    <p class="full-width-p">A prediction nobody can check isn't a diagnosis — it's an opinion. Here are four things to watch over the next year that would say the bottleneck is getting fixed, not getting worse:</p>
+    <div class="table-scroll">
+      <table>
+        <thead><tr><th style="width:260px;">Signal</th><th>What "resolved" looks like</th></tr></thead>
+        <tbody>
+          <tr><td>Operating cash vs. reported profit</td><td>Cash conversion climbs back toward last year's level, where operating cash actually beat profit — not just holds steady at this year's weaker ratio</td></tr>
+          <tr><td>Allowance against unbilled revenue</td><td>Its growth rate falls back in line with, or below, revenue growth — instead of continuing to outpace the allowance on invoiced receivables</td></tr>
+          <tr><td>The newer growth segment</td><td>No further acquisition inside it needs to be unwound, and it starts converting orders at a rate that matches the money already spent on it</td></tr>
+          <tr><td>Large, long-cycle contracts</td><td>No disclosed cost overrun or schedule slip shows up on the biggest jobs in the backlog</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p class="full-width-p"><strong>What shifted:</strong> the right question about a growing order book isn't "is demand strong" — that was never in doubt. It's "is the booked work turning into delivered, collected cash at anything like the same speed." That question travels to any equipment or project business celebrating a record backlog, not just this one.</p>
+  </section>
+
+</div>
+
+<div class="closing-section">
+  <div class="closing-label">Closing</div>
+  <h2>Busy Is Not the Same as Capable</h2>
+  <p>The backlog was real. The record quarter was real. The dividend, the anniversary, the letter celebrating "a marked improvement in the quality of orders" — all real, none of it false. That's exactly what makes a year like this the hardest one to question: everything you're trained to look for said the business was healthy.</p>
+  <p>What the headline never measured is the number underneath it — whether the ability to deliver grew anywhere near as fast as the willingness to sell. A backlog that outruns delivery capacity doesn't announce itself as a crisis. It announces itself as a record year. And waits.</p>
+  <div class="closing-question">The year the order book looks this good is the only year you can still ask, cheaply, whether you can actually deliver it. Every year after that, the same question costs more to ask, and gets a worse answer.</div>
+  <div class="take-with-you">
+    <div class="take-label">Take With You</div>
+    <div class="take-line">The best year to distrust a profit number is the year it sets a record.</div>
+  </div>
+  <div class="closing-line">Amplified Insight · Diagnostic Brief · July 2026</div>
+</div>
+
+<div class="method-note">
+  <span class="method-label">Method</span>Diagnostic built on a constraint-and-leverage framework developed by Aanand Ladgaonkar over a private, cross-domain synthesis library — systems thinking, organisational lifecycle, capital allocation — cross-checked here against primary filings, cash-flow statements, and statutory audit disclosures. Drafted in collaboration with Claude (Anthropic).
+</div>
+
+<div class="footer">
+  <div>Amplified Insight · Diagnostic Series</div>
+  <div>Pattern-first. Anonymised by default. The company is the specimen, not the story.</div>
+</div>
+
+</body>
+</html>
