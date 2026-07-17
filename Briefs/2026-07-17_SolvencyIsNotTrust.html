@@ -207,6 +207,23 @@
     .two-col, .three-col, .causal-columns { grid-template-columns: 1fr; }
   }
   @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+
+  @media print {
+    .toggle-btn { display: none; }
+    p { max-width: none; }
+    .two-col, .three-col, .causal-columns { display: block; }
+    .two-col > *, .three-col > *, .causal-columns > * { margin-bottom: 14px; }
+    .two-col > *:last-child, .three-col > *:last-child, .causal-columns > *:last-child { margin-bottom: 0; }
+    .card, .rung, .callout, .insight-box, .open-box, .causal-item, tr {
+      break-inside: avoid; page-break-inside: avoid;
+    }
+    .exhibit, table, .diagram-wrap { break-inside: auto; page-break-inside: auto; }
+    h2, h3, .section-label, .exhibit-label, .exhibit-title { break-after: avoid; page-break-after: avoid; }
+    .ladder-zone-heading { break-after: avoid; page-break-after: avoid; }
+    section { break-inside: auto; }
+    p, .rung-caption, .exhibit-note { orphans: 3; widows: 3; }
+    .header, .closing-section { break-inside: avoid; }
+  }
 </style>
 </head>
 <body>
