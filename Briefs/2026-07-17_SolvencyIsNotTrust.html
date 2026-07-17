@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Solvency Is Not the Same as Trust — Amplified Insight</title>
+<style>
+  :root {
+    --bg: #f9f7f4;
+    --surface: #ffffff;
+    --border: #e2ddd7;
+    --text: #1a1a1a;
+    --text-muted: #6b6b6b;
+    --accent: #1d3557;
+    --accent2: #e63946;
+    --accent3: #457b9d;
+    --accent4: #2a9d8f;
+    --accent5: #6d28d9;
+    --tag-bg: #eef2f7;
+    --table-head: #f0ede8;
+    --red-row: #fff0f0;
+    --amber-row: #fffbf0;
+    --green-row: #f0faf2;
+    --purple-row: #f5f0ff;
+    --chart-blue: #2f6fb0;
+    --chart-red: #e63946;
+    --chart-teal: #1f8f7a;
+    --chart-gold: #b5651d;
+    --chart-track: #e6e0d7;
+    --chart-muted: #a39c90;
+  }
+  .dark {
+    --bg: #111214;
+    --surface: #1c1e22;
+    --border: #2e3138;
+    --text: #e8e6e1;
+    --text-muted: #9a9a9a;
+    --accent: #4a90d9;
+    --accent2: #e63946;
+    --accent3: #70b8d8;
+    --accent4: #2a9d8f;
+    --accent5: #a78bfa;
+    --tag-bg: #252830;
+    --table-head: #252830;
+    --red-row: #2d1a1a;
+    --amber-row: #2d2a1a;
+    --green-row: #1a2d1e;
+    --purple-row: #241a30;
+    --chart-blue: #4f8fc4;
+    --chart-red: #e8636f;
+    --chart-teal: #2a9d8f;
+    --chart-gold: #b8790a;
+    --chart-track: #33363c;
+    --chart-muted: #565a62;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Georgia', serif; background: var(--bg); color: var(--text); line-height: 1.75; transition: background 0.3s, color 0.3s; }
+  ::selection { background: var(--accent3); color: #fff; }
+
+  .header { background: var(--accent); color: #fff; padding: 56px 64px 48px; position: relative; }
+  .header-brand { font-family: 'Helvetica Neue', sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 3px; text-transform: uppercase; opacity: 0.6; margin-bottom: 24px; }
+  .header h1 { font-size: 38px; font-weight: 700; line-height: 1.2; max-width: 720px; margin-bottom: 28px; text-wrap: balance; }
+  .header-opening { max-width: 680px; }
+  .header-opening p { font-size: 16px; line-height: 1.8; opacity: 0.88; margin-bottom: 16px; }
+  .header-opening p:last-child { margin-bottom: 0; }
+  .header-opening .question { font-size: 17px; font-style: italic; opacity: 1; font-weight: 500; border-left: 3px solid rgba(255,255,255,0.4); padding-left: 18px; margin-top: 24px; }
+  .header-meta { margin-top: 32px; font-family: 'Helvetica Neue', sans-serif; font-size: 12px; opacity: 0.45; }
+  .toggle-btn { position: absolute; top: 24px; right: 24px; background: rgba(255,255,255,0.14); border: 1px solid rgba(255,255,255,0.28); color: #fff; padding: 6px 14px; border-radius: 4px; cursor: pointer; font-family: 'Helvetica Neue', sans-serif; font-size: 12px; }
+  .toggle-btn:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+
+  .verdict-bar { background: var(--surface); border-bottom: 1px solid var(--border); padding: 20px 64px; font-family: 'Helvetica Neue', sans-serif; font-size: 13px; color: var(--text-muted); font-style: italic; }
+  .closing-section { background: var(--accent); color: #fff; padding: 56px 64px; }
+  .closing-section .closing-label { font-family: 'Helvetica Neue', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; opacity: 0.55; margin-bottom: 20px; }
+  .closing-section h2 { font-size: 26px; font-weight: 700; line-height: 1.3; max-width: 680px; margin-bottom: 28px; text-wrap: balance; }
+  .closing-section p { font-size: 16px; line-height: 1.8; opacity: 0.85; max-width: 680px; margin-bottom: 18px; }
+  .closing-section .closing-question { font-size: 18px; font-style: italic; font-weight: 500; opacity: 1; border-left: 3px solid rgba(255,255,255,0.4); padding-left: 20px; margin: 32px 0; max-width: 640px; line-height: 1.7; }
+  .closing-section .take-with-you { margin-top: 40px; padding-top: 28px; border-top: 1px solid rgba(255,255,255,0.25); }
+  .closing-section .take-label { font-family: 'Helvetica Neue', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; opacity: 0.55; margin-bottom: 14px; }
+  .closing-section .take-line { font-size: 20px; font-style: italic; font-weight: 500; max-width: 640px; line-height: 1.6; }
+  .closing-section .closing-line { font-family: 'Helvetica Neue', sans-serif; font-size: 13px; opacity: 0.5; margin-top: 36px; }
+
+  .container { max-width: 980px; margin: 0 auto; padding: 52px 64px; }
+  section { margin-bottom: 60px; }
+
+  .section-label { font-family: 'Helvetica Neue', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: var(--accent3); margin-bottom: 10px; }
+  h2 { font-size: 22px; font-weight: 700; margin-bottom: 18px; line-height: 1.3; text-wrap: balance; }
+  h3 { font-size: 16px; font-weight: 700; margin: 28px 0 10px; }
+  p { margin-bottom: 16px; font-size: 15px; max-width: 68ch; }
+  .full-width-p { max-width: none; }
+
+  .callout { border-left: 4px solid var(--accent2); background: var(--surface); padding: 18px 22px; margin: 24px 0; border-radius: 0 6px 6px 0; font-size: 15px; font-style: italic; max-width: none; }
+
+  .table-scroll { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 13.5px; font-family: 'Helvetica Neue', sans-serif; font-variant-numeric: tabular-nums; }
+  th { background: var(--table-head); padding: 10px 14px; text-align: left; font-weight: 600; border-bottom: 2px solid var(--border); font-size: 12px; letter-spacing: 0.3px; }
+  td { padding: 10px 14px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  tr:last-child td { border-bottom: none; }
+
+  .zone-sep td { font-family: 'Helvetica Neue', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; padding: 8px 14px; border-bottom: none; }
+  .zone-surface { background: var(--green-row); }
+  .zone-surface.zone-sep td { color: #2e7d32; }
+  .zone-middle { background: var(--amber-row); }
+  .zone-middle.zone-sep td { color: #b45309; }
+  .zone-failure { background: var(--red-row); }
+  .zone-failure.zone-sep td { color: #b91c1c; }
+  .zone-foundation { background: var(--purple-row); }
+  .zone-foundation.zone-sep td { color: var(--accent5); }
+
+  .badge { display: inline-block; font-family: 'Helvetica Neue', sans-serif; font-size: 11px; font-weight: 700; padding: 3px 9px; border-radius: 3px; white-space: nowrap; }
+  .badge-red { background: #fde8e8; color: #c0392b; }
+  .badge-amber { background: #fef3cd; color: #856404; }
+  .badge-green { background: #d4edda; color: #155724; }
+  .badge-dash { color: var(--text-muted); font-size: 12px; }
+
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 24px 0; }
+  .three-col { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin: 24px 0; }
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 22px; }
+  .card-label { font-family: 'Helvetica Neue', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 8px; }
+  .card-value { font-size: 28px; font-weight: 700; color: var(--accent2); line-height: 1.15; margin-bottom: 6px; font-variant-numeric: tabular-nums; }
+  .card-desc { font-size: 13px; color: var(--text-muted); font-family: 'Helvetica Neue', sans-serif; }
+
+  .insight-box { background: var(--surface); border: 1px solid var(--border); border-top: 3px solid var(--accent4); border-radius: 6px; padding: 22px 26px; margin: 22px 0; }
+  .insight-label { font-family: 'Helvetica Neue', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--accent4); margin-bottom: 10px; }
+
+  .open-box { background: var(--surface); border: 1px dashed var(--accent5); border-radius: 6px; padding: 22px 26px; margin: 22px 0; }
+  .open-label { font-family: 'Helvetica Neue', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--accent5); margin-bottom: 10px; }
+
+  .diagram-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 28px 24px; margin: 24px 0; overflow-x: auto; }
+
+  .exhibit { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 24px 26px 20px; margin: 22px 0; overflow-x: auto; }
+  .exhibit-label { font-family: 'Helvetica Neue', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--chart-blue); margin-bottom: 6px; }
+  .exhibit-title { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
+  .exhibit-sub { font-family: 'Helvetica Neue', sans-serif; font-size: 12.5px; color: var(--text-muted); margin-bottom: 16px; max-width: 62ch; }
+  .exhibit-note { font-family: 'Helvetica Neue', sans-serif; font-size: 12px; color: var(--text-muted); font-style: italic; margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--border); max-width: none; }
+  .legend-row { display: flex; gap: 18px; margin: 0 0 16px; font-family: 'Helvetica Neue', sans-serif; font-size: 11.5px; color: var(--text-muted); flex-wrap: wrap; }
+  .legend-swatch { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 5px; vertical-align: middle; }
+
+  .bar-cell { display: flex; align-items: center; gap: 10px; }
+  .bar-track { position: relative; flex: 1; min-width: 60px; height: 14px; background: var(--chart-track); border-radius: 7px; overflow: hidden; }
+  .bar-fill { height: 100%; border-radius: 7px; background: var(--chart-blue); }
+  .bar-fill.muted { background: var(--chart-muted); }
+  .bar-fill.alert { background: var(--chart-red); }
+  .bar-fill.gold { background: var(--chart-gold); }
+  .bar-fill.teal { background: var(--chart-teal); }
+  .bar-value { font-family: 'Helvetica Neue', sans-serif; font-size: 12.5px; font-weight: 700; white-space: nowrap; min-width: 46px; text-align: right; font-variant-numeric: tabular-nums; }
+
+  .ladder { margin: 24px 0; }
+  .ladder-zone-heading { font-family: 'Helvetica Neue', sans-serif; font-size: 10.5px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-muted); margin: 22px 0 12px; }
+  .ladder-zone-heading:first-child { margin-top: 0; }
+  .rung { display: flex; gap: 14px; margin-bottom: 18px; }
+  .rung-num { width: 26px; height: 26px; border-radius: 50%; background: var(--tag-bg); display: flex; align-items: center; justify-content: center; font-family: 'Helvetica Neue', sans-serif; font-weight: 700; font-size: 12px; color: var(--text); flex-shrink: 0; }
+  .rung-body { flex: 1; min-width: 0; }
+  .rung-title-row { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; flex-wrap: wrap; margin-bottom: 6px; }
+  .rung-title { font-size: 14.5px; font-weight: 700; }
+  .rung-bartrack { position: relative; height: 12px; background: var(--chart-track); border-radius: 6px; overflow: hidden; margin-bottom: 8px; }
+  .rung-barfill { height: 100%; border-radius: 6px; }
+  .rung-barfill.fill-surface { background: #3f8f52; }
+  .rung-barfill.fill-middle { background: #c07a1e; }
+  .rung-barfill.fill-failure { background: var(--accent2); }
+  .rung-barfill.fill-foundation { background: var(--accent); }
+  .rung-caption { font-family: 'Helvetica Neue', sans-serif; font-size: 12.5px; color: var(--text-muted); line-height: 1.55; max-width: none; }
+
+  .dumbbell { display: flex; flex-direction: column; gap: 4px; min-width: 170px; }
+  .dumbbell-row { display: flex; align-items: center; gap: 8px; }
+  .dumbbell-tag { font-family: 'Helvetica Neue', sans-serif; font-size: 10px; color: var(--text-muted); width: 30px; flex-shrink: 0; }
+  .dumbbell-track { position: relative; flex: 1; height: 11px; background: var(--chart-track); border-radius: 6px; overflow: hidden; }
+  .dumbbell-fill { height: 100%; border-radius: 6px; }
+  .dumbbell-fill.prior { background: var(--chart-muted); }
+  .dumbbell-fill.current { background: var(--chart-blue); }
+  .dumbbell-fill.current.alert { background: var(--chart-red); }
+  .dumbbell-value { font-family: 'Helvetica Neue', sans-serif; font-size: 11.5px; font-weight: 700; min-width: 68px; text-align: right; font-variant-numeric: tabular-nums; }
+
+  .diverging-row { display: grid; grid-template-columns: 168px 1fr 62px; align-items: center; gap: 10px; margin-bottom: 10px; font-family: 'Helvetica Neue', sans-serif; font-size: 12.5px; }
+  .diverging-track { position: relative; height: 14px; background: var(--chart-track); border-radius: 7px; }
+  .diverging-center { position: absolute; left: 50%; top: -3px; bottom: -3px; width: 1px; background: var(--text-muted); opacity: 0.5; }
+  .diverging-fill { position: absolute; top: 0; height: 100%; border-radius: 7px; }
+  .diverging-fill.positive { left: 50%; background: var(--chart-blue); }
+  .diverging-fill.negative { right: 50%; background: var(--chart-red); }
+  .diverging-value { font-weight: 700; text-align: right; font-variant-numeric: tabular-nums; }
+  .diverging-zero-labels { display: grid; grid-template-columns: 168px 1fr 62px; gap: 10px; font-family: 'Helvetica Neue', sans-serif; font-size: 10px; color: var(--text-muted); margin-bottom: 6px; }
+  .diverging-zero-labels span:nth-child(2) { text-align: center; }
+
+  .stat-delta { display: inline-flex; align-items: center; gap: 4px; font-family: 'Helvetica Neue', sans-serif; font-size: 11.5px; font-weight: 700; padding: 2px 8px; border-radius: 4px; margin-left: 8px; vertical-align: middle; }
+  .stat-delta.flag-bad { background: #fde8e8; color: #c0392b; }
+  .stat-delta.flag-good { background: #d4edda; color: #155724; }
+  .stat-delta.flag-neutral { background: var(--tag-bg); color: var(--text-muted); }
+
+  .causal-top { background: var(--accent); color: #fff; border-radius: 6px; padding: 16px 20px; text-align: center; font-family: 'Helvetica Neue', sans-serif; font-size: 13px; font-weight: 700; margin-bottom: 4px; }
+  .causal-arrow-row { text-align: center; color: var(--text-muted); font-size: 20px; line-height: 1.2; margin: 2px 0; }
+  .causal-columns { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 4px 0; }
+  .causal-col { display: flex; flex-direction: column; gap: 4px; }
+  .causal-item { border-radius: 6px; padding: 12px 14px; font-family: 'Helvetica Neue', sans-serif; font-size: 12px; line-height: 1.5; color: #fff; }
+  .causal-consequence { background: var(--accent2); }
+  .causal-factor { background: var(--accent3); }
+  .causal-structural { background: #1d3557; }
+  .causal-item-title { font-weight: 700; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; opacity: 0.8; margin-bottom: 4px; display: block; }
+  .causal-shared-root { background: var(--accent4); color: #fff; border-radius: 6px; padding: 16px 20px; text-align: center; font-family: 'Helvetica Neue', sans-serif; font-size: 13px; font-weight: 700; margin-top: 4px; }
+  .causal-annotation { border: 1.5px dashed var(--accent4); border-radius: 6px; padding: 16px 20px; margin-top: 14px; font-size: 13.5px; font-style: italic; color: var(--text-muted); max-width: none; }
+
+  .divider { height: 1px; background: var(--border); margin: 40px 0; }
+  .footer { background: var(--surface); border-top: 1px solid var(--border); padding: 28px 64px; font-family: 'Helvetica Neue', sans-serif; font-size: 12px; color: var(--text-muted); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
+  .method-note { background: var(--bg); border-top: 1px solid var(--border); padding: 20px 64px; font-family: 'Helvetica Neue', sans-serif; font-size: 11.5px; color: var(--text-muted); line-height: 1.6; }
+  .method-note .method-label { font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text); margin-right: 6px; }
+
+  @media (max-width: 720px) {
+    .header, .container, .closing-section, .footer { padding-left: 24px; padding-right: 24px; }
+    .two-col, .three-col, .causal-columns { grid-template-columns: 1fr; }
+  }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <button class="toggle-btn" onclick="document.body.classList.toggle('dark')" aria-label="Toggle dark mode">☾ / ☀</button>
+  <div class="header-brand">Amplified Insight · Diagnostic Brief · July 2026</div>
+  <h1>Solvency Is Not the Same as Trust</h1>
+  <div class="header-opening">
+    <p>This July, a mass-transit line in one of India's largest cities — a line more than half a million commuters ride every day — signed away years of insolvency risk in a single agreement. Its entire ₹2,771.32 crore obligation to lenders was restructured in one stroke, cutting the debt by more than ₹1,100 crore and formally withdrawing the insolvency proceedings that had loomed over it. On paper, the line went from insolvent to solvent in an afternoon.</p>
+    <p>In the same fiscal year — inside the same infrastructure group that controls the line — the statutory auditor did something it had never done before: it filed a formal fraud report with the government under company law, then resigned. Its final opinion on the group's own accounts wasn't a qualification. It was a disclaimer — the strongest thing an auditor can say short of refusing to sign at all, and it means: we cannot vouch for these numbers.</p>
+    <p>The easy read is two unrelated headlines: one subsidiary got rescued, one parent got flagged. The harder question is whether they're the same story, told twice. A debt restructuring repairs a number. It says nothing, by itself, about whether the people now trusted to run the business behind that number have changed — and this particular group has now walked four other entities through a strikingly similar sequence before this one.</p>
+    <div class="question">This brief traces the rescue backwards — from the headline debt figure to a fund-routing mechanism the same promoter group has used before — and asks what a lender should verify before calling any restructuring a resolution.</div>
+  </div>
+  <div class="header-meta">Amplified Insight · Aanand Ladgaonkar · Vadodara · July 2026</div>
+</div>
+
+<div class="verdict-bar">
+  This brief works backwards from a debt-restructuring headline — through a parent company's own audit disclaimer, a fund-routing mechanism under live regulatory investigation, and a leadership "change" that wasn't one — to ask what a rescue actually needs to fix before anyone should call it resolved.
+</div>
+
+<div class="container">
+
+  <!-- 01 THE PATTERN -->
+  <section>
+    <div class="section-label">01 · The Pattern</div>
+    <h2>When the Rescue Fixes the Debt But Not the Hands That Spend It</h2>
+
+    <p>Picture any distressed company that gets restructured by a sophisticated creditor — a bank, a bad-bank vehicle, an asset reconstruction company. The creditor buys the debt, cuts the quantum, takes a board seat, sets up a monitoring committee. Every one of those moves is real, and every one of them is aimed at the same target: the liability side of the balance sheet. What none of them automatically do is answer a completely different question — whether the people who will run the company tomorrow are the same people who ran it into this position, and whether the specific mechanism that produced the distress has actually been closed off, or just moved to a different line item.</p>
+
+    <p>A balance-sheet fix and a governance fix are two different repairs. They often get announced together, in the same press release, and read by the market as a single event: "resolved." They are not the same event. One is checkable in an afternoon by anyone who can read a debt schedule. The other requires knowing who is still in the room, what they were doing the last time money went missing, and whether the new oversight mechanism can actually see the channel that mattered.</p>
+
+    <div class="callout">
+      The easy story is "the debt got fixed, so the company is fixed." The harder question: does the fix even claim to cover the mechanism that put the company here — or does it only cover the number that was always the most visible, most measurable, easiest part of the problem to solve?
+    </div>
+
+    <div class="two-col">
+      <div class="card">
+        <div class="card-label">Debt cut in the restructuring, against total obligation</div>
+        <div class="card-value">₹1,100+ Cr</div>
+        <div class="card-desc">Against a total restructured obligation of ₹2,771.32 crore — a real, verifiable, balance-sheet repair</div>
+      </div>
+      <div class="card">
+        <div class="card-label">Parent group's audit opinion, same fiscal year</div>
+        <div class="card-value">Disclaimer</div>
+        <div class="card-desc">The statutory auditor could not form an opinion on the consolidated or standalone accounts at all — a governance signal the debt fix does not touch</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 02 THE FAILURE STACK -->
+  <section>
+    <div class="section-label">02 · The Failure Stack</div>
+    <h2>Four Layers Deep — the Rescue Only Reached the First One</h2>
+
+    <p>Read only the restructuring announcement, and this is a clean turnaround story: insolvency averted, debt cut, oversight added. Read one layer into the group's own financial disclosures from the same year, and it's a story about which parts of the sentence "the company is now safe" were actually tested.</p>
+
+    <div class="ladder">
+      <div class="ladder-zone-heading">Surface — most visible, least consequential</div>
+
+      <div class="rung">
+        <div class="rung-num">1</div>
+        <div class="rung-body">
+          <div class="rung-title-row"><span class="rung-title">Events</span><span class="badge badge-green">The headline</span></div>
+          <div class="rung-bartrack"><div class="rung-barfill fill-surface" style="width:20%;"></div></div>
+          <div class="rung-caption">Restructuring agreement signed. Insolvency proceedings withdrawn. Debt cut by more than ₹1,100 crore. A creditor-nominated board seat and monitoring committee established.</div>
+        </div>
+      </div>
+
+      <div class="ladder-zone-heading">Middle — visible only if you read the parent's own accounts</div>
+
+      <div class="rung">
+        <div class="rung-num">2</div>
+        <div class="rung-body">
+          <div class="rung-title-row"><span class="rung-title">Patterns</span><span class="badge badge-amber">Visible only in the numbers</span></div>
+          <div class="rung-bartrack"><div class="rung-barfill fill-middle" style="width:52%;"></div></div>
+          <div class="rung-caption">The parent group's headline profit rose year-on-year — but strip out non-operating income and the group swung from an operating profit to a pre-exceptional operating loss in the same twelve months. The rescued subsidiary itself carries a negative net worth and current liabilities exceeding current assets by several thousand crore. The "new" chief executive is the outgoing chief financial officer, promoted, not replaced.</div>
+        </div>
+      </div>
+
+      <div class="ladder-zone-heading">The failure zone — where the actual failure lived</div>
+
+      <div class="rung">
+        <div class="rung-num">3</div>
+        <div class="rung-body">
+          <div class="rung-title-row"><span class="rung-title">Structures</span><span class="badge badge-red">Where it failed</span></div>
+          <div class="rung-bartrack"><div class="rung-barfill fill-failure" style="width:82%;"></div></div>
+          <div class="rung-caption">This group has done this before. Raise money into a listed company. Route it through loosely labelled payments — loans in one case, contractor payments in another — to companies tied to the promoter. One case already ended in a large fine and a five-year market ban. A bigger case — tens of billions of rupees, routed through a single contractor — is under investigation right now, in the very company that owns this rescued subsidiary, in the same year as the rescue.</div>
+        </div>
+      </div>
+
+      <div class="ladder-zone-heading">Foundation — deepest, and driving everything above it</div>
+
+      <div class="rung" style="margin-bottom:0;">
+        <div class="rung-num">4</div>
+        <div class="rung-body">
+          <div class="rung-title-row"><span class="rung-title">The unstated belief</span><span class="badge-dash">Never said out loud</span></div>
+          <div class="rung-bartrack"><div class="rung-barfill fill-foundation" style="width:100%;"></div></div>
+          <div class="rung-caption">Everyone involved — the creditor, the subsidiary, the parent, the market reading the headline — is acting as if fixing the debt is the whole job. Nobody has had to say, on the record, whether the people and channels already caught moving money before are now blocked from doing it again.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="exhibit">
+      <div class="exhibit-label">Exhibit 1</div>
+      <div class="exhibit-title">The Same Mechanism, Four Times Before</div>
+      <div class="exhibit-sub">This group has run at least four other companies through something close to this same sequence. Each one has its own excuse on its own. Put together, it's a pattern — and it's on the regulatory record, not just in the press.</div>
+      <div class="table-scroll">
+        <table>
+          <thead><tr><th style="width:180px;">Entity</th><th>What happened</th><th>Evidence tier</th></tr></thead>
+          <tbody>
+            <tr>
+              <td style="font-weight:600;">A listed housing-finance arm</td>
+              <td>₹14,577.68 crore disbursed as loosely classified "general purpose" loans; 88.76% (₹12,487.56 crore) went to entities the regulator found were indirectly linked to the promoter group. Collapsed within 18 months of a backdoor listing.</td>
+              <td><span class="badge badge-red">Adjudicated</span> — regulator's final order, ₹624 crore penalty, 25 entities including the promoter barred from securities markets for five years</td>
+            </tr>
+            <tr>
+              <td style="font-weight:600;">A private bank that financed the group</td>
+              <td>The bank kept lending to the group even after a rating agency flagged weak financials — and allegedly got cheap loans back, routed to companies tied to the bank co-founder's family. Its exposure to the group roughly doubled in a year.</td>
+              <td><span class="badge badge-amber">Chargesheeted</span> — criminal investigation agency's formal charge document, quantified loss to the bank</td>
+            </tr>
+            <tr>
+              <td style="font-weight:600;">A telecom arm</td>
+              <td>Went insolvent owing tens of thousands of crore. Investigators later found documents suggesting the insolvency filing itself may have been staged.</td>
+              <td><span class="badge badge-amber">Under investigation</span> — enforcement agency probe ongoing</td>
+            </tr>
+            <tr>
+              <td style="font-weight:600;">A financial-services arm</td>
+              <td>The banking regulator superseded the board after defaults and governance failures — a materially stronger intervention than an ordinary insolvency filing.</td>
+              <td><span class="badge badge-red">Regulatory takeover</span> — board superseded by the central bank</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="exhibit-note">The group-wide regulatory exposure now runs to roughly ₹73,000 crore under investigation across seven separate cases, against a peak group debt load of roughly ₹94,000 crore at its worst point. Scale and multiplicity, not one bad project.</div>
+    </div>
+
+    <div class="exhibit">
+      <div class="exhibit-label">Exhibit 2</div>
+      <div class="exhibit-title">The Headline Profit vs. the Operating Reality</div>
+      <div class="exhibit-sub">Parent group, year-on-year. The number everyone read is the top line. The number that tells you what the actual business is doing sits one line below it.</div>
+      <div class="legend-row"><span><span class="legend-swatch" style="background:var(--chart-muted);"></span>Prior year</span><span><span class="legend-swatch" style="background:var(--chart-blue);"></span>This year</span></div>
+      <div style="display:flex; flex-direction:column; gap:16px;">
+        <div>
+          <div style="font-family:'Helvetica Neue',sans-serif; font-size:12.5px; font-weight:600; margin-bottom:4px;">Consolidated net profit (₹ Cr)</div>
+          <div class="dumbbell-row"><span class="dumbbell-tag">Prior</span><div class="dumbbell-track"><div class="dumbbell-fill prior" style="width:59%;"></div></div><span class="dumbbell-value">1,708.98</span></div>
+          <div class="dumbbell-row"><span class="dumbbell-tag">Now</span><div class="dumbbell-track"><div class="dumbbell-fill current" style="width:100%;"></div></div><span class="dumbbell-value">2,900.23</span></div>
+        </div>
+        <div>
+          <div style="font-family:'Helvetica Neue',sans-serif; font-size:12.5px; font-weight:600; margin-bottom:4px;">Pre-exceptional, pre-regulatory-income operating result (₹ Cr)</div>
+          <div class="diverging-zero-labels"><span></span><span>0</span><span></span></div>
+          <div class="diverging-row">
+            <div>Prior year</div>
+            <div class="diverging-track"><div class="diverging-center"></div><div class="diverging-fill positive" style="width:18%;"></div></div>
+            <div class="diverging-value" style="color:var(--chart-blue);">+958.41</div>
+          </div>
+          <div class="diverging-row">
+            <div>This year</div>
+            <div class="diverging-track"><div class="diverging-center"></div><div class="diverging-fill negative" style="width:33%;"></div></div>
+            <div class="diverging-value" style="color:var(--chart-red);">−1,701.24</div>
+          </div>
+        </div>
+      </div>
+      <div class="exhibit-note">In plain terms: the headline profit rose 70%. Strip out non-operating "regulatory income" and the group's actual operating business swung from a profit of ₹958.41 crore to a loss of ₹1,701.24 crore in the same year. The number that got better is not the number that describes whether the business is working.</div>
+    </div>
+  </section>
+
+  <!-- 03 ROOT CAUSE -->
+  <section>
+    <div class="section-label">03 · The Root Cause</div>
+    <h2>The Constraint Was Never the Debt Quantum</h2>
+
+    <p>Two problems sit stacked on top of each other here. The restructuring only fixes the one on top. The visible problem: a subsidiary owed more than it could pay, and a creditor cut the amount. That's solved, cleanly — and one part of it deserves real credit, not just skepticism. The creditor didn't leave other lenders exposed. It bought out the entire original lending group at a steep discount and became the sole creditor, with its own money now at risk on the recovery. That's a cleaner outcome than a partial restructuring would have produced, and it gives the creditor a real reason to want this business to actually work.</p>
+
+    <p>The second problem is the one the deal never touches: will the people who control cash here tomorrow be the same people a regulator already caught — in a sister company, under the same promoter — moving money to related parties through categories built not to draw attention? That mechanism has shown up again, bigger, inside the parent itself. This time disguised as contractor payments instead of loans. Three separate agencies are investigating it right now, in the same year this restructuring closed.</p>
+
+    <div class="exhibit">
+      <div class="exhibit-label">Exhibit 3</div>
+      <div class="exhibit-title">What Changed at the Top, and What Didn't</div>
+      <div class="exhibit-sub">Four governance events, approved at one board meeting. The precondition that matters most in any genuine turnaround — a real break in who is trusted to run the business — is testable directly against what was actually announced.</div>
+
+      <div class="two-col" style="margin-top:0; margin-bottom:14px;">
+        <div class="card" style="padding:16px 20px;">
+          <div class="rung-title-row" style="margin-bottom:6px;"><span class="rung-title" style="font-size:13.5px;">Chief executive</span><span class="badge badge-red">Continuity, not change</span></div>
+          <div class="rung-caption">The CFO and executive director since 2022 — the exact window covering the fund-routing conduct now under investigation — was promoted to CEO.</div>
+        </div>
+        <div class="card" style="padding:16px 20px;">
+          <div class="rung-title-row" style="margin-bottom:6px;"><span class="rung-title" style="font-size:13.5px;">Chief financial officer</span><span class="badge badge-amber">Untested</span></div>
+          <div class="rung-caption">A new appointee fills the seat the promoted executive vacated.</div>
+        </div>
+      </div>
+      <div class="two-col" style="margin-top:0;">
+        <div class="card" style="padding:16px 20px;">
+          <div class="rung-title-row" style="margin-bottom:6px;"><span class="rung-title" style="font-size:13.5px;">Statutory auditor</span><span class="badge badge-amber">Fast, long lock-in</span></div>
+          <div class="rung-caption">The outgoing auditor — who filed the fraud report and issued the disclaimer of opinion — resigned. A new firm was appointed to a five-year term almost immediately, before any track record exists.</div>
+        </div>
+        <div class="card" style="padding:16px 20px;">
+          <div class="rung-title-row" style="margin-bottom:6px;"><span class="rung-title" style="font-size:13.5px;">Capital raise</span><span class="badge badge-red">No disclosed use</span></div>
+          <div class="rung-caption">A large discretionary equity fundraise, same board session — intended use disclosed only as "long-term strategic goals and operational requirements."</div>
+        </div>
+      </div>
+
+      <div class="exhibit-note">Three of the four either preserve continuity with the period under investigation or introduce new, unproven parties with no track record yet to judge. None is a genuinely independent, external leadership change of the kind that most reliably predicts recovery from internally-caused distress.</div>
+    </div>
+
+    <div class="exhibit">
+      <div class="exhibit-label">Exhibit 4</div>
+      <div class="exhibit-title">The One Clean Positive: Creditor Consolidation</div>
+      <div class="exhibit-sub">Named honestly, because a diagnosis that only builds the negative case isn't a diagnosis. This part of the deal is structurally sound.</div>
+      <div class="three-col">
+        <div class="card">
+          <div class="card-label">Original consortium face value</div>
+          <div class="card-value" style="font-size:24px; color: var(--text);">₹2,658 Cr</div>
+          <div class="card-desc">Held across five public-sector lenders before the restructuring</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Acquisition price paid by the restructuring creditor</div>
+          <div class="card-value" style="font-size:24px; color: var(--text);">₹1,063 Cr</div>
+          <div class="card-desc">Roughly 40% of face value — the creditor's own capital is now genuinely at risk on recovery, not a symbolic write-down</div>
+        </div>
+        <div class="card">
+          <div class="card-label">No creditors left outside the deal</div>
+          <div class="card-value" style="font-size:24px; color: var(--chart-teal);">Single creditor</div>
+          <div class="card-desc">Every original lender was bought out — no fragmented claims left to trigger a fresh insolvency filing elsewhere</div>
+        </div>
+      </div>
+      <div class="exhibit-note">This is a real improvement over a partial restructuring, and the creditor now has real skin in the game. But it doesn't prove the creditor's oversight reaches past debt repayment — into related-party and contractor cash flows, the exact mechanism behind every prior finding against this group.</div>
+    </div>
+
+    <div class="callout">
+      A simple test: does the fix change who has to be trusted with the next rupee that moves, or only how much is currently owed? When it's consistently the second, a company can be declared solvent while the exact mechanism that made it insolvent stays fully staffed and fully in place.
+    </div>
+  </section>
+
+  <!-- 04 DEPTH OF INTERVENTION -->
+  <section>
+    <div class="section-label">04 · Depth of Intervention</div>
+    <h2>Where the Rescue Acted — and Where the Fix Actually Needed to Land</h2>
+
+    <p>Every rescue like this follows the same pattern: the first moves announced are the most visible and the least powerful. The move that would actually change the outcome — who controls the cash, and whether that's changed — rarely makes the press release. It isn't one transaction you can point to. It's a standing rule, or the lack of one.</p>
+
+    <div class="ladder">
+      <div class="ladder-zone-heading">Surface — most visible, least powerful</div>
+
+      <div class="rung">
+        <div class="rung-num">7</div>
+        <div class="rung-body">
+          <div class="rung-title-row"><span class="rung-title">Cut the debt quantum</span><span class="badge badge-green">Creditor acted here</span></div>
+          <div class="rung-bartrack"><div class="rung-barfill fill-surface" style="width:24%;"></div></div>
+          <div class="rung-caption">Real, verifiable, and the single most visible line in every press report of the deal</div>
+        </div>
+      </div>
+
+      <div class="rung">
+        <div class="rung-num">6</div>
+        <div class="rung-body">
+          <div class="rung-title-row"><span class="rung-title">Withdraw insolvency proceedings</span><span class="badge badge-green">Creditor acted here</span></div>
+          <div class="rung-bartrack"><div class="rung-barfill fill-surface" style="width:28%;"></div></div>
+          <div class="rung-caption">Removes the immediate legal threat — but a legal threat removed is not the same as a mechanism closed</div>
+        </div>
+      </div>
+
+      <div class="ladder-zone-heading">Middle — intermediate leverage</div>
+
+      <div class="rung">
+        <div class="rung-num">5</div>
+        <div class="rung-body">
+          <div class="rung-title-row"><span class="rung-title">Consolidate every lender under one creditor</span><span class="badge badge-amber">Genuine improvement, debt-side only</span></div>
+          <div class="rung-bartrack"><div class="rung-barfill fill-middle" style="width:48%;"></div></div>
+          <div class="rung-caption">Removes fragmentation risk and gives the creditor real incentive to want recovery — but its mandate still runs to debt service, not to the entity's operating cash flows</div>
+        </div>
+      </div>
+
+      <div class="rung">
+        <div class="rung-num">4</div>
+        <div class="rung-body">
+          <div class="rung-title-row"><span class="rung-title">Add a board seat and a monitoring committee</span><span class="badge badge-amber">Visibility, unclear scope</span></div>
+          <div class="rung-bartrack"><div class="rung-barfill fill-middle" style="width:52%;"></div></div>
+          <div class="rung-caption">Public disclosure describes "covenants dictating operational scope" without specifying whether related-party or vendor-contract transactions are inside that scope — the one detail that would settle the argument is not public</div>
+        </div>
+      </div>
+
+      <div class="ladder-zone-heading">The failure zone — where the actual failure lived</div>
+
+      <div class="rung">
+        <div class="rung-num">3</div>
+        <div class="rung-body">
+          <div class="rung-title-row"><span class="rung-title">Verify and restrict related-party and contractor cash flows before declaring resolution</span><span class="badge badge-red">Root failure</span></div>
+          <div class="rung-bartrack"><div class="rung-barfill fill-failure" style="width:80%;"></div></div>
+          <div class="rung-caption">The exact mechanism already proven, and now under fresh investigation elsewhere in this group — never named as a condition of this deal, at least not publicly</div>
+        </div>
+      </div>
+
+      <div class="rung">
+        <div class="rung-num">2</div>
+        <div class="rung-body">
+          <div class="rung-title-row"><span class="rung-title">Require a genuinely independent leadership change</span><span class="badge badge-red">Root failure</span></div>
+          <div class="rung-bartrack"><div class="rung-barfill fill-failure" style="width:85%;"></div></div>
+          <div class="rung-caption">The single precondition most associated with successful recovery from internally-caused distress — a real outside break in leadership — was not tested; the top seat went to internal continuity instead</div>
+        </div>
+      </div>
+
+      <div class="ladder-zone-heading">Foundation — deepest, most powerful, rarely touched</div>
+
+      <div class="rung" style="margin-bottom:0;">
+        <div class="rung-num">1</div>
+        <div class="rung-body">
+          <div class="rung-title-row"><span class="rung-title">Change what "resolved" is allowed to mean</span><span class="badge-dash">Never named as a decision</span></div>
+          <div class="rung-bartrack"><div class="rung-barfill fill-foundation" style="width:100%;"></div></div>
+          <div class="rung-caption">Replacing "the debt is fixed" with "the debt is fixed and the mechanism that created it is independently verified closed" — the one redefinition that would reorder every other decision in the deal</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 05 FIX SEQUENCE -->
+  <section>
+    <div class="section-label">05 · Fix Sequence</div>
+    <h2>What Should Happen, in Order</h2>
+
+    <p>The instinct in any rescue is to fix the balance sheet first and treat governance as something to check later. That's backwards — especially when the promoter already has a proven record on this exact question. Verification has to come before anyone calls the deal resolved. Not after, as a monitoring task that can quietly never happen.</p>
+
+    <table>
+      <thead><tr><th style="width:40px;">Order</th><th>Move</th><th>Why it comes here, not later</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>Confirm the oversight mandate explicitly covers related-party and contractor cash flows, not only debt service</td><td>This is the exact channel already found to have moved money out of a sister entity, and separately under investigation in the parent — leaving it unaddressed means the rescue closes a door the past pattern didn't use</td></tr>
+        <tr><td>2</td><td>Require an independently sourced leadership change before treating the restructuring as final</td><td>Internal promotion of continuity leadership is the one precondition most strongly associated with turnaround failure when the original distress was internally caused</td></tr>
+        <tr><td>3</td><td>Only then treat the debt relief as durable, and release the entity from enhanced monitoring</td><td>A debt fix without a verified cash-control fix is a balance-sheet event dressed as a resolution — durable only until the same mechanism finds the same opening again</td></tr>
+      </tbody>
+    </table>
+
+    <div class="insight-box">
+      <div class="insight-label">The sequencing error</div>
+      This restructuring ran the sequence backwards — or at least the public record shows it did. The debt number got fixed first, fast, and loudly. Whether the channel that's moved money out of this group before is now closed was never made a condition of the deal. Not publicly, anyway.
+    </div>
+  </section>
+
+  <!-- 06 CAUSAL CHAIN -->
+  <section>
+    <div class="section-label">06 · Causal Chain</div>
+    <h2>Tracing the Rescue Back to Its Structural Origin</h2>
+
+    <div class="diagram-wrap">
+      <div class="causal-top">Same trigger — a subsidiary's mounting insolvency risk forces a restructuring</div>
+      <div class="causal-arrow-row">↓</div>
+      <div class="causal-columns">
+        <div class="causal-col">
+          <div class="causal-item causal-consequence"><span class="causal-item-title">Consequence</span>Debt cut by over ₹1,100 crore, insolvency withdrawn, market reads it as resolved</div>
+          <div class="causal-item causal-factor"><span class="causal-item-title">Causal factor</span>The debt quantum is the single most visible, most measurable number in the entire situation — the easiest part of the problem to fix and to announce</div>
+          <div class="causal-item causal-structural"><span class="causal-item-title">Structural root</span>Creditors and markets judge "resolution" by the balance-sheet number, because it's the only part of the story that's fully public</div>
+        </div>
+        <div class="causal-col">
+          <div class="causal-item causal-consequence"><span class="causal-item-title">Consequence</span>The parent's own statutory auditor files a fraud report and issues a disclaimer of opinion, same fiscal year</div>
+          <div class="causal-item causal-factor"><span class="causal-item-title">Causal factor</span>Tens of billions of rupees routed through a single contractor to group-linked entities, now under simultaneous securities, enforcement, and serious-fraud investigation</div>
+          <div class="causal-item causal-structural"><span class="causal-item-title">Structural root</span>The group has used loosely classified transaction categories — loans in one cycle, contractor payments in the next — to move money to related parties across more than one prior cycle</div>
+        </div>
+        <div class="causal-col">
+          <div class="causal-item causal-consequence"><span class="causal-item-title">Consequence</span>The "new" chief executive is the chief financial officer who held that seat through the period now under investigation</div>
+          <div class="causal-item causal-factor"><span class="causal-item-title">Causal factor</span>No externally sourced leadership change accompanied the financial rescue — promotion, not replacement</div>
+          <div class="causal-item causal-structural"><span class="causal-item-title">Structural root</span>The precondition that most reliably predicts a genuine turnaround from internally-caused distress — a real break in who is trusted — was never tested</div>
+        </div>
+      </div>
+      <div class="causal-arrow-row">↓</div>
+      <div class="causal-shared-root">Shared root: the rescue fixed the number that was easiest to verify, and left untouched the one that has broken this same group four times before</div>
+      <div class="causal-annotation">The debt-first rescue trap: when a restructuring only repairs the liability side, it treats balance-sheet velocity as proof of cure — and a reader who stops at the headline number will never see the layer where the actual risk still lives.</div>
+    </div>
+  </section>
+
+  <!-- 07 DIAGNOSTIC TESTS -->
+  <section>
+    <div class="section-label">07 · Diagnostic Tests</div>
+    <h2>Three Questions a Lender Can Ask Before Calling Any Rescue Resolved</h2>
+
+    <table>
+      <thead><tr><th style="width:34px;">#</th><th>Question</th><th>What a bad answer sounds like</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>Does the monitoring mandate explicitly cover related-party and vendor-contract cash flows, or only debt service?</td><td>"There's a monitoring committee in place" — offered with no detail on what it's actually mandated to see</td></tr>
+        <tr><td>2</td><td>Is the "new" leadership genuinely external, or is it internal promotion of whoever ran finance through the period now under scrutiny?</td><td>"There's been a change at the top" — true, but not the change that matters</td></tr>
+        <tr><td>3</td><td>Is the audit opinion on the parent's own accounts clean, in the same period the rescue is being celebrated?</td><td>"That's a separate matter, unrelated to this deal" — the two are rarely as separate as they're presented</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- 08 THREE RULES -->
+  <section>
+    <div class="section-label">08 · Three Rules</div>
+    <h2>Standing Principles From This Case</h2>
+
+    <div class="two-col">
+      <div class="card">
+        <div class="card-label">Rule 1</div>
+        <div class="card-desc" style="font-size:14px; color: var(--text);">A balance-sheet fix and a governance fix are different repairs. A rescue that only performs one should never be read in the market as having resolved the other.</div>
+      </div>
+      <div class="card">
+        <div class="card-label">Rule 2</div>
+        <div class="card-desc" style="font-size:14px; color: var(--text);">Once a promoter group has one regulator-adjudicated diversion finding, every other distressed entity under the same promoter carries the same base-rate risk until proven otherwise. That's not suspicion. It's arithmetic.</div>
+      </div>
+    </div>
+    <div class="two-col">
+      <div class="card">
+        <div class="card-label">Rule 3</div>
+        <div class="card-desc" style="font-size:14px; color: var(--text);">An auditor's disclaimer of opinion is a stronger signal than any press release announcing a rescue signed in the same period. Read the audit opinion before the deal terms, not after.</div>
+      </div>
+      <div class="card">
+        <div class="card-label">Rule 4</div>
+        <div class="card-desc" style="font-size:14px; color: var(--text);">Leadership staying the same through the period under investigation isn't stability. It's the most important test for recovery failing quietly, dressed up as a smooth handover.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 09 SESSION SUMMARY -->
+  <section>
+    <div class="section-label">09 · Session Summary</div>
+    <h2>Prediction, Delta, What Shifted</h2>
+    <p class="full-width-p"><strong>Prediction locked, before any further reveal:</strong> within 12–18 months, expect one of these — fresh regulatory action, a new credit event, or a related-party disclosure — showing cash from the rescued entity, or its vendors, moved toward group-linked parties. The reason: the restructuring's oversight covers debt service. It was never extended to related-party or contractor cash flows.</p>
+    <p class="full-width-p"><strong>Delta, named honestly:</strong> the mechanism itself is solid — proven in one sister entity, under live investigation by three agencies in the parent, backed by the parent's own auditor resigning and refusing an opinion in the same year as this deal. What isn't confirmed is the actual covenant text in the restructuring agreement. It isn't public. The honest move is to say that, not assume the worst version of it.</p>
+
+    <div class="exhibit">
+      <div class="exhibit-label">Exhibit 5</div>
+      <div class="exhibit-title">Why the Group Might Be Behaving This Way — Four Readings, Same Facts</div>
+      <div class="exhibit-sub">The promoter family holds the parent closely throughout this period. That rules out one generic motive — propping up a scattered shareholder base's confidence — without telling us which of these four is the real one.</div>
+      <div class="table-scroll">
+        <table>
+          <thead><tr><th style="width:200px;">Reading</th><th>What supports it</th><th>What cuts against it</th></tr></thead>
+          <tbody>
+            <tr>
+              <td style="font-weight:600;">A deliberate, repeatable extraction pattern</td>
+              <td>Four prior entities, same shape of event. One finding already proven, with a named mechanism. A near-identical mechanism now live in the parent — dressed up as contractor spend instead of loans.</td>
+              <td>Requires assuming intent across a decade and several entities, not just weak controls repeated under pressure</td>
+            </tr>
+            <tr>
+              <td style="font-weight:600;">Chronic capital indiscipline under repeated distress, not intent</td>
+              <td>Infrastructure and telecom projects in India carry real construction-cost and regulatory risk on their own. Distress alone can explain reckless, poorly controlled financing choices.</td>
+              <td>Doesn't explain why the money specifically went to promoter-linked companies, instead of just being lost to cost overruns</td>
+            </tr>
+            <tr>
+              <td style="font-weight:600;">Enforcement is finally catching up, and the group is now genuinely reforming</td>
+              <td>New auditor, new CFO, a large capital raise, one clean creditor instead of many — all consistent with a group trying to visibly clean up</td>
+              <td>The CEO seat stayed with continuity leadership. The new auditor got a five-year lock-in before earning any track record. The capital raise has no disclosed use. None of this reads as reform under scrutiny.</td>
+            </tr>
+            <tr>
+              <td style="font-weight:600;">This is the ordinary shape of Indian infrastructure distress, not unique culpability</td>
+              <td>Serial restructuring and promoter-group distress show up across many Indian infrastructure conglomerates, not just this one</td>
+              <td>Doesn't explain the proven finding of related-party fund diversion, or the parent's current disclaimer of opinion. Both are unusual even for a messy sector.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="exhibit-note">Whichever reading is true, the test for a lender is the same: does this deal prove the channel already caught moving money elsewhere is closed here — or does it only prove the debt number looks better than last quarter?</div>
+    </div>
+
+    <h3>What Would Prove This Wrong</h3>
+    <p class="full-width-p">A prediction nobody can check isn't a diagnosis — it's an opinion. Here are the signals to watch that would say the rescue is genuinely durable, not cosmetic:</p>
+    <div class="table-scroll">
+      <table>
+        <thead><tr><th style="width:260px;">Signal</th><th>What "resolved" looks like</th></tr></thead>
+        <tbody>
+          <tr><td>Restructuring covenant scope</td><td>If the covenant text becomes public, it names related-party and vendor-contract transactions, not just debt service</td></tr>
+          <tr><td>A pending arbitration award owed to the subsidiary</td><td>A court-ordered payment owed to the rescued entity actually arrives, and gets spent on operations — not left unresolved or redirected</td></tr>
+          <tr><td>The large discretionary capital raise</td><td>Its use gets disclosed specifically enough to check against real operating need — not just "strategic goals"</td></tr>
+          <tr><td>Regulatory trajectory</td><td>No further securities, enforcement, or serious-fraud action against the parent within the next reporting cycle</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p class="full-width-p"><strong>What shifted:</strong> the right question about any distressed-asset rescue isn't "was the debt fixed." That's the easiest thing to verify — and the easiest thing for a promoter with a prior record to make look convincing. The real question: does the fix reach the mechanism, not just the number? That question travels to any restructuring with a repeat-offender promoter, not just this one.</p>
+  </section>
+
+</div>
+
+<div class="closing-section">
+  <div class="closing-label">Closing</div>
+  <h2>Solvency Is Not the Same as Trust</h2>
+  <p>The debt cut was real. The insolvency withdrawal was real. One creditor with real money at risk is a genuinely better structure than several fragmented ones. None of that is false, and none of it should get waved away just to make the darker reading feel more satisfying. That's exactly what makes a rescue like this hard to question: everything a balance sheet is built to show says the business is safe now.</p>
+  <p>What the balance sheet was never built to show is who is still allowed to move the next rupee, and whether that channel has a history. A restructuring that fixes the number and leaves the mechanism untouched doesn't announce itself as incomplete. It announces itself as a resolution. And waits for the same channel to open again.</p>
+  <div class="closing-question">The year a rescue is announced is the only year anyone will ask, cheaply, whether it reaches the mechanism and not just the number. Every year after that, a regulator asks the same question instead — and it costs the lender far more for having skipped it.</div>
+  <div class="take-with-you">
+    <div class="take-label">Take With You</div>
+    <div class="take-line">The cleaner the balance sheet looks after a rescue, the less anyone checks who's still writing on it.</div>
+  </div>
+  <div class="closing-line">Amplified Insight · Diagnostic Brief · July 2026</div>
+</div>
+
+<div class="method-note">
+  <span class="method-label">Method</span>Diagnostic built on a constraint-and-leverage framework developed by Aanand Ladgaonkar over a private, cross-domain synthesis library — corporate turnaround, capital allocation, systems thinking — cross-checked here against public regulatory orders, statutory filings, and audit disclosures. Drafted in collaboration with Claude (Anthropic).
+</div>
+
+<div class="footer">
+  <div>Amplified Insight · Diagnostic Series</div>
+  <div>Pattern-first. Anonymised by default. The company is the specimen, not the story.</div>
+</div>
+
+</body>
+</html>
